@@ -12,8 +12,8 @@ class MenuViewController: UIViewController {
 	
 	// MARK: - Outlets
 	@IBOutlet weak var chatView: MyView!
-	@IBOutlet weak var loginView: MyView!
-//	@IBOutlet weak var animationView: MyView!
+	@IBOutlet weak var loginView: UIView!
+	//	@IBOutlet weak var animationView: MyView!
 	
 	
 	//MARK: Properties
@@ -76,7 +76,7 @@ class MenuViewController: UIViewController {
 		navigationController?.setNavigationBarHidden(false, animated: true)
 		navigationController?.navigationBar.barTintColor = kCOLOR_0E5C89 //bar's backgroundColor
 		navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: kHEADERTEXT, NSAttributedString.Key.foregroundColor: kCOLOR_FFFFFF] //turn title to white and font to systemFont with size and weight
-		title = "Coding Tasks"
+		title = "Jack N' Poy"
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil) //removes the title when we go to child controller
 	}
 	override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }

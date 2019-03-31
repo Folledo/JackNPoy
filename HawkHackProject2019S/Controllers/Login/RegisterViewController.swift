@@ -10,8 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
-import AVFoundation
-import Photos
+//import AVFoundation
+//import Photos
 
 class RegisterViewController: UIViewController {
 	
@@ -244,130 +244,129 @@ extension RegisterViewController: UITextFieldDelegate {
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	@objc func handleUserAvatar() {
-		
-		
+//		showAttachmentActionSheet(vc: self)
 		
 		let picker = UIImagePickerController()
+		picker.sourceType = .photoLibrary
 		picker.delegate = self
 		picker.allowsEditing = true //will allow us to edit image
-		picker.sourceType = .photoLibrary
 		present(picker, animated: true, completion: nil)
 	}
 	
-	
-	func showAttachmentActionSheet(vc: UIViewController) {
-//		currentVC = vc
-		let actionSheet = UIAlertController(title: "Add a File", message: "Choose the source of your image", preferredStyle: .actionSheet)
-		
-		actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action) -> Void in
-			self.authorisationStatus(attachmentTypeEnum: .camera, vc: self)
-		}))
-		
-		actionSheet.addAction(UIAlertAction(title: "Camera Roll", style: .default, handler: { (action) -> Void in
-//			actionSheet.addAction(UIAlertAction(title: "Camera Roll", style: .default, handler: { (action) in
 //
-//			}))
-			self.authorisationStatus(attachmentTypeEnum: .photoLibrary, vc: self)
-		}))
-		
-//		actionSheet.addAction(UIAlertAction(title: Constants.video, style: .default, handler: { (action) -> Void in
-//			self.authorisationStatus(attachmentTypeEnum: .video, vc: self.currentVC!)
+//	func showAttachmentActionSheet(vc: UIViewController) {
+////		currentVC = vc
+//		let actionSheet = UIAlertController(title: "Add a File", message: "Choose the source of your image", preferredStyle: .actionSheet)
 //
+//		actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action) -> Void in
+//			self.authorisationStatus(attachmentTypeEnum: .camera, vc: self)
 //		}))
 //
-//		actionSheet.addAction(UIAlertAction(title: Constants.file, style: .default, handler: { (action) -> Void in
-//			self.documentPicker()
+//		actionSheet.addAction(UIAlertAction(title: "Camera Roll", style: .default, handler: { (action) -> Void in
+////			actionSheet.addAction(UIAlertAction(title: "Camera Roll", style: .default, handler: { (action) in
+////
+////			}))
+//			self.authorisationStatus(attachmentTypeEnum: .photoLibrary, vc: self)
 //		}))
 //
-		actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		
-		vc.present(actionSheet, animated: true, completion: nil)
-	}
-	
-	enum AttachmentType: String{
-		case camera, video, photoLibrary
-	}
-	
-	func authorisationStatus(attachmentTypeEnum: AttachmentType, vc: UIViewController){
-//		currentVC = vc
-		if attachmentTypeEnum ==  AttachmentType.camera{
-			let status = AVCaptureDevice.authorizationStatus(for: .video)
-			switch status{
-			case .authorized: // The user has previously granted access to the camera.
-//				self.openCamera(vc)
-				openCamera()
-				
-			case .notDetermined: // The user has not yet been asked for camera access.
-				AVCaptureDevice.requestAccess(for: .video) { granted in
-					if granted {
-						self.openCamera()
-					}
-				}
-				//denied - The user has previously denied access.
-			//restricted - The user can't grant access due to restrictions.
-			case .denied, .restricted:
-//				self.addAlertForSettings(attachmentTypeEnum)
-				print(".camera os denied/restricted")
-				return
-				
-			default:
-				break
-			}
-		}else if attachmentTypeEnum == AttachmentType.photoLibrary || attachmentTypeEnum == AttachmentType.video{
-			let status = PHPhotoLibrary.authorizationStatus()
-			switch status{
-			case .authorized:
-				if attachmentTypeEnum == AttachmentType.photoLibrary{
-					photoLibrary()
-				}
-				
-				if attachmentTypeEnum == AttachmentType.video{
-					videoLibrary()
-				}
-			case .denied, .restricted:
-//				self.addAlertForSettings(attachmentTypeEnum)
-				print("Status for photo is either denier or restricted")
-			case .notDetermined:
-				PHPhotoLibrary.requestAuthorization({ (status) in
-					if status == PHAuthorizationStatus.authorized{
-						// photo library access given
-						self.photoLibrary()
-					}
-					if attachmentTypeEnum == AttachmentType.video{
-						self.videoLibrary()
-					}
-				})
-			default:
-				break
-			}
-		}
-	}
-	
-	func openCamera(){
-		if UIImagePickerController.isSourceTypeAvailable(.camera){
-			let myPickerController = UIImagePickerController()
-			myPickerController.delegate = self
-			myPickerController.sourceType = .camera
-			self.present(myPickerController, animated: true, completion: nil)
-		}
-	}
-	func photoLibrary(){
-		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-			let myPickerController = UIImagePickerController()
-			myPickerController.delegate = self
-			myPickerController.sourceType = .photoLibrary
-			self.present(myPickerController, animated: true, completion: nil)
-		}
-	}
-	func videoLibrary(){
-		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-			let myPickerController = UIImagePickerController()
-			myPickerController.delegate = self
-			myPickerController.sourceType = .photoLibrary
-//			myPickerController.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String]
+////		actionSheet.addAction(UIAlertAction(title: Constants.video, style: .default, handler: { (action) -> Void in
+////			self.authorisationStatus(attachmentTypeEnum: .video, vc: self.currentVC!)
+////
+////		}))
+////
+////		actionSheet.addAction(UIAlertAction(title: Constants.file, style: .default, handler: { (action) -> Void in
+////			self.documentPicker()
+////		}))
+////
+//		actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//		vc.present(actionSheet, animated: true, completion: nil)
+//	}
+//
+//	enum AttachmentType: String{
+//		case camera, video, photoLibrary
+//	}
+//
+//	func authorisationStatus(attachmentTypeEnum: AttachmentType, vc: UIViewController){
+////		currentVC = vc
+//		if attachmentTypeEnum ==  AttachmentType.camera{
+//			let status = AVCaptureDevice.authorizationStatus(for: .video)
+//			switch status{
+//			case .authorized: // The user has previously granted access to the camera.
+////				self.openCamera(vc)
+//				openCamera()
+//
+//			case .notDetermined: // The user has not yet been asked for camera access.
+//				AVCaptureDevice.requestAccess(for: .video) { granted in
+//					if granted {
+//						self.openCamera()
+//					}
+//				}
+//				//denied - The user has previously denied access.
+//			//restricted - The user can't grant access due to restrictions.
+//			case .denied, .restricted:
+////				self.addAlertForSettings(attachmentTypeEnum)
+//				print(".camera os denied/restricted")
+//				return
+//
+//			default:
+//				break
+//			}
+//		}else if attachmentTypeEnum == AttachmentType.photoLibrary || attachmentTypeEnum == AttachmentType.video{
+//			let status = PHPhotoLibrary.authorizationStatus()
+//			switch status{
+//			case .authorized:
+//				if attachmentTypeEnum == AttachmentType.photoLibrary{
+//					photoLibrary()
+//				}
+//
+//				if attachmentTypeEnum == AttachmentType.video{
+//					videoLibrary()
+//				}
+//			case .denied, .restricted:
+////				self.addAlertForSettings(attachmentTypeEnum)
+//				print("Status for photo is either denier or restricted")
+//			case .notDetermined:
+//				PHPhotoLibrary.requestAuthorization({ (status) in
+//					if status == PHAuthorizationStatus.authorized{
+//						// photo library access given
+//						self.photoLibrary()
+//					}
+//					if attachmentTypeEnum == AttachmentType.video{
+//						self.videoLibrary()
+//					}
+//				})
+//			default:
+//				break
+//			}
+//		}
+//	}
+//
+//	func openCamera(){
+//		if UIImagePickerController.isSourceTypeAvailable(.camera){
+//			let myPickerController = UIImagePickerController()
+//			myPickerController.delegate = self
+//			myPickerController.sourceType = .camera
 //			self.present(myPickerController, animated: true, completion: nil)
-		}
-	}
+//		}
+//	}
+//	func photoLibrary(){
+//		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+//			let myPickerController = UIImagePickerController()
+//			myPickerController.delegate = self
+//			myPickerController.sourceType = .photoLibrary
+//			self.present(myPickerController, animated: true, completion: nil)
+//		}
+//	}
+//	func videoLibrary(){
+//		if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+//			let myPickerController = UIImagePickerController()
+//			myPickerController.delegate = self
+//			myPickerController.sourceType = .photoLibrary
+////			myPickerController.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String]
+////			self.present(myPickerController, animated: true, completion: nil)
+//		}
+//	}
 
 	
 //delegate method that will get the image to our app

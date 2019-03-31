@@ -13,7 +13,6 @@
 		7E9BAA91224FD089003C6D22 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA90224FD089003C6D22 /* User.swift */; };
 		7E9BAA93224FD091003C6D22 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA92224FD091003C6D22 /* Game.swift */; };
 		7E9BAA95224FD09F003C6D22 /* OpponentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA94224FD09F003C6D22 /* OpponentUser.swift */; };
-		7E9BAA9C224FD1A3003C6D22 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9B224FD1A3003C6D22 /* MenuViewController.swift */; };
 		7E9BAA9E224FD1D3003C6D22 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9D224FD1D3003C6D22 /* ChatViewController.swift */; };
 		7E9BAAA0224FD277003C6D22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9F224FD277003C6D22 /* Constants.swift */; };
 		7E9BAAA2224FD2A6003C6D22 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAA1224FD2A6003C6D22 /* Service.swift */; };
@@ -32,6 +31,7 @@
 		7EE876F3224FC55500B53E7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F1224FC55500B53E7E /* Main.storyboard */; };
 		7EE876F5224FC55A00B53E7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F4224FC55A00B53E7E /* Assets.xcassets */; };
 		7EE876F8224FC55A00B53E7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F6224FC55A00B53E7E /* LaunchScreen.storyboard */; };
+		7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9B224FD1A3003C6D22 /* MenuViewController.swift */; };
 		A4807C3D9513B4067D09FC53 /* Pods_HawkHackProject2019S.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17EAA8C1E184FC4AFE5A0CC /* Pods_HawkHackProject2019S.framework */; };
 /* End PBXBuildFile section */
 
@@ -363,9 +363,9 @@
 				7E9BAAAD224FD5B3003C6D22 /* RegisterViewController.swift in Sources */,
 				7E9BAA93224FD091003C6D22 /* Game.swift in Sources */,
 				7E9BAAA9224FD30C003C6D22 /* UIImageView+extension.swift in Sources */,
-				7E9BAA9C224FD1A3003C6D22 /* MenuViewController.swift in Sources */,
 				7E9BAA8F224FD064003C6D22 /* Message.swift in Sources */,
 				7E9BAAB8225004FD003C6D22 /* MatchesTableViewCell.swift in Sources */,
+				7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */,
 				7E9BAA91224FD089003C6D22 /* User.swift in Sources */,
 				7E9BAAA2224FD2A6003C6D22 /* Service.swift in Sources */,
 				7EE876EE224FC55400B53E7E /* AppDelegate.swift in Sources */,
@@ -516,6 +516,7 @@
 			baseConfigurationReference = C1ADFB1033EF7E6F34E8C73C /* Pods-HawkHackProject2019S.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8KSKUH7X29;
 				INFOPLIST_FILE = HawkHackProject2019S/Info.plist;
@@ -526,8 +527,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.FolledoSwag.HawkHackProject2019S;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -536,6 +538,7 @@
 			baseConfigurationReference = CF1265AECB9D40FC02E2868C /* Pods-HawkHackProject2019S.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8KSKUH7X29;
 				INFOPLIST_FILE = HawkHackProject2019S/Info.plist;
@@ -546,8 +549,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.FolledoSwag.HawkHackProject2019S;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

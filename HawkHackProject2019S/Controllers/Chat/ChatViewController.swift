@@ -35,6 +35,12 @@ class ChatViewController: UIViewController {
 		super.viewDidLoad()
 		
 		messages = [Message]()
+		
+		let messageDic: [String: Any] = [kAVATARURL: "https://firebasestorage.googleapis.com/v0/b/jackn-poy.appspot.com/o/avatar_images%2F000071CD62FA-A3F1-438A-8926-1CD80D04432E.png?alt=media&token=bab4a3c6-be20-4478-a8ba-e5f20e9e2137", kTEXT: "Hello everyone!!!", kNAME: "Raquel", kUSERID: "2FD0VQa92ES8yo9k5NsOW4Qy72o2"]
+		let message = Message(_dictionary: messageDic)
+		messages?.append(message)
+		chatTable.reloadData()
+		
 		handleKeyboardObservers()
 		
 		configureTable(tableView: chatTable)
@@ -185,8 +191,15 @@ extension ChatViewController {
 	}
 	
 	@objc func handleKeyboardDidShow() {
-		let indexPath = IndexPath(item: messages!.count - 1, section: 0)
-		chatTable.scrollToRow(at: indexPath, at: .bottom, animated: true)
+		guard let messages = self.messages else { return }
+//		if messages.count != 0 {
+			let indexPath = IndexPath(item: messages.count - 1, section: 0)
+			chatTable.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//		} else {
+//			let indexPath = IndexPath(item: 0, section: 0)
+//			chatTable.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//		}
+		
 	}
 	
 	@objc func handleViewsOnKeyboardShowOrHide(notification: Notification) {

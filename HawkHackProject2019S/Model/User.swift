@@ -119,42 +119,42 @@ func saveUserLocally(user: User) {
 
 
 //MARK: Helper fuctions
-func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void) {
-	//	print("1")
-	//	let ref = firDatabase.child(kGAMESESSIONS).queryEqual(toValue: gameSessionId)
-	let ref = firDatabase.child(kUSERS).child(kUSERID)
-	//	print("2")
-	ref.observeSingleEvent(of: .value, with: { (snapshot) in
-		
-		//		print("3")
-		//		print("EYO SNAPSHot\(snapshot)")
-		if snapshot.exists() {
-			print("SNAPSHOT FROM FETCH USERWITH IS \(snapshot)")
-			//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
-			let userDictionary = snapshot.value as! [String: AnyObject]
-			let user = User(_dictionary: userDictionary)
-			print("FETCHED USER IS \(user)")
-			completion(user)
-		} else { completion(nil) }
-		
-		
-	}, withCancel: nil)
-	//	ref.observeSingleEvent(of: .value, with: { (snapshot) in
-	//
-	//	}, withCancel: nil)
-}
 //func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void) {
-//	let ref = firDatabase.child(kUSERS).queryOrdered(byChild: kUSERID).queryEqual(toValue: userId)
-//
+//	//	print("1")
+//	//	let ref = firDatabase.child(kGAMESESSIONS).queryEqual(toValue: gameSessionId)
+//	let ref = firDatabase.child(kUSERS).child(kUSERID)
+//	//	print("2")
 //	ref.observeSingleEvent(of: .value, with: { (snapshot) in
-//		print("SNAPSHOT FROM FETCH USER IS \(snapshot)")
+//
+//		//		print("3")
+//		//		print("EYO SNAPSHot\(snapshot)")
 //		if snapshot.exists() {
-//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: Any]
+//			print("SNAPSHOT FROM FETCH USERWITH IS \(snapshot)")
+//			//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
+//			let userDictionary = snapshot.value as! [String: AnyObject]
 //			let user = User(_dictionary: userDictionary)
+//			print("FETCHED USER IS \(user)")
 //			completion(user)
 //		} else { completion(nil) }
+//
+//
 //	}, withCancel: nil)
+//	//	ref.observeSingleEvent(of: .value, with: { (snapshot) in
+//	//
+//	//	}, withCancel: nil)
 //}
+func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void) {
+	let ref = firDatabase.child(kUSERS).queryOrdered(byChild: kUSERID).queryEqual(toValue: userId)
+
+	ref.observeSingleEvent(of: .value, with: { (snapshot) in
+		print("SNAPSHOT FROM FETCH USER IS \(snapshot)")
+		if snapshot.exists() {
+			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: Any]
+			let user = User(_dictionary: userDictionary)
+			completion(user)
+		} else { completion(nil) }
+	}, withCancel: nil)
+}
 
 
 func userDictionaryFrom(user: User) -> NSDictionary { //take a user and return an NSDictionary

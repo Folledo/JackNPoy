@@ -68,6 +68,39 @@ class Game {
 	//		}
 	//	}
 	
+	func deleteGame(game: Game, completion: @escaping (_ value: String)-> Void) {
+		let player1Ref = firDatabase.child(kUSERTOGAMESESSIONS).child(game.player1Id!).child(game.player2Id!)
+		player1Ref.removeValue { (error, ref) in
+			if let error = error {
+				completion(error.localizedDescription)
+			} else {
+				print("Successfully removed \(game.gameId)")
+//				completion("Success")
+			}
+		}
+		
+		let player2Ref = firDatabase.child(kUSERTOGAMESESSIONS).child(game.player2Id!).child(player1Id!)
+		player2Ref.removeValue { (error, ref) in
+			if let error = error {
+				completion(error.localizedDescription)
+			} else {
+				print("Successfully removed \(game.gameId)")
+//				completion("Success")
+			}
+		}
+		
+		let userToGameRef = firDatabase.child(kGAMESESSIONS).child(game.gameId)
+		userToGameRef.removeValue { (error, ref) in
+			if let error = error {
+				completion(error.localizedDescription)
+			} else {
+				print("Successfully removed \(game.gameId)")
+//				completion("Success")
+			}
+		}
+		completion("Success")
+	}
+	
 	internal func reset() {
 		self.player2Id = nil
 		self.player1Id = nil
