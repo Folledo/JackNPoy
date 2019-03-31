@@ -31,6 +31,13 @@ let kPLAYER1AVATARURL: String = "player1AvatarUrl"
 let kPLAYER2AVATARURL: String = "player2AvatarUrl"
 let kPLAYER1HP: String = "player1Hp"
 let kPLAYER2HP: String = "player2Hp"
+let kWINNERUID: String = "winnerUid"
+
+let kGAMEATTACK: String = "gameAttack"
+let kGAMEMOVE: String = "gameMove"
+let kMOVES: String = "moves"
+let kTURNCOUNT: String = "turnCount"
+let kTURNCOUNTER: String = "turnCounter"
 
 let kTIMESTAMP: String = "timeStamp"
 

@@ -17,10 +17,10 @@ class Game {
 	var player2Id: String?
 	var gameId: String = ""
 	
-	var winOrLose: String?
+	var winnerUid: String?
 	var timeStamp: Int?
-	var player1HP: String?
-	var player2HP: String?
+	var player1HP: Int = 100
+	var player2HP: Int = 100
 	
 	var player1Email: String?
 	var player2Email: String?
@@ -41,10 +41,10 @@ class Game {
 		self.player2Id = _dictionary[kPLAYER2ID] as? String
 		self.gameId = _dictionary[kGAMESESSIONS] as! String
 		
-		self.winOrLose = _dictionary["winOrLose"] as? String
+		self.winnerUid = _dictionary[kWINNERUID] as? String
 		self.timeStamp = _dictionary["timeStamp"] as? Int
-		self.player1HP = _dictionary[kPLAYER1HP] as? String
-		self.player2HP = _dictionary[kPLAYER2HP] as? String
+		self.player1HP = _dictionary[kPLAYER1HP] as! Int
+		self.player2HP = _dictionary[kPLAYER2HP] as! Int
 		
 		self.player1Name = _dictionary[kPLAYER1NAME] as? String
 		self.player2Name = _dictionary[kPLAYER2NAME] as? String
@@ -107,10 +107,10 @@ class Game {
 		self.text = nil
 		self.gameId = ""
 		
-		self.winOrLose = nil
+		self.winnerUid = nil
 		self.timeStamp = nil
-		self.player1HP = nil
-		self.player2HP = nil
+		self.player1HP = 100
+		self.player2HP = 100
 		
 		self.player1Name = ""
 		self.player2Name = ""
