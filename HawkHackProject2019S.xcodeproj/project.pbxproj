@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E5C91BA22595D6000AA45B7 /* UILabel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */; };
 		7E9BAA87224FCD8C003C6D22 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */; };
 		7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA8C224FD017003C6D22 /* MyView.swift */; };
 		7E9BAA8F224FD064003C6D22 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA8E224FD064003C6D22 /* Message.swift */; };
@@ -32,6 +33,7 @@
 		7EE876F5224FC55A00B53E7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F4224FC55A00B53E7E /* Assets.xcassets */; };
 		7EE876F8224FC55A00B53E7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F6224FC55A00B53E7E /* LaunchScreen.storyboard */; };
 		7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9B224FD1A3003C6D22 /* MenuViewController.swift */; };
+		7EEB6B2B2252836F00CB275E /* CurrentGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */; };
 		7EED33ED2250B8C4004CB4B8 /* OpponentTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33EC2250B8C4004CB4B8 /* OpponentTurn.swift */; };
 		7EED33F22250BB10004CB4B8 /* GameMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F12250BB10004CB4B8 /* GameMove.swift */; };
 		7EED33F42250BB19004CB4B8 /* GameAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F32250BB19004CB4B8 /* GameAttack.swift */; };
@@ -41,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extensions.swift"; sourceTree = "<group>"; };
 		7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7E9BAA8C224FD017003C6D22 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		7E9BAA8E224FD064003C6D22 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -68,6 +71,7 @@
 		7EE876F4224FC55A00B53E7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7EE876F7224FC55A00B53E7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7EE876F9224FC55A00B53E7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentGameViewController.swift; sourceTree = "<group>"; };
 		7EED33EC2250B8C4004CB4B8 /* OpponentTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpponentTurn.swift; sourceTree = "<group>"; };
 		7EED33F12250BB10004CB4B8 /* GameMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMove.swift; sourceTree = "<group>"; };
 		7EED33F32250BB19004CB4B8 /* GameAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAttack.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 			children = (
 				7E9BAAAE224FE27E003C6D22 /* PreGameViewController.swift */,
 				7E9BAAB0224FE2A7003C6D22 /* GameViewController.swift */,
+				7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				7E9BAAA4224FD2D1003C6D22 /* String+extensions.swift */,
 				7E9BAAA6224FD2FB003C6D22 /* UIColor+extension.swift */,
 				7E9BAAA8224FD30C003C6D22 /* UIImageView+extension.swift */,
+				7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -380,10 +386,12 @@
 				7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */,
 				7E9BAAB4225004E7003C6D22 /* ChatTableViewCell.swift in Sources */,
 				7E9BAAA5224FD2D1003C6D22 /* String+extensions.swift in Sources */,
+				7E5C91BA22595D6000AA45B7 /* UILabel+extensions.swift in Sources */,
 				7E9BAAA7224FD2FB003C6D22 /* UIColor+extension.swift in Sources */,
 				7EED33F62250C4C2004CB4B8 /* UserTurn.swift in Sources */,
 				7E9BAA9E224FD1D3003C6D22 /* ChatViewController.swift in Sources */,
 				7E9BAAB1224FE2A7003C6D22 /* GameViewController.swift in Sources */,
+				7EEB6B2B2252836F00CB275E /* CurrentGameViewController.swift in Sources */,
 				7EED33F82250CDB3004CB4B8 /* MovesButton.swift in Sources */,
 				7E9BAAAF224FE27E003C6D22 /* PreGameViewController.swift in Sources */,
 				7E9BAAAD224FD5B3003C6D22 /* RegisterViewController.swift in Sources */,
