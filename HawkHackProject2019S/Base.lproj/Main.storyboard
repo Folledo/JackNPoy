@@ -299,9 +299,6 @@
                                 <state key="normal" title="Invite">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <action selector="topButtonTapped:" destination="B9U-rl-Vff" eventType="touchUpInside" id="ywV-eA-bvS"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MATCHES:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkZ-Vb-ZAq" userLabel="matchesLabel">
                                 <rect key="frame" x="30" y="232" width="676" height="17"/>
@@ -351,10 +348,10 @@
                         <viewLayoutGuide key="safeArea" id="TKc-m1-umi"/>
                     </view>
                     <connections>
-                        <outlet property="emailTextField" destination="H0a-Eu-iXh" id="kRk-gp-qW1"/>
-                        <outlet property="helloLabel" destination="OtW-p0-OZh" id="Tw3-jW-tYs"/>
-                        <outlet property="matchesTableView" destination="Ax3-nn-MBr" id="p6r-eh-4y4"/>
-                        <outlet property="topButton" destination="5N3-ba-aZS" id="0Sz-qp-xXS"/>
+                        <outlet property="emailTextField" destination="H0a-Eu-iXh" id="zFj-RA-6TH"/>
+                        <outlet property="helloLabel" destination="OtW-p0-OZh" id="nfz-gS-gRf"/>
+                        <outlet property="matchesTableView" destination="Ax3-nn-MBr" id="cQd-mS-IrN"/>
+                        <outlet property="topButton" destination="5N3-ba-aZS" id="Anb-n2-fLG"/>
                         <segue destination="bUN-KP-xA1" kind="show" identifier="preGameToGameSegue" id="Njr-gD-Il9"/>
                     </connections>
                 </viewController>

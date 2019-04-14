@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E5C91BA22595D6000AA45B7 /* UILabel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */; };
 		7E9BAA87224FCD8C003C6D22 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */; };
 		7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA8C224FD017003C6D22 /* MyView.swift */; };
 		7E9BAA8F224FD064003C6D22 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA8E224FD064003C6D22 /* Message.swift */; };
@@ -22,8 +21,6 @@
 		7E9BAAA9224FD30C003C6D22 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAA8224FD30C003C6D22 /* UIImageView+extension.swift */; };
 		7E9BAAAB224FD4FC003C6D22 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAAA224FD4FC003C6D22 /* LoginViewController.swift */; };
 		7E9BAAAD224FD5B3003C6D22 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAAC224FD5B2003C6D22 /* RegisterViewController.swift */; };
-		7E9BAAAF224FE27E003C6D22 /* PreGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAAE224FE27E003C6D22 /* PreGameViewController.swift */; };
-		7E9BAAB1224FE2A7003C6D22 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB0224FE2A7003C6D22 /* GameViewController.swift */; };
 		7E9BAAB4225004E7003C6D22 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB2225004E7003C6D22 /* ChatTableViewCell.swift */; };
 		7E9BAAB5225004E7003C6D22 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB3225004E7003C6D22 /* ChatTableViewCell.xib */; };
 		7E9BAAB8225004FD003C6D22 /* MatchesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB6225004FD003C6D22 /* MatchesTableViewCell.swift */; };
@@ -39,11 +36,12 @@
 		7EED33F42250BB19004CB4B8 /* GameAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F32250BB19004CB4B8 /* GameAttack.swift */; };
 		7EED33F62250C4C2004CB4B8 /* UserTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F52250C4C2004CB4B8 /* UserTurn.swift */; };
 		7EED33F82250CDB3004CB4B8 /* MovesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F72250CDB3004CB4B8 /* MovesButton.swift */; };
+		7EF17B272261CF320027CF2F /* PreGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF17B262261CF320027CF2F /* PreGameViewController.swift */; };
+		7EF17B292261CFE50027CF2F /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF17B282261CFE50027CF2F /* UILabel+extension.swift */; };
 		A4807C3D9513B4067D09FC53 /* Pods_HawkHackProject2019S.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17EAA8C1E184FC4AFE5A0CC /* Pods_HawkHackProject2019S.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extensions.swift"; sourceTree = "<group>"; };
 		7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7E9BAA8C224FD017003C6D22 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		7E9BAA8E224FD064003C6D22 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -59,8 +57,6 @@
 		7E9BAAA8224FD30C003C6D22 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		7E9BAAAA224FD4FC003C6D22 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7E9BAAAC224FD5B2003C6D22 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		7E9BAAAE224FE27E003C6D22 /* PreGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameViewController.swift; sourceTree = "<group>"; };
-		7E9BAAB0224FE2A7003C6D22 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		7E9BAAB2225004E7003C6D22 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		7E9BAAB3225004E7003C6D22 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
 		7E9BAAB6225004FD003C6D22 /* MatchesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesTableViewCell.swift; sourceTree = "<group>"; };
@@ -77,6 +73,8 @@
 		7EED33F32250BB19004CB4B8 /* GameAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAttack.swift; sourceTree = "<group>"; };
 		7EED33F52250C4C2004CB4B8 /* UserTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTurn.swift; sourceTree = "<group>"; };
 		7EED33F72250CDB3004CB4B8 /* MovesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesButton.swift; sourceTree = "<group>"; };
+		7EF17B262261CF320027CF2F /* PreGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameViewController.swift; sourceTree = "<group>"; };
+		7EF17B282261CFE50027CF2F /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
 		C1ADFB1033EF7E6F34E8C73C /* Pods-HawkHackProject2019S.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HawkHackProject2019S.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HawkHackProject2019S/Pods-HawkHackProject2019S.debug.xcconfig"; sourceTree = "<group>"; };
 		CF1265AECB9D40FC02E2868C /* Pods-HawkHackProject2019S.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HawkHackProject2019S.release.xcconfig"; path = "Pods/Target Support Files/Pods-HawkHackProject2019S/Pods-HawkHackProject2019S.release.xcconfig"; sourceTree = "<group>"; };
 		D17EAA8C1E184FC4AFE5A0CC /* Pods_HawkHackProject2019S.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HawkHackProject2019S.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,8 +182,7 @@
 		7E9BAA9A224FD183003C6D22 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				7E9BAAAE224FE27E003C6D22 /* PreGameViewController.swift */,
-				7E9BAAB0224FE2A7003C6D22 /* GameViewController.swift */,
+				7EF17B262261CF320027CF2F /* PreGameViewController.swift */,
 				7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */,
 			);
 			path = Game;
@@ -197,7 +194,7 @@
 				7E9BAAA4224FD2D1003C6D22 /* String+extensions.swift */,
 				7E9BAAA6224FD2FB003C6D22 /* UIColor+extension.swift */,
 				7E9BAAA8224FD30C003C6D22 /* UIImageView+extension.swift */,
-				7E5C91B922595D6000AA45B7 /* UILabel+extensions.swift */,
+				7EF17B282261CFE50027CF2F /* UILabel+extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -384,21 +381,20 @@
 				7E9BAAAB224FD4FC003C6D22 /* LoginViewController.swift in Sources */,
 				7E9BAA95224FD09F003C6D22 /* OpponentUser.swift in Sources */,
 				7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */,
+				7EF17B272261CF320027CF2F /* PreGameViewController.swift in Sources */,
 				7E9BAAB4225004E7003C6D22 /* ChatTableViewCell.swift in Sources */,
 				7E9BAAA5224FD2D1003C6D22 /* String+extensions.swift in Sources */,
-				7E5C91BA22595D6000AA45B7 /* UILabel+extensions.swift in Sources */,
 				7E9BAAA7224FD2FB003C6D22 /* UIColor+extension.swift in Sources */,
 				7EED33F62250C4C2004CB4B8 /* UserTurn.swift in Sources */,
 				7E9BAA9E224FD1D3003C6D22 /* ChatViewController.swift in Sources */,
-				7E9BAAB1224FE2A7003C6D22 /* GameViewController.swift in Sources */,
 				7EEB6B2B2252836F00CB275E /* CurrentGameViewController.swift in Sources */,
 				7EED33F82250CDB3004CB4B8 /* MovesButton.swift in Sources */,
-				7E9BAAAF224FE27E003C6D22 /* PreGameViewController.swift in Sources */,
 				7E9BAAAD224FD5B3003C6D22 /* RegisterViewController.swift in Sources */,
 				7EED33ED2250B8C4004CB4B8 /* OpponentTurn.swift in Sources */,
 				7EED33F22250BB10004CB4B8 /* GameMove.swift in Sources */,
 				7E9BAA93224FD091003C6D22 /* Game.swift in Sources */,
 				7E9BAAA9224FD30C003C6D22 /* UIImageView+extension.swift in Sources */,
+				7EF17B292261CFE50027CF2F /* UILabel+extension.swift in Sources */,
 				7E9BAA8F224FD064003C6D22 /* Message.swift in Sources */,
 				7E9BAAB8225004FD003C6D22 /* MatchesTableViewCell.swift in Sources */,
 				7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */,

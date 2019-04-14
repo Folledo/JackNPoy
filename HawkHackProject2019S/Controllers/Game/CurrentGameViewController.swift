@@ -372,7 +372,7 @@ class CurrentGameViewController: UIViewController {
 	
 	private func getPlayer1Damage() {
 		var player1Damage: CGFloat = 0
-		var player2Defense: CGFloat = 1
+//		var player2Defense: CGFloat = 1
 		
 		
 		switch player1TagSelected.attack {
@@ -431,13 +431,11 @@ class CurrentGameViewController: UIViewController {
 		}
 		
 		p1MoveResult.damage = Int(player1Damage)
-//		return Int(player1Damage * player2Defense)
 	}
 	
 
 	private func getPlayer2Damage() {
 		var player2Damage: CGFloat = 0
-		var player1Defense: CGFloat = 1
 		
 		switch player2TagSelected.attack {
 		case (24): //p2 Heavy Up
