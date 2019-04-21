@@ -50,17 +50,14 @@
                                         <rect key="frame" x="0.0" y="1" width="736" height="49"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Send a message" minimumFontSize="14" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="4Kt-3n-BRg">
-                                                <rect key="frame" x="0.0" y="0.0" width="636" height="49"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="644" height="49"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6L-8Y-P7C">
-                                                <rect key="frame" x="636" y="0.0" width="100" height="49"/>
+                                                <rect key="frame" x="644" y="0.0" width="92" height="49"/>
                                                 <color key="backgroundColor" red="0.0" green="0.3294117647" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="100" id="90n-Fa-cM5"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Send">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -86,6 +83,7 @@
                                     <constraint firstAttribute="bottom" secondItem="ct2-gv-L9o" secondAttribute="bottom" id="c17-ht-SEh"/>
                                     <constraint firstAttribute="height" constant="50" id="fqJ-OW-Uhz"/>
                                     <constraint firstAttribute="trailing" secondItem="ehD-jC-PTP" secondAttribute="trailing" id="jgK-LP-sDL"/>
+                                    <constraint firstItem="I6L-8Y-P7C" firstAttribute="width" secondItem="ynG-l2-j6h" secondAttribute="width" multiplier="1:8" id="nE7-hP-By6"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -299,6 +297,9 @@
                                 <state key="normal" title="Invite">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="topButtonTapped:" destination="B9U-rl-Vff" eventType="touchUpInside" id="Wv9-5d-6aH"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MATCHES:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkZ-Vb-ZAq" userLabel="matchesLabel">
                                 <rect key="frame" x="30" y="232" width="676" height="17"/>
@@ -410,8 +411,8 @@
                                             <constraint firstItem="E3E-N5-kea" firstAttribute="centerY" secondItem="cdA-Xr-dOT" secondAttribute="centerY" id="wGb-f6-oNj"/>
                                         </constraints>
                                     </view>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnA-q4-31D">
-                                        <rect key="frame" x="299.66666666666669" y="21.666666666666671" width="28.333333333333314" height="20.333333333333329"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-30" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnA-q4-31D">
+                                        <rect key="frame" x="275" y="21.666666666666671" width="53" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -440,7 +441,7 @@
                                     <constraint firstItem="yjM-Bt-da4" firstAttribute="leading" secondItem="VUZ-Wg-SE0" secondAttribute="leading" constant="5" id="py4-MJ-hzY"/>
                                     <constraint firstItem="FUq-er-P5n" firstAttribute="height" secondItem="VUZ-Wg-SE0" secondAttribute="height" id="rPb-Kd-B4g"/>
                                     <constraint firstAttribute="trailing" secondItem="gzl-n2-INF" secondAttribute="trailing" constant="10" id="v3g-k1-4xQ"/>
-                                    <constraint firstItem="MnA-q4-31D" firstAttribute="leading" secondItem="yjM-Bt-da4" secondAttribute="trailing" constant="244.66999999999999" id="xv0-7P-KQm"/>
+                                    <constraint firstItem="MnA-q4-31D" firstAttribute="leading" secondItem="yjM-Bt-da4" secondAttribute="trailing" constant="220" id="xv0-7P-KQm"/>
                                     <constraint firstItem="FUq-er-P5n" firstAttribute="centerX" secondItem="VUZ-Wg-SE0" secondAttribute="centerX" id="zAA-Bm-xsQ"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -513,8 +514,8 @@
                                             <constraint firstItem="PS7-o8-HDW" firstAttribute="centerX" secondItem="mio-mW-Q8Y" secondAttribute="centerX" id="vST-xx-dgC"/>
                                         </constraints>
                                     </view>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4p-Cn-pMl">
-                                        <rect key="frame" x="9.9999999999999982" y="21.666666666666671" width="28.333333333333329" height="20.333333333333329"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4p-Cn-pMl">
+                                        <rect key="frame" x="10" y="21.666666666666671" width="53" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -539,7 +540,7 @@
                                     <constraint firstItem="0Ue-gF-t9C" firstAttribute="top" secondItem="Vw8-rw-LpR" secondAttribute="top" id="NwZ-ag-eYd"/>
                                     <constraint firstItem="Vw8-rw-LpR" firstAttribute="leading" secondItem="0Ue-gF-t9C" secondAttribute="trailing" constant="10" id="X4l-gZ-5so"/>
                                     <constraint firstItem="mio-mW-Q8Y" firstAttribute="top" secondItem="0Ue-gF-t9C" secondAttribute="bottom" constant="10" id="fHc-pk-eau"/>
-                                    <constraint firstItem="Vw8-rw-LpR" firstAttribute="leading" secondItem="m4p-Cn-pMl" secondAttribute="trailing" constant="244.66999999999999" id="fml-Xv-F0m"/>
+                                    <constraint firstItem="Vw8-rw-LpR" firstAttribute="leading" secondItem="m4p-Cn-pMl" secondAttribute="trailing" constant="220" id="fml-Xv-F0m"/>
                                     <constraint firstItem="mio-mW-Q8Y" firstAttribute="width" secondItem="0Ue-gF-t9C" secondAttribute="width" id="gQj-q6-Tib"/>
                                     <constraint firstItem="tV6-1w-8si" firstAttribute="centerY" secondItem="wqh-ND-xMg" secondAttribute="centerY" id="gcl-PI-nTe"/>
                                     <constraint firstAttribute="trailing" secondItem="Vw8-rw-LpR" secondAttribute="trailing" constant="5" id="j3Y-HA-B2g"/>
@@ -689,10 +690,10 @@
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z4P-os-zWa">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" clipsSubviews="YES" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgD-DA-Zis" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" clipsSubviews="YES" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgD-DA-Zis" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUp" backgroundImage="gloveUp">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUp">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -717,8 +718,12 @@
                                                     <constraint firstItem="z4P-os-zWa" firstAttribute="height" secondItem="a8N-Yn-JYl" secondAttribute="height" constant="10" id="7sI-42-tME"/>
                                                     <constraint firstItem="z4P-os-zWa" firstAttribute="width" secondItem="a8N-Yn-JYl" secondAttribute="width" constant="10" id="GWp-YF-a2c"/>
                                                     <constraint firstItem="z4P-os-zWa" firstAttribute="centerX" secondItem="a8N-Yn-JYl" secondAttribute="centerX" id="KlT-vz-MNN"/>
+                                                    <constraint firstItem="hgD-DA-Zis" firstAttribute="height" secondItem="a8N-Yn-JYl" secondAttribute="height" id="Oxt-zp-omP"/>
+                                                    <constraint firstItem="hgD-DA-Zis" firstAttribute="width" secondItem="a8N-Yn-JYl" secondAttribute="width" id="Zwr-mu-Clz"/>
                                                     <constraint firstAttribute="height" constant="50" id="cXd-tR-YhX"/>
+                                                    <constraint firstItem="hgD-DA-Zis" firstAttribute="centerX" secondItem="a8N-Yn-JYl" secondAttribute="centerX" id="e5J-Np-PAP"/>
                                                     <constraint firstAttribute="width" constant="50" id="pNO-h9-VZC"/>
+                                                    <constraint firstItem="hgD-DA-Zis" firstAttribute="centerY" secondItem="a8N-Yn-JYl" secondAttribute="centerY" id="zeh-Wx-hCj"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1h-VU-pUI">
@@ -727,10 +732,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRp-7j-34L">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRP-IT-NaO" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRP-IT-NaO" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUp" backgroundImage="gloveUp">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUp">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -753,8 +758,12 @@
                                                 <constraints>
                                                     <constraint firstItem="XRp-7j-34L" firstAttribute="height" secondItem="y1h-VU-pUI" secondAttribute="height" constant="10" id="0mJ-Ko-pXh"/>
                                                     <constraint firstAttribute="height" constant="50" id="1H3-dk-Fue"/>
+                                                    <constraint firstItem="qRP-IT-NaO" firstAttribute="width" secondItem="y1h-VU-pUI" secondAttribute="width" id="4c7-3G-tL9"/>
                                                     <constraint firstItem="XRp-7j-34L" firstAttribute="centerY" secondItem="y1h-VU-pUI" secondAttribute="centerY" multiplier="2:3" id="6JI-Cd-H0q"/>
+                                                    <constraint firstItem="qRP-IT-NaO" firstAttribute="centerY" secondItem="y1h-VU-pUI" secondAttribute="centerY" id="9TJ-En-1Zf"/>
+                                                    <constraint firstItem="qRP-IT-NaO" firstAttribute="height" secondItem="y1h-VU-pUI" secondAttribute="height" id="B5L-Af-8qH"/>
                                                     <constraint firstItem="XRp-7j-34L" firstAttribute="centerX" secondItem="y1h-VU-pUI" secondAttribute="centerX" id="Grh-mO-nTn"/>
+                                                    <constraint firstItem="qRP-IT-NaO" firstAttribute="centerX" secondItem="y1h-VU-pUI" secondAttribute="centerX" id="dzy-E9-bBS"/>
                                                     <constraint firstAttribute="width" constant="50" id="oxU-0z-SrQ"/>
                                                     <constraint firstItem="XRp-7j-34L" firstAttribute="width" secondItem="y1h-VU-pUI" secondAttribute="width" constant="10" id="rzH-Ds-KJ1"/>
                                                 </constraints>
@@ -765,10 +774,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7e2-j9-NXU">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zfY-U2-DHp" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zfY-U2-DHp" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUpDark">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUpDark">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -790,11 +799,15 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="7Bz-0f-j2z"/>
+                                                    <constraint firstItem="zfY-U2-DHp" firstAttribute="centerX" secondItem="zkK-dl-0Li" secondAttribute="centerX" id="7Wk-Uw-vqf"/>
                                                     <constraint firstItem="7e2-j9-NXU" firstAttribute="height" secondItem="zkK-dl-0Li" secondAttribute="height" constant="10" id="H3r-nw-pdR"/>
+                                                    <constraint firstItem="zfY-U2-DHp" firstAttribute="width" secondItem="zkK-dl-0Li" secondAttribute="width" id="HXf-7A-i4w"/>
+                                                    <constraint firstItem="zfY-U2-DHp" firstAttribute="centerY" secondItem="zkK-dl-0Li" secondAttribute="centerY" id="T3K-kd-QYE"/>
                                                     <constraint firstItem="7e2-j9-NXU" firstAttribute="centerY" secondItem="zkK-dl-0Li" secondAttribute="centerY" multiplier="2:3" id="Vt9-JY-waw"/>
                                                     <constraint firstItem="7e2-j9-NXU" firstAttribute="width" secondItem="zkK-dl-0Li" secondAttribute="width" constant="10" id="eIe-Rp-Md2"/>
                                                     <constraint firstItem="7e2-j9-NXU" firstAttribute="centerX" secondItem="zkK-dl-0Li" secondAttribute="centerX" id="fOO-d7-CmD"/>
                                                     <constraint firstAttribute="height" constant="50" id="gXQ-vK-5zf"/>
+                                                    <constraint firstItem="zfY-U2-DHp" firstAttribute="height" secondItem="zkK-dl-0Li" secondAttribute="height" id="jRw-2A-HHJ"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -808,10 +821,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b3M-df-TEm">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="17" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ESg-Cb-Zt6" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ESg-Cb-Zt6" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDown" backgroundImage="gloveDown">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDown">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -832,9 +845,13 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="ESg-Cb-Zt6" firstAttribute="width" secondItem="N3z-8I-eXP" secondAttribute="width" id="FRL-X0-apU"/>
+                                                    <constraint firstItem="ESg-Cb-Zt6" firstAttribute="centerX" secondItem="N3z-8I-eXP" secondAttribute="centerX" id="H0O-bN-lts"/>
                                                     <constraint firstItem="b3M-df-TEm" firstAttribute="height" secondItem="N3z-8I-eXP" secondAttribute="height" constant="10" id="P4O-kE-YNc"/>
+                                                    <constraint firstItem="ESg-Cb-Zt6" firstAttribute="centerY" secondItem="N3z-8I-eXP" secondAttribute="centerY" id="Rop-Ye-I7Y"/>
                                                     <constraint firstAttribute="height" constant="50" id="V8R-aO-Psn"/>
                                                     <constraint firstItem="b3M-df-TEm" firstAttribute="centerY" secondItem="N3z-8I-eXP" secondAttribute="centerY" multiplier="2:3" id="VKo-Hw-nZy"/>
+                                                    <constraint firstItem="ESg-Cb-Zt6" firstAttribute="height" secondItem="N3z-8I-eXP" secondAttribute="height" id="bce-6T-rhZ"/>
                                                     <constraint firstItem="b3M-df-TEm" firstAttribute="centerX" secondItem="N3z-8I-eXP" secondAttribute="centerX" id="bwa-do-0eE"/>
                                                     <constraint firstItem="b3M-df-TEm" firstAttribute="width" secondItem="N3z-8I-eXP" secondAttribute="width" constant="10" id="fAI-db-rzt"/>
                                                     <constraint firstAttribute="width" constant="50" id="un1-F1-zcK"/>
@@ -846,10 +863,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="agX-LJ-if6">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="18" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ILY-6p-usB" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="18" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ILY-6p-usB" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDown" backgroundImage="gloveDown">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDown">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -873,8 +890,12 @@
                                                     <constraint firstItem="agX-LJ-if6" firstAttribute="width" secondItem="7Uk-kV-xyD" secondAttribute="width" constant="10" id="3Rw-2T-qDY"/>
                                                     <constraint firstItem="agX-LJ-if6" firstAttribute="height" secondItem="7Uk-kV-xyD" secondAttribute="height" constant="10" id="Asf-IM-1IE"/>
                                                     <constraint firstAttribute="height" constant="50" id="Aye-1l-eFx"/>
+                                                    <constraint firstItem="ILY-6p-usB" firstAttribute="centerX" secondItem="7Uk-kV-xyD" secondAttribute="centerX" id="HUd-f9-sK2"/>
                                                     <constraint firstAttribute="width" constant="50" id="Zbc-6m-nWB"/>
+                                                    <constraint firstItem="ILY-6p-usB" firstAttribute="width" secondItem="7Uk-kV-xyD" secondAttribute="width" id="cdA-8V-EoR"/>
                                                     <constraint firstItem="agX-LJ-if6" firstAttribute="centerY" secondItem="7Uk-kV-xyD" secondAttribute="centerY" multiplier="2:3" id="eR1-jw-3bx"/>
+                                                    <constraint firstItem="ILY-6p-usB" firstAttribute="centerY" secondItem="7Uk-kV-xyD" secondAttribute="centerY" id="g5Z-RT-2si"/>
+                                                    <constraint firstItem="ILY-6p-usB" firstAttribute="height" secondItem="7Uk-kV-xyD" secondAttribute="height" id="m4W-uZ-1Xm"/>
                                                     <constraint firstItem="agX-LJ-if6" firstAttribute="centerX" secondItem="7Uk-kV-xyD" secondAttribute="centerX" id="ulN-yF-lq0"/>
                                                 </constraints>
                                             </view>
@@ -884,10 +905,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iW7-t7-vHV">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="19" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uol-Xk-ETt" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="19" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uol-Xk-ETt" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDownDark">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDownDark">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -909,9 +930,13 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="iW7-t7-vHV" firstAttribute="centerX" secondItem="K6d-vh-Zqo" secondAttribute="centerX" id="0ys-fP-tA3"/>
+                                                    <constraint firstItem="uol-Xk-ETt" firstAttribute="centerY" secondItem="K6d-vh-Zqo" secondAttribute="centerY" id="3VC-wD-xSh"/>
                                                     <constraint firstAttribute="height" constant="50" id="G4a-Dq-we3"/>
+                                                    <constraint firstItem="uol-Xk-ETt" firstAttribute="centerX" secondItem="K6d-vh-Zqo" secondAttribute="centerX" id="SMU-ad-2qv"/>
                                                     <constraint firstItem="iW7-t7-vHV" firstAttribute="height" secondItem="K6d-vh-Zqo" secondAttribute="height" constant="10" id="SjR-np-xpG"/>
+                                                    <constraint firstItem="uol-Xk-ETt" firstAttribute="height" secondItem="K6d-vh-Zqo" secondAttribute="height" id="WcC-AZ-9ZA"/>
                                                     <constraint firstItem="iW7-t7-vHV" firstAttribute="centerY" secondItem="K6d-vh-Zqo" secondAttribute="centerY" multiplier="2:3" id="WnC-zl-9jR"/>
+                                                    <constraint firstItem="uol-Xk-ETt" firstAttribute="width" secondItem="K6d-vh-Zqo" secondAttribute="width" id="elu-y3-lFw"/>
                                                     <constraint firstAttribute="width" constant="50" id="rwk-Os-CcT"/>
                                                     <constraint firstItem="iW7-t7-vHV" firstAttribute="width" secondItem="K6d-vh-Zqo" secondAttribute="width" constant="10" id="w5X-eO-B5j"/>
                                                 </constraints>
@@ -1083,10 +1108,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="frj-hv-ndL">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="24" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DYI-6J-DeC" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="24" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DYI-6J-DeC" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUpDark">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUpDark">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1107,9 +1132,13 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="DYI-6J-DeC" firstAttribute="width" secondItem="f6c-o7-CUJ" secondAttribute="width" id="8Hh-2l-B5G"/>
+                                                    <constraint firstItem="DYI-6J-DeC" firstAttribute="centerY" secondItem="f6c-o7-CUJ" secondAttribute="centerY" id="AhS-uP-fD1"/>
+                                                    <constraint firstItem="DYI-6J-DeC" firstAttribute="height" secondItem="f6c-o7-CUJ" secondAttribute="height" id="Efe-1b-ZtO"/>
                                                     <constraint firstAttribute="width" constant="50" id="T2K-SV-GhN"/>
                                                     <constraint firstItem="frj-hv-ndL" firstAttribute="height" secondItem="f6c-o7-CUJ" secondAttribute="height" constant="10" id="UlE-Ex-sMV"/>
                                                     <constraint firstItem="frj-hv-ndL" firstAttribute="width" secondItem="f6c-o7-CUJ" secondAttribute="width" constant="10" id="V9U-gU-AS9"/>
+                                                    <constraint firstItem="DYI-6J-DeC" firstAttribute="centerX" secondItem="f6c-o7-CUJ" secondAttribute="centerX" id="bHO-et-q6x"/>
                                                     <constraint firstAttribute="height" constant="50" id="eJ1-O2-AjK"/>
                                                     <constraint firstItem="frj-hv-ndL" firstAttribute="centerY" secondItem="f6c-o7-CUJ" secondAttribute="centerY" multiplier="2:3" id="eTb-9r-rbv"/>
                                                     <constraint firstItem="frj-hv-ndL" firstAttribute="centerX" secondItem="f6c-o7-CUJ" secondAttribute="centerX" id="g7E-5I-vy6"/>
@@ -1121,10 +1150,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lse-V3-tOP">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" clipsSubviews="YES" tag="25" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7P-dU-EIv" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" clipsSubviews="YES" tag="25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7P-dU-EIv" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUp">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUp">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1145,12 +1174,16 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="b7P-dU-EIv" firstAttribute="width" secondItem="khS-EA-aZA" secondAttribute="width" id="1Ow-3G-T4N"/>
                                                     <constraint firstItem="lse-V3-tOP" firstAttribute="centerX" secondItem="khS-EA-aZA" secondAttribute="centerX" id="27K-3q-P1u"/>
                                                     <constraint firstItem="lse-V3-tOP" firstAttribute="centerY" secondItem="khS-EA-aZA" secondAttribute="centerY" multiplier="2:3" id="CcV-2J-Vec"/>
                                                     <constraint firstItem="lse-V3-tOP" firstAttribute="width" secondItem="khS-EA-aZA" secondAttribute="width" constant="10" id="Nta-uq-CU5"/>
                                                     <constraint firstAttribute="width" constant="50" id="VcT-mZ-39D"/>
+                                                    <constraint firstItem="b7P-dU-EIv" firstAttribute="centerX" secondItem="khS-EA-aZA" secondAttribute="centerX" id="cnQ-fR-3cY"/>
+                                                    <constraint firstItem="b7P-dU-EIv" firstAttribute="centerY" secondItem="khS-EA-aZA" secondAttribute="centerY" id="kXI-BD-Zdy"/>
                                                     <constraint firstAttribute="height" constant="50" id="kkS-Zk-2ju"/>
                                                     <constraint firstItem="lse-V3-tOP" firstAttribute="height" secondItem="khS-EA-aZA" secondAttribute="height" constant="10" id="q7B-Um-UcU"/>
+                                                    <constraint firstItem="b7P-dU-EIv" firstAttribute="height" secondItem="khS-EA-aZA" secondAttribute="height" id="yrY-Se-flS"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NLH-4w-niB">
@@ -1159,10 +1192,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="We9-dq-jAa">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" clipsSubviews="YES" tag="26" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvc-gS-xp0" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" clipsSubviews="YES" tag="26" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvc-gS-xp0" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveUp">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveUp">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1184,10 +1217,14 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="BQI-Bk-bY9"/>
+                                                    <constraint firstItem="cvc-gS-xp0" firstAttribute="height" secondItem="NLH-4w-niB" secondAttribute="height" id="Hvb-7V-WIL"/>
                                                     <constraint firstAttribute="height" constant="50" id="OCu-5O-bkK"/>
                                                     <constraint firstItem="We9-dq-jAa" firstAttribute="centerY" secondItem="NLH-4w-niB" secondAttribute="centerY" multiplier="2:3" id="UxA-6f-D37"/>
                                                     <constraint firstItem="We9-dq-jAa" firstAttribute="centerX" secondItem="NLH-4w-niB" secondAttribute="centerX" id="WwB-29-6Z3"/>
                                                     <constraint firstItem="We9-dq-jAa" firstAttribute="width" secondItem="NLH-4w-niB" secondAttribute="width" constant="10" id="XrN-yi-Ait"/>
+                                                    <constraint firstItem="cvc-gS-xp0" firstAttribute="width" secondItem="NLH-4w-niB" secondAttribute="width" id="dRq-qM-pOQ"/>
+                                                    <constraint firstItem="cvc-gS-xp0" firstAttribute="centerY" secondItem="NLH-4w-niB" secondAttribute="centerY" id="fMK-QD-ecq"/>
+                                                    <constraint firstItem="cvc-gS-xp0" firstAttribute="centerX" secondItem="NLH-4w-niB" secondAttribute="centerX" id="pFK-gT-Glq"/>
                                                     <constraint firstItem="We9-dq-jAa" firstAttribute="height" secondItem="NLH-4w-niB" secondAttribute="height" constant="10" id="y9v-nt-mDV"/>
                                                 </constraints>
                                             </view>
@@ -1202,10 +1239,11 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dkf-mP-wQP">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="27" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n93-sO-Z8A" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="27" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n93-sO-Z8A" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDownDark">
+                                                        <rect key="contentStretch" x="0.0" y="1" width="1" height="1"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDownDark">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1228,9 +1266,13 @@
                                                 <constraints>
                                                     <constraint firstItem="Dkf-mP-wQP" firstAttribute="centerY" secondItem="oRr-cC-48l" secondAttribute="centerY" multiplier="2:3" id="4Cd-FF-Xgk"/>
                                                     <constraint firstAttribute="width" constant="50" id="6hv-Ch-Tcp"/>
+                                                    <constraint firstItem="n93-sO-Z8A" firstAttribute="centerY" secondItem="oRr-cC-48l" secondAttribute="centerY" id="86c-Va-dU1"/>
+                                                    <constraint firstItem="n93-sO-Z8A" firstAttribute="height" secondItem="oRr-cC-48l" secondAttribute="height" id="9yc-kf-3gC"/>
                                                     <constraint firstItem="Dkf-mP-wQP" firstAttribute="height" secondItem="oRr-cC-48l" secondAttribute="height" constant="10" id="KiZ-Tj-bKQ"/>
+                                                    <constraint firstItem="n93-sO-Z8A" firstAttribute="width" secondItem="oRr-cC-48l" secondAttribute="width" id="RDy-5J-0sR"/>
                                                     <constraint firstItem="Dkf-mP-wQP" firstAttribute="centerX" secondItem="oRr-cC-48l" secondAttribute="centerX" id="d7Q-dh-mzp"/>
                                                     <constraint firstItem="Dkf-mP-wQP" firstAttribute="width" secondItem="oRr-cC-48l" secondAttribute="width" constant="10" id="pRw-jz-zB6"/>
+                                                    <constraint firstItem="n93-sO-Z8A" firstAttribute="centerX" secondItem="oRr-cC-48l" secondAttribute="centerX" id="tqm-eh-kqP"/>
                                                     <constraint firstAttribute="height" constant="50" id="wdV-1c-5lf"/>
                                                 </constraints>
                                             </view>
@@ -1240,10 +1282,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ICo-FP-YZV">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="28" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1n-bC-oNQ" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="28" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1n-bC-oNQ" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDown">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDown">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1264,11 +1306,15 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="C1n-bC-oNQ" firstAttribute="centerY" secondItem="TvD-Pr-Agc" secondAttribute="centerY" id="09N-OT-fkC"/>
+                                                    <constraint firstItem="C1n-bC-oNQ" firstAttribute="height" secondItem="TvD-Pr-Agc" secondAttribute="height" id="AgX-8i-WFY"/>
                                                     <constraint firstItem="ICo-FP-YZV" firstAttribute="centerX" secondItem="TvD-Pr-Agc" secondAttribute="centerX" id="LWs-SM-GgC"/>
                                                     <constraint firstItem="ICo-FP-YZV" firstAttribute="centerY" secondItem="TvD-Pr-Agc" secondAttribute="centerY" multiplier="2:3" id="QSQ-FX-Wqh"/>
+                                                    <constraint firstItem="C1n-bC-oNQ" firstAttribute="centerX" secondItem="TvD-Pr-Agc" secondAttribute="centerX" id="bKq-8b-VMy"/>
                                                     <constraint firstAttribute="height" constant="50" id="jgn-20-Pzz"/>
                                                     <constraint firstItem="ICo-FP-YZV" firstAttribute="width" secondItem="TvD-Pr-Agc" secondAttribute="width" constant="10" id="mC2-hX-Te0"/>
                                                     <constraint firstAttribute="width" constant="50" id="ms2-RR-QPi"/>
+                                                    <constraint firstItem="C1n-bC-oNQ" firstAttribute="width" secondItem="TvD-Pr-Agc" secondAttribute="width" id="wf9-gV-2bT"/>
                                                     <constraint firstItem="ICo-FP-YZV" firstAttribute="height" secondItem="TvD-Pr-Agc" secondAttribute="height" constant="10" id="y4K-6C-sfH"/>
                                                 </constraints>
                                             </view>
@@ -1278,10 +1324,10 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bKH-to-ou7">
                                                         <rect key="frame" x="-5" y="-13.333333333333314" width="60" height="60"/>
                                                     </imageView>
-                                                    <button opaque="NO" tag="29" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ihj-SF-pJ3" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
+                                                    <button opaque="NO" tag="29" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ihj-SF-pJ3" customClass="MovesButton" customModule="HawkHackProject2019S" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" image="gloveDown">
+                                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="33"/>
+                                                        <state key="normal" backgroundImage="gloveDown">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1302,8 +1348,12 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="Ihj-SF-pJ3" firstAttribute="width" secondItem="4BB-rw-ac0" secondAttribute="width" id="6sS-VF-Evo"/>
+                                                    <constraint firstItem="Ihj-SF-pJ3" firstAttribute="centerY" secondItem="4BB-rw-ac0" secondAttribute="centerY" id="FWW-Yr-oJc"/>
                                                     <constraint firstItem="bKH-to-ou7" firstAttribute="width" secondItem="4BB-rw-ac0" secondAttribute="width" constant="10" id="Gnc-tt-opH"/>
+                                                    <constraint firstItem="Ihj-SF-pJ3" firstAttribute="centerX" secondItem="4BB-rw-ac0" secondAttribute="centerX" id="S3D-G5-Nad"/>
                                                     <constraint firstAttribute="width" constant="50" id="XRt-MO-C7K"/>
+                                                    <constraint firstItem="Ihj-SF-pJ3" firstAttribute="height" secondItem="4BB-rw-ac0" secondAttribute="height" id="a3G-Er-0st"/>
                                                     <constraint firstItem="bKH-to-ou7" firstAttribute="centerX" secondItem="4BB-rw-ac0" secondAttribute="centerX" id="ewg-NZ-Y1x"/>
                                                     <constraint firstAttribute="height" constant="50" id="nXe-we-XIG"/>
                                                     <constraint firstItem="bKH-to-ou7" firstAttribute="height" secondItem="4BB-rw-ac0" secondAttribute="height" constant="10" id="ppV-SI-YLG"/>
@@ -1407,21 +1457,21 @@
                         <outlet property="p1Button18MDown" destination="ILY-6p-usB" id="hsX-bq-lsc"/>
                         <outlet property="p1Button19HDown" destination="uol-Xk-ETt" id="E7x-h2-fy2"/>
                         <outlet property="p1Button19ImageView" destination="iW7-t7-vHV" id="hCV-OA-Rot"/>
-                        <outlet property="p1Button24ImageView" destination="frj-hv-ndL" id="dtL-UL-cdm"/>
-                        <outlet property="p1Button25ImageView" destination="lse-V3-tOP" id="oP3-bT-4rH"/>
-                        <outlet property="p1Button26ImageView" destination="We9-dq-jAa" id="UK6-oS-I7f"/>
-                        <outlet property="p1Button27ImageView" destination="Dkf-mP-wQP" id="Ief-gM-uXw"/>
-                        <outlet property="p1Button28ImageView" destination="ICo-FP-YZV" id="rr1-e3-Bsq"/>
-                        <outlet property="p1Button29ImageView" destination="bKH-to-ou7" id="AKE-W9-43B"/>
                         <outlet property="p2Button20Up" destination="S4e-te-Uig" id="u9g-AO-HT8"/>
                         <outlet property="p2Button21Forward" destination="y1x-Pp-fn7" id="Nr6-b1-2gs"/>
                         <outlet property="p2Button22Down" destination="ZNN-7M-Prj" id="d5T-DQ-ov6"/>
                         <outlet property="p2Button23Back" destination="b2Z-kM-FX8" id="5Qn-Ig-3s2"/>
                         <outlet property="p2Button24HUp" destination="DYI-6J-DeC" id="HVu-DS-dY7"/>
+                        <outlet property="p2Button24ImageView" destination="frj-hv-ndL" id="Ogc-0o-g6G"/>
+                        <outlet property="p2Button25ImageView" destination="lse-V3-tOP" id="3aR-bT-vU4"/>
                         <outlet property="p2Button25MUp" destination="b7P-dU-EIv" id="vF1-ms-4av"/>
+                        <outlet property="p2Button26ImageView" destination="We9-dq-jAa" id="xwb-8O-mQK"/>
                         <outlet property="p2Button26LUp" destination="cvc-gS-xp0" id="GsX-fn-uPX"/>
                         <outlet property="p2Button27HDown" destination="n93-sO-Z8A" id="Ziz-LV-tMt"/>
+                        <outlet property="p2Button27ImageView" destination="Dkf-mP-wQP" id="uZX-Rj-0gr"/>
+                        <outlet property="p2Button28ImageView" destination="ICo-FP-YZV" id="8yM-N5-Rqa"/>
                         <outlet property="p2Button28MDown" destination="C1n-bC-oNQ" id="dQu-Z2-p3n"/>
+                        <outlet property="p2Button29ImageView" destination="bKH-to-ou7" id="CcG-aw-iSi"/>
                         <outlet property="p2Button29LDown" destination="Ihj-SF-pJ3" id="Iax-HM-uRY"/>
                         <outlet property="player1Character" destination="WAW-9K-Fs0" id="T0P-n7-EYt"/>
                         <outlet property="player1DamageLabel" destination="MnA-q4-31D" id="nbP-Ey-9tb"/>

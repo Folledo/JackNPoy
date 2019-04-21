@@ -21,9 +21,10 @@ class MovesButton: UIButton {
 	var buttonTag: Int = 0
 	var selectedButton: Bool = false
 	
-	var multiplier: CGFloat = 1
+	var damageMultiplier: CGFloat = 1
 	var damage: Int = 0
 	var speed: Int = 0
+	var defenseMultiploer: CGFloat = 1
 	
 	var animation = ButtonAnimations.None
 	
@@ -35,7 +36,7 @@ class MovesButton: UIButton {
 	}
 	
 	internal func getAttackDamage() -> CGFloat {
-		return CGFloat(damage) * multiplier
+		return CGFloat(damage) * damageMultiplier
 	}
 	
 	internal func setButtonCooldown(amount: Int) { //not used yet
@@ -70,9 +71,15 @@ func updateButtonsView(buttons: [MovesButton]) {
 		}
 		
 		if button.cooldown > 0 { //if on cooldown
+//			print("button with tag \(button.buttonTag) is in \(button.cooldown) turn cooldown")
 			button.alpha = 0.5
 			button.isEnabled = false
+			button.animation = ButtonAnimations.None
+//			let buttonImage = button.currentImage
+//			button.setBackgroundImage(buttonImage, for: .normal)
+//			button.titleEdgeInsets = UIEdgeInsets(top: 5,left: 5,bottom: 5,right: 5)
 			button.setTitle("\(button.cooldown)", for: .normal)
+//			button.titleLabel?.text = "\(button.cooldown)"
 		} else { //enable
 			button.alpha = 1
 			button.isEnabled = true

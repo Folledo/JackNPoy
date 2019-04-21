@@ -141,3 +141,44 @@ func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) 
 	}, withCancel: nil)
 }
 
+func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, currentUserTag: (Int?, Int?), completion: @escaping (_ error: Error?) -> Void) {
+	let ref = firDatabase.child(kGAMESESSIONS).child(gameSessionId)
+	var properties: [String: Int] = [:]
+	
+	let move:[String:Int] = currentUserTag.0 != nil ? ["\(p1OrP2String)MoveTag": currentUserTag.0!] : ["\(p1OrP2String)MoveTag": 0]
+	let attack:[String:Int] = currentUserTag.1 != nil ? ["\(p1OrP2String)AttackTag": currentUserTag.1!] : ["\(p1OrP2String)AttackTag": 0]
+	move.forEach {properties[$0] = $1}
+	attack.forEach {properties[$0] = $1}
+	ref.updateChildValues(properties) { (error, ref) in
+		if let error = error {
+			completion(error)
+		} else {
+			print("\(p1OrP2String)MoveTag was successfully uploaded")
+			completion(nil)
+		}
+	}
+}
+
+func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, completion: @escaping (_ opponentTag: (Int?, Int?)) -> Void) {
+	let ref = firDatabase.child(kGAMESESSIONS).child(gameSessionId)
+	
+	ref.observeSingleEvent(of: .value, with: { (snapshot) in
+		
+		if snapshot.exists() {
+			//			print("SNAPSHOT FROM FETCH opponent user IS \(snapshot)")
+			//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
+			let resultDic = snapshot.value as! [String: AnyObject]
+			let opponentMove = resultDic["\(p1OrP2String)MoveTag"] as! Int
+			let opponentAttack = resultDic["\(p1OrP2String)AttackTag"] as! Int
+			let opponentMoveTag = opponentMove == 0 ?  nil : opponentMove
+			let opponentAttackTag = opponentAttack == 0 ? nil : opponentAttack
+//			print("Opponent Tag is \(opponentTag)")
+			//			print("USER DICTIONARY IS \(userDictionary)")
+//			let user = OpponentUser(_dictionary: userDictionary)
+			
+			completion((opponentMoveTag, opponentAttackTag))
+		} else { completion((nil,nil)) }
+		
+		
+	}, withCancel: nil)
+}
