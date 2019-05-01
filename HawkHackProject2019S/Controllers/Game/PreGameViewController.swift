@@ -187,11 +187,12 @@ class PreGameViewController: UIViewController {
 	
 	func gameUidsToGame(gameUidDictionary: [String: AnyObject]) {
 		//		print("\n\n\nKeys are\(gameUidDictionary.keys)\nValues are\(gameUidDictionary.values)\n\n\n")
-		self.matches.removeAll()
 		for key in gameUidDictionary.keys {
 			
 			fetchGameWith(gameSessionId: key, completion: { (game) in
 				DispatchQueue.main.async {
+                    self.matches.removeAll()
+                    
 					guard let game = game else { return }
 					print("Game found = \(game.gameId)")
 					

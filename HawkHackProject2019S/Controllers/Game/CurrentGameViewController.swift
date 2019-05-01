@@ -281,27 +281,53 @@ class CurrentGameViewController: UIViewController {
 			return
 		} else { //if we are playing against someone online...
 			if User.currentId() == self.game?.player1Id { //if our current user is p1 then upload p1's selectedTag and fetch p2's selectedTag
-				
-				uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1", currentUserTag: player1TagSelected) { (error) in
+                let player1MoveTag = player1TagSelected.move == nil ? 1 : player1TagSelected.move
+                let player1AttackTag = player1TagSelected.attack == nil ? 1 : player1TagSelected.attack
+                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1", turnCount: turnCount, currentUserTag: (player1MoveTag, player1AttackTag)) { (error) in
 					if let error = error {
 						Service.presentAlert(on: self, title: "Error Uploading User Selected Tag", message: error.localizedDescription)
 						return
 					}
 				}
 				
-				fetchOpponentSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2") { (opponentTag) in
-					self.player2TagSelected = opponentTag
+                fetchOpponentSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2", turnCount: turnCount) { (opponentTag) in
+                    let opponentSelectedMoveTag = opponentTag.0 == 1 ? nil : opponentTag.0
+                    let opponentSelectedAttackTag = opponentTag.1 == 1 ? nil : opponentTag.1
+                    
+					self.player2TagSelected = (opponentSelectedMoveTag,opponentSelectedAttackTag)
+                    
+                    print("Go back and fix this line \(opponentTag)")
+                    
+                    print("fetched p2 tag selected \(self.player2TagSelected)")
+//                    Service.presentAlert(on: self, title: "Fetched p2 tagSelected", message: "\(self.player2TagSelected)")
+//                    self.getPlayer2Damage()
+                    self.changeCharactersAnimationNames(completion: {
+                        
+                    })
+                    
 				}
 				
 			} else if User.currentId() == self.game?.player2Id { //if our current user is p2 then upload p2's selectedTag and fetch p1's selectedTag
-				uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2", currentUserTag: player2TagSelected) { (error) in
+                
+                let player2MoveTag = player2TagSelected.move == nil ? 1 : player2TagSelected.move
+                let player2AttackTag = player2TagSelected.attack == nil ? 1 : player2TagSelected.attack
+                
+                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2", turnCount: turnCount, currentUserTag: (player2MoveTag,player2AttackTag)) { (error) in
 					if let error = error {
 						Service.presentAlert(on: self, title: "Error Uploading User Selected Tag", message: error.localizedDescription)
 						return
 					}
 				}
-				fetchOpponentSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1") { (opponentTag) in
-					self.player1TagSelected = opponentTag
+                fetchOpponentSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1", turnCount: turnCount) { (opponentTag) in
+                    
+                    let opponentSelectedMoveTag = opponentTag.0 == 1 ? nil : opponentTag.0
+                    let opponentSelectedAttackTag = opponentTag.1 == 1 ? nil : opponentTag.1
+                    
+                    self.player1TagSelected = (opponentSelectedMoveTag,opponentSelectedAttackTag)
+                    
+//                    self.player1TagSelected = opponentTag
+                    print("fetched p1 tag selected \(self.player1TagSelected)")
+//                    Service.presentAlert(on: self, title: "Fetched p1 tagSelected", message: "\(self.player1TagSelected)")
 				}
 			}
 		}
@@ -330,7 +356,7 @@ class CurrentGameViewController: UIViewController {
 		let player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
 		let player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
 		
-//		print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
+        print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
 		
 //		print("P1 \(p1MoveResult)\nP2 \(p2MoveResult)")
 		
@@ -456,6 +482,7 @@ class CurrentGameViewController: UIViewController {
 		}
 		
 		p1MoveResult.damage = Int(player1Damage)
+        print("player 1 damage = \(p1MoveResult.damage)")
 	}
 	
 
@@ -514,6 +541,7 @@ class CurrentGameViewController: UIViewController {
 		}
 		p2MoveResult.damage = Int(player2Damage)
 //		p2MoveResult.damage = Int(player2Damage * player1Defense)
+        print("player 2 damage = \(p2MoveResult.damage)")
 	}
 	
 	private func getEnemyDefense() {
@@ -623,6 +651,9 @@ class CurrentGameViewController: UIViewController {
 	
 	private func updateViewWithGame(currentGame: Game) {
 		DispatchQueue.main.async {
+            
+            self.turnCount = currentGame.turnCounter
+            
 			self.gameSessionLabel.text = currentGame.gameId
 			
 			self.player1ImageView.layer.cornerRadius = 25 //half of the imageView to make it round
@@ -676,7 +707,7 @@ class CurrentGameViewController: UIViewController {
 			
 			setupSelectedTag()
 			DispatchQueue.main.async {
-				self.changeCharactersAnimationNames {
+//                self.changeCharactersAnimationNames {
 					
 					for button in self.player1AttackButtons! {
 						if button.selectedButton == false { continue }
@@ -874,7 +905,7 @@ class CurrentGameViewController: UIViewController {
 					self.timeLeftLabel.text = "\(self.clockCounter)"
 					self.startTurnTimer()
 					
-				}
+//                }
 			}
 			
 		}

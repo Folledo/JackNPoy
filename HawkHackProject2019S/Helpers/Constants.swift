@@ -31,6 +31,9 @@ let kPLAYER1AVATARURL: String = "player1AvatarUrl"
 let kPLAYER2AVATARURL: String = "player2AvatarUrl"
 let kPLAYER1HP: String = "player1Hp"
 let kPLAYER2HP: String = "player2Hp"
+let kP1MOVE: String = "p1Move"
+let kP2MOVE: String = "p2Move"
+
 let kWINNERUID: String = "winnerUid"
 
 let kGAMEATTACK: String = "gameAttack"
@@ -40,7 +43,7 @@ let kTURNCOUNT: String = "turnCount"
 let kTURNCOUNTER: String = "turnCounter"
 
 let kTIMESTAMP: String = "timeStamp"
-
+//let kTURNCOUNTER: String = "turnCounter"
 
 let kSMILEYURL: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/220px-Smiley.svg.png"
 let firDatabase = Database.database().reference()
