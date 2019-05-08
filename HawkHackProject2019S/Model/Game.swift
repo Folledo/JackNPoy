@@ -22,16 +22,16 @@ class Game {
 	var player1HP: Int = 100
 	var player2HP: Int = 100
 	
-	var player1Email: String?
-	var player2Email: String?
-	
 	var player1Name: String?
 	var player2Name: String?
 	
 	var player1AvatarUrl: String?
 	var player2AvatarUrl: String?
     
-    var turnCounter = 0
+    var player1Image: UIImage?
+    var player2Image: UIImage?
+    
+    var roundNumber = 0
 	
 	
 	static let sharedInstance = Game() //initialize this Game as singleton
@@ -44,15 +44,15 @@ class Game {
 		self.gameId = _dictionary[kGAMESESSIONS] as! String
 		
 		self.winnerUid = _dictionary[kWINNERUID] as? String
-		self.timeStamp = _dictionary["timeStamp"] as? Int
+		self.timeStamp = _dictionary[kTIMESTAMP] as? Int
 		self.player1HP = _dictionary[kPLAYER1HP] as! Int
 		self.player2HP = _dictionary[kPLAYER2HP] as! Int
 		
 		self.player1Name = _dictionary[kPLAYER1NAME] as? String
 		self.player2Name = _dictionary[kPLAYER2NAME] as? String
 		
-		self.player1Email = _dictionary[kPLAYER1EMAIL] as? String
-		self.player2Email = _dictionary[kPLAYER2EMAIL] as? String
+//        self.player1Email = _dictionary[kPLAYER1EMAIL] as? String
+//        self.player2Email = _dictionary[kPLAYER2EMAIL] as? String
 		self.player1AvatarUrl = _dictionary[kPLAYER1AVATARURL] as? String
 		self.player2AvatarUrl = _dictionary[kPLAYER2AVATARURL] as? String
 	}
@@ -119,7 +119,7 @@ class Game {
 	}
 //--------------------------------------+++++++++++++++++++++++++++++++++++
     
-//    class func currentGameTurnCounter(game: Game) {
+//    class func currentGameRoundNumber(game: Game) {
 //        let ref = firDatabase.child(kGAMESESSIONS).child(game.gameId).child(kTURNCOUNT)
 //        ref.observeSingleValue
 //    }
@@ -227,29 +227,35 @@ class Game {
 //---------------------------------++++++++++++++++++++++++++++++++++++++++++++++++
 
 //MARK: Helper fuctions
-func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) -> Void) {
+func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) -> Void) { //used in PreGameVC
 	//	let ref = firDatabase.child(kGAMESESSIONS).queryEqual(toValue: gameSessionId)
     let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId)
-
-	ref.observe(.value, with: { (snapshot) in
-		
-		if snapshot.exists() {
-			//			print("SNAPSHOT FROM FETCH GAMESESSION IS \(snapshot)")
-			//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
-			var gameDictionary = snapshot.value as! [String: AnyObject]
-			//			print("GAME DICTIONARY IS \(gameDictionary)")
-			
-//            let gameUid: String = gameDictionary[kGAMESESSIONS] as! String
-			
-			let game = Game(_dictionary: gameDictionary)
-			
-			//			print("FETCHED GAME IS \(game)")
-			completion(game)
-		} else {
+    
+    ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        if snapshot.exists() {
+            //            print("SNAPSHOT FROM FETCH GAMESESSION IS \(snapshot)")
+            //            let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
+            var gameDictionary = snapshot.value as! [String: AnyObject]
+            //            print("GAME DICTIONARY IS \(gameDictionary)")
+            
+            //            let gameUid: String = gameDictionary[kGAMESESSIONS] as! String
+            
+            let game = Game(_dictionary: gameDictionary)
+            
+            //            print("FETCHED GAME IS \(game)")
+            completion(game)
+        } else {
             print("ref doesn't exist")
             completion(nil) }
-	}, withCancel: nil)
+    }, withCancel: nil)
 }
+
+
+func gameDictionaryFrom(game: Game) -> NSDictionary {
+    return NSDictionary(objects:[game.gameId, game.roundNumber], forKeys:[] )
+}
+
 
 func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int, currentUserTag: (Int?, Int?), completion: @escaping (_ error: Error?) -> Void) {
     let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child("currentGame").child("\(turnCount)")
@@ -278,7 +284,7 @@ func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, t
 	}
 }
 
-func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int, completion: @escaping (_ opponentTag: (Int?, Int?)) -> Void) {
+func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int, completion: @escaping (_ opponentTag: (Int?, Int?)) -> Void) { //used in PreGameVC
     let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child("currentGame").child("\(turnCount)")
 
 	

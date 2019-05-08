@@ -450,8 +450,14 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roundNumber" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNC-xA-129">
+                                <rect key="frame" x="199" y="127.99999999999999" width="338" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gameSessionIdLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5r-dE-CiC">
-                                <rect key="frame" x="199" y="136" width="338" height="20.333333333333343"/>
+                                <rect key="frame" x="199" y="152.33333333333334" width="338" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -1407,11 +1413,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="mNC-xA-129" firstAttribute="centerX" secondItem="CMz-Ej-Kng" secondAttribute="centerX" id="12B-lZ-oNP"/>
                             <constraint firstItem="mjc-s4-Wt8" firstAttribute="bottom" secondItem="ExZ-sQ-yIg" secondAttribute="bottom" constant="20" id="1xa-6b-1E2"/>
                             <constraint firstItem="wqh-ND-xMg" firstAttribute="width" secondItem="VUZ-Wg-SE0" secondAttribute="width" id="8Tx-Xz-Jcw"/>
+                            <constraint firstItem="o5r-dE-CiC" firstAttribute="top" secondItem="mNC-xA-129" secondAttribute="bottom" constant="4" id="9D3-Mq-Qdt"/>
                             <constraint firstItem="8Tr-ar-Pcc" firstAttribute="width" secondItem="wmM-sw-LWt" secondAttribute="width" id="EVp-hn-pv6"/>
-                            <constraint firstItem="o5r-dE-CiC" firstAttribute="top" secondItem="xA1-Ng-Vod" secondAttribute="bottom" constant="12" id="GPb-C0-P5H"/>
                             <constraint firstItem="L3e-v4-UOT" firstAttribute="leading" secondItem="VUZ-Wg-SE0" secondAttribute="leading" id="GT7-BL-AaC"/>
+                            <constraint firstItem="mNC-xA-129" firstAttribute="width" secondItem="o5r-dE-CiC" secondAttribute="width" id="GTH-bB-dXv"/>
                             <constraint firstItem="8Tr-ar-Pcc" firstAttribute="leading" secondItem="wmM-sw-LWt" secondAttribute="leading" id="LEf-iW-nNL"/>
                             <constraint firstItem="wqh-ND-xMg" firstAttribute="height" secondItem="VUZ-Wg-SE0" secondAttribute="height" id="NUO-Kc-Rgq"/>
                             <constraint firstItem="8Tr-ar-Pcc" firstAttribute="top" secondItem="mjc-s4-Wt8" secondAttribute="top" id="Q61-VX-DmT"/>
@@ -1425,6 +1433,7 @@
                             <constraint firstItem="WAW-9K-Fs0" firstAttribute="bottom" secondItem="w79-fg-ea3" secondAttribute="bottom" id="gcE-yV-zIn"/>
                             <constraint firstItem="ExZ-sQ-yIg" firstAttribute="trailing" secondItem="wqh-ND-xMg" secondAttribute="trailing" id="gz3-Q4-FWT"/>
                             <constraint firstItem="VUZ-Wg-SE0" firstAttribute="leading" secondItem="wmM-sw-LWt" secondAttribute="leading" constant="10" id="i98-QU-1yf"/>
+                            <constraint firstItem="mNC-xA-129" firstAttribute="top" secondItem="CMz-Ej-Kng" secondAttribute="bottom" constant="4" id="iOm-ta-utJ"/>
                             <constraint firstAttribute="trailing" secondItem="wqh-ND-xMg" secondAttribute="trailing" constant="10" id="kCa-Zh-4pt"/>
                             <constraint firstItem="wqh-ND-xMg" firstAttribute="top" secondItem="VUZ-Wg-SE0" secondAttribute="top" id="m4E-PC-G4k"/>
                             <constraint firstItem="xA1-Ng-Vod" firstAttribute="leading" secondItem="VUZ-Wg-SE0" secondAttribute="trailing" id="oUV-sA-OLH"/>
@@ -1487,6 +1496,7 @@
                         <outlet property="player2ImageView" destination="Vw8-rw-LpR" id="z0k-z3-gJQ"/>
                         <outlet property="player2MovesView" destination="ExZ-sQ-yIg" id="FXR-Vl-GGk"/>
                         <outlet property="player2NameLabel" destination="0Ue-gF-t9C" id="1hT-Ki-hfr"/>
+                        <outlet property="roundNumberLabel" destination="mNC-xA-129" id="WK9-Gj-sUW"/>
                         <outlet property="timeLeftLabel" destination="CMz-Ej-Kng" id="p8u-MY-QMr"/>
                     </connections>
                 </viewController>
