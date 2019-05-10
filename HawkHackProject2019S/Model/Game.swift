@@ -263,8 +263,8 @@ func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, t
 	var properties: [String: Int] = [:]
 	
     
-    let move = currentUserTag.0 == 1 ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)MoveTag": currentUserTag.0]
-    let attack = currentUserTag.1 == 1 ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)AttackTag": currentUserTag.1]
+    let move = currentUserTag.0 == nil ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)MoveTag": currentUserTag.0]
+    let attack = currentUserTag.1 == nil ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)AttackTag": currentUserTag.1]
     
 //    self.player2TagSelected = (opponentSelectedMoveTag,opponentSelectedAttackTag)
     
