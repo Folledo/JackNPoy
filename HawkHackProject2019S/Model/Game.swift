@@ -24,6 +24,8 @@ class Game {
 	
 	var player1Name: String?
 	var player2Name: String?
+//    var player1Email: String?
+//    var player2Email: String?
 	
 	var player1AvatarUrl: String?
 	var player2AvatarUrl: String?
@@ -70,13 +72,37 @@ class Game {
 	//		}
 	//	}
 	
+    func assignWinner(game: Game, winningPlayerUid: String, completion: @escaping (_ value: String?)-> Void) {
+        let loserPlayerUid = player1Id == winningPlayerUid ? player2Id : player1Id //if winning playerUID is == p1UID then p2 is loser
+        
+        let winnerRef = firDatabase.child(kGAMEHISTORY).child(winningPlayerUid).childByAutoId()
+        winnerRef.setValue(["result": "winner", "opponentUid": loserPlayerUid]) { (error, red) in
+            if let error = error {
+                completion(error.localizedDescription)
+            } else {
+                print("Finished saving winner uid \(winningPlayerUid)")
+                completion(nil)
+            }
+        }
+        
+        let loserRef = firDatabase.child(kGAMEHISTORY).child(loserPlayerUid!).childByAutoId()
+        loserRef.setValue(["result": "loser", "opponentUid": loserPlayerUid]) { (error, red) in
+            if let error = error {
+                completion(error.localizedDescription)
+            } else {
+                print("Finished saving winner uid \(winningPlayerUid)")
+                completion(nil)
+            }
+        }
+    }
+    
 	func deleteGame(game: Game, completion: @escaping (_ value: String)-> Void) {
 		let player1Ref = firDatabase.child(kUSERTOGAMESESSIONS).child(game.player1Id!).child(game.player2Id!)
 		player1Ref.removeValue { (error, ref) in
 			if let error = error {
 				completion(error.localizedDescription)
 			} else {
-				print("Successfully removed \(game.gameId)")
+				print("Successfully removed \(game.gameId) from P1")
 //				completion("Success")
 			}
 		}
@@ -86,7 +112,7 @@ class Game {
 			if let error = error {
 				completion(error.localizedDescription)
 			} else {
-				print("Successfully removed \(game.gameId)")
+				print("Successfully removed \(game.gameId) from P2")
 //				completion("Success")
 			}
 		}
@@ -96,7 +122,7 @@ class Game {
 			if let error = error {
 				completion(error.localizedDescription)
 			} else {
-				print("Successfully removed \(game.gameId)")
+				print("Successfully removed \(game.gameId) from userToGame reference")
 //				completion("Success")
 			}
 		}
@@ -116,6 +142,8 @@ class Game {
 		
 		self.player1Name = ""
 		self.player2Name = ""
+//        self.player1Email = ""
+//        self.player2Email = ""
 	}
 //--------------------------------------+++++++++++++++++++++++++++++++++++
     
@@ -258,7 +286,7 @@ func gameDictionaryFrom(game: Game) -> NSDictionary {
 
 
 func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int, currentUserTag: (Int?, Int?), completion: @escaping (_ error: Error?) -> Void) {
-    let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child("currentGame").child("\(turnCount)")
+    let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child(kCURRENTGAME).child(kROUNDS).child("\(turnCount)")
 
 	var properties: [String: Int] = [:]
 	
@@ -266,12 +294,6 @@ func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, t
     let move = currentUserTag.0 == nil ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)MoveTag": currentUserTag.0]
     let attack = currentUserTag.1 == nil ? ["\(p1OrP2String)MoveTag": 1] : ["\(p1OrP2String)AttackTag": currentUserTag.1]
     
-//    self.player2TagSelected = (opponentSelectedMoveTag,opponentSelectedAttackTag)
-    
-    
-//
-//    let move:[String:Int] = currentUserTag.0 != nil ? ["\(p1OrP2String)MoveTag": currentUserTag.0!] : ["\(p1OrP2String)MoveTag": 0] //value of p1OrP2String moveTag will be 0 if currentUserTag.0 is nil
-//    let attack:[String:Int] = currentUserTag.1 != nil ? ["\(p1OrP2String)AttackTag": currentUserTag.1!] : ["\(p1OrP2String)AttackTag": 0]
 	move.forEach {properties[$0] = $1}
 	attack.forEach {properties[$0] = $1}
 	ref.updateChildValues(properties) { (error, ref) in
@@ -285,7 +307,7 @@ func uploadCurrentUserSelectedTag(gameSessionId: String, p1OrP2String: String, t
 }
 
 func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int, completion: @escaping (_ opponentTag: (Int?, Int?)) -> Void) { //used in PreGameVC
-    let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child("currentGame").child("\(turnCount)")
+    let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child(kCURRENTGAME).child(kROUNDS).child("\(turnCount)")
 
 	
     ref.observe(.value, with: { (snapshot) in

@@ -92,6 +92,8 @@ class PreGameViewController: UIViewController {
 	//MARK: Methods for sending requests
 	func sendRequest() {
 		let userId = User.currentId()
+        emailTextField.resignFirstResponder()
+        
 		guard let opponentEmail = self.emailTextField.text?.trimmedString() else { return }
 		
 		

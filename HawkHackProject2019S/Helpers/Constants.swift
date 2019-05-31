@@ -37,15 +37,25 @@ let kP1MOVE: String = "p1Move"
 let kP2MOVE: String = "p2Move"
 
 let kWINNERUID: String = "winnerUid"
-
+let kCURRENTGAME: String = "currentGame"
 let kGAMEATTACK: String = "gameAttack"
 let kGAMEMOVE: String = "gameMove"
 let kMOVES: String = "moves"
 let kTURNCOUNT: String = "turnCount"
 let kROUNDNUMBER: String = "roundNumber"
-
+let kROUNDS: String = "rounds"
+let kGAMEID: String = "gameId"
 let kTIMESTAMP: String = "timeStamp"
+let kGAMEHISTORY: String = "gameHistory"
 //let kTURNCOUNTER: String = "turnCounter"
+
+//storyboard VC Identifiers
+let kHOMEVIEWCONTROLLER: String = "homeVC"
+let kPREGAMEVIEWCONTROLLER: String = "preGameVC"
+let kGAMEVIEWCONTROLLER: String = "gameVC"
+let kGAMEOVERVIEWCONTROLLER: String = "gameOverVC"
+let kGAMEHISTORYVIEWCONTROLLER: String = "gameHistoryVC"
+let kGAMEHISTORYCELL: String = "gameHistoryCell"
 
 let kSMILEYURL: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/220px-Smiley.svg.png"
 let firDatabase = Database.database().reference()

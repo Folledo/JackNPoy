@@ -34,6 +34,10 @@ class User: NSObject {
 	class func currentId() -> String {
 		return Auth.auth().currentUser!.uid
 	}
+    
+//    class func currentEmail() -> String {
+//        return (Auth.auth().currentUser?.email)!
+//    }
 	
 	class func currentUser() -> User? {
 		if Auth.auth().currentUser != nil { //if we have user...
@@ -115,9 +119,6 @@ func saveUserLocally(user: User) {
 }
 
 
-
-
-
 //MARK: Helper fuctions
 //func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void) {
 //	//	print("1")
@@ -194,6 +195,8 @@ func isUserLoggedIn() -> Bool {
 		return false
 	}
 }
+
+
 
 //func isUserLoggedIn(viewController: UIViewController) -> Bool {
 //

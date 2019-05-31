@@ -36,7 +36,9 @@ class CurrentGameViewController: UIViewController {
 	@IBOutlet weak var player1Character: UIImageView!
 	@IBOutlet weak var player1MovesView: MyView!
 	@IBOutlet weak var player1HPBar: UIProgressView!
-	
+    @IBOutlet weak var player1IsFirstImageView: UIImageView!
+    
+    
 	@IBOutlet weak var player2NameLabel: UILabel!
 	@IBOutlet weak var player2ImageView: UIImageView!
 	@IBOutlet weak var player2HPLabel: UILabel!
@@ -44,7 +46,8 @@ class CurrentGameViewController: UIViewController {
 	@IBOutlet weak var player2Character: UIImageView!
 	@IBOutlet weak var player2MovesView: MyView!
 	@IBOutlet weak var player2HPBar: UIProgressView!
-	
+    @IBOutlet weak var player2IsFirstImageView: UIImageView!
+    
 	@IBOutlet weak var p1Button10Up: MovesButton!
 	@IBOutlet weak var p1Button11Back: MovesButton!
 	@IBOutlet weak var p1Button12Down: MovesButton!
@@ -85,7 +88,10 @@ class CurrentGameViewController: UIViewController {
 	
 //MARK: Properties
 	var game: Game?
-	
+    var round: CurrentRound?
+//    var p1Round: CurrentRound?
+//    var p2Round: CurrentRound?
+    
 	var player1TagSelected: (move: Int?, attack: Int?)
 	var player2TagSelected: (move: Int?, attack: Int?)
 	
@@ -161,7 +167,22 @@ class CurrentGameViewController: UIViewController {
 		ryuTimer?.invalidate()
 		kenTimer?.invalidate()
         fetchingOpponentMoveTimer?.invalidate()
+        firDatabase.removeAllObservers()
 	}
+    
+//prepare for segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "toGameOverSegue":
+            guard let didUserWin = sender as? Bool else { return }
+            let gameOverVC: GameOverViewController = segue.destination as! GameOverViewController
+            gameOverVC.didWin = didUserWin
+            gameOverVC.game = game //pass the game to gameOVer
+        default:
+            break
+        }
+    }
+    
 	
 	private func putAnimation(button: MovesButton, animation: (String,Int)) {
 //		if button.cooldown > 1 { return }
@@ -278,11 +299,18 @@ class CurrentGameViewController: UIViewController {
 	private func startTurnTimer() {
 //        turnCount = 1
 //        self.roundNumberLabel.text = "\(turnCount)"
+        player1IsFirstImageView.isHidden = !p1HasSpeedBoost //if p1IsFirstImageView will be hidden if p1HasSpeedBoost == false
+        player2IsFirstImageView.isHidden = p1HasSpeedBoost
+        print("p1 is hidden  = \(!p1HasSpeedBoost)\np2 is hidden = \(!p1HasSpeedBoost)")
         
         if p1HasSpeedBoost {
+//            player1IsFirstImageView.isHidden = false
+//            player2IsFirstImageView.isHidden = true
             p1MoveResult = (damage:0, damageMultiplier:CGFloat(1), defenseMultiplier:CGFloat(1), speed: CGFloat(1)) //give p1MoveResults a +1 speed boost
             p2MoveResult = (damage:0, damageMultiplier:1, defenseMultiplier:1, speed:0)
         } else {
+//            player2IsFirstImageView.isHidden = false
+//            player1IsFirstImageView.isHidden = true
             p2MoveResult = (damage:0, damageMultiplier:CGFloat(1), defenseMultiplier:CGFloat(1), speed: CGFloat(1)) //give p2 +1 speed boost
             p1MoveResult = (damage:0, damageMultiplier:1, defenseMultiplier:1, speed:0)
         }
@@ -293,10 +321,6 @@ class CurrentGameViewController: UIViewController {
 	
     
     
-    
-    
-	
-	/////////////////////////////////////////////////////////
     private func setupSelectedTag() {
 //        p1MoveResult = (damage:0, damageMultiplier:1, defenseMultiplier:1, speed:0)
 //        p2MoveResult = (damage:0, damageMultiplier:1, defenseMultiplier:1, speed:0)
@@ -304,11 +328,26 @@ class CurrentGameViewController: UIViewController {
         player2MovesView.isUserInteractionEnabled = false
         
         if !isAgainstOnlineUser {
-            applyDamagesToViews(opponentTag: (nil,nil)) {
-                print("Done updating turn")
-                self.finishTurn()
-            }
+            
+            self.applyDamagesToViews(opponentTag: (nil, nil), completion: { (didP1Win) in
+                self.player1DamageLabel.isHidden = true
+                self.player2DamageLabel.isHidden = true
+                
+                if didP1Win == nil {
+//                    if self.player1TagSelected == (nil, nil) || self.player2TagSelected == (nil, nil) {
+//                        print("Player1 or Player 2 Tag is nil")
+//                    } else {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            print("applied damage to views")
+                            self.finishTurn()
+//                        }
+//                    }
+                } else { //if isGameOver is not nil
+                    self.gameOver(didP1Win: didP1Win!) //pass either if p1 or p2 wins
+                }
+            })
             return
+            
         } else { //if we are playing against someone online...
             if User.currentId() == self.game?.player1Id { //if our current user is p1 then upload p1's selectedTag and fetch p2's selectedTag
                 self.player1TagSelected.move = player1TagSelected.move == nil ? 1 : player1TagSelected.move
@@ -340,7 +379,7 @@ class CurrentGameViewController: UIViewController {
     
     
     func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int) {
-        let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child("currentGame").child("\(turnCount)")
+        let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child(kCURRENTGAME).child(kROUNDS).child("\(turnCount)")
         ref.observe(.value, with: { (snapshot) in
             print("Hey something was added at currentGame turn #\(turnCount)")
             if snapshot.exists() && snapshot.childrenCount == 4 { //if it exist and it has 4 children (p1Move, p1Attack, p2Move, p2Attack)...
@@ -379,24 +418,31 @@ class CurrentGameViewController: UIViewController {
                     }
                 }
                 
-                print("applying damage to views")
-                self.applyDamagesToViews(opponentTag: (fetchedOpponentMove, fetchedOpponentAttack)) {
-                    print("applied damage to views")
-                    if self.player1TagSelected == (nil, nil) || self.player2TagSelected == (nil, nil) {
-                        print("Player1 or Player 2 Tag is nil")
-                    } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            self.finishTurn()
+            print("applying damage to views")
+                self.applyDamagesToViews(opponentTag: (fetchedOpponentMove, fetchedOpponentAttack), completion: { (didP1Win) in
+                    self.player1DamageLabel.isHidden = true
+                    self.player2DamageLabel.isHidden = true
+                    
+                    if didP1Win == nil {
+                        if self.player1TagSelected == (nil, nil) || self.player2TagSelected == (nil, nil) {
+                            print("Player1 or Player 2 Tag is nil")
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                print("applied damage to views")
+                                self.finishTurn()
+                            }
                         }
+                    } else { //if isGameOver is not nil
+                        self.gameOver(didP1Win: didP1Win!)
                     }
-                }
+                })
+                
+                
             } else { //snapshot dont exist or not all 4 moves are available
                 self.player1MovesView.isUserInteractionEnabled = false
                 self.player2MovesView.isUserInteractionEnabled = false
                 self.scheduledTimerWithTimeInterval()
             }
-            
-            
         }, withCancel: nil)
     }
     
@@ -409,196 +455,128 @@ class CurrentGameViewController: UIViewController {
         print("counting...")
     }
 	
-    private func applyDamagesToViews(opponentTag:(move: Int?, attack: Int?), completion: @escaping () -> Void) { //or () -> ()
-//		print("p1: \(player1TagSelected)")
-//		print("p2: \(player2TagSelected)")
+    private func applyDamagesToViews(opponentTag:(move: Int?, attack: Int?), completion: @escaping (_ didP1Win: Bool?) -> Void) { //or () -> ()
+        getPlayer1Damage()
+        getPlayer2Damage()
+        getEnemyDefense()
         
-//        if isAgainstOnlineUser { //if we are against another player ONLINE
-//
-//
-//            getPlayer1Damage()
-//            getPlayer2Damage()
-//            getEnemyDefense()
-//
-//            ryuCounter = 0
-//
-//            let player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
-//            let player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
-//
-//            print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
-//
-//            //        print("P1 \(p1MoveResult)\nP2 \(p2MoveResult)")
-//
-//
-//            if player1Damage > 0 {
-//                player2DamageLabel.text = "-\(player1Damage)"
-//                player2DamageLabel.isHidden = false
-//                player2DamageLabel.pulsate()
-//            }
-//            if player2Damage > 0 {
-//                player1DamageLabel.text = "-\(player2Damage)"
-//                player1DamageLabel.isHidden = false
-//                player1DamageLabel.pulsate()
-//            }
-//
-//
-//            if CGFloat(p1MoveResult.speed!) > CGFloat(p2MoveResult.speed!) { //if p1 first
-//                //            print("p1 first")
-//                self.player2Hp -= player1Damage
-//                self.player2HPProgress.completedUnitCount += Int64(player1Damage)
-//                let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
-//                self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
-//
-//
-//                if player2Hp > 0 { //if p2 is still alive
-//                    self.player1Hp -= player2Damage
-//                    self.player1HPProgress.completedUnitCount += Int64(player2Damage)
-//                    let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
-//                    self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
-//                    self.player1HPLabel.text = "\(player1Hp)/100"
-//                    self.player2HPLabel.text = "\(player2Hp)/100"
-//                } else { //if p2 dies
-//                    self.player1HPLabel.text = "WIN!"
-//                    self.player2HPLabel.text = "LOSE"
-//                    return
-//                }
-//
-//            } else { //if p2 first
-//                //            print("p2 first")
-//                self.player1Hp -= player2Damage
-//                self.player1HPProgress.completedUnitCount += Int64(player2Damage)
-//                let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
-//                self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
-//
-//                if player1Hp > 0 { //if p1 is still alive
-//                    self.player2Hp -= player1Damage
-//                    self.player2HPProgress.completedUnitCount += Int64(player1Damage)
-//                    let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
-//                    self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
-//                    self.player1HPLabel.text = "\(player1Hp)/100"
-//                    self.player2HPLabel.text = "\(player2Hp)/100"
-//                } else { //if p1 dies
-//                    self.player1HPLabel.text = "LOSE"
-//                    self.player2HPLabel.text = "WIN!"
-//                    return
-//                }
-//
-//            }
-//
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
-//                self.player1DamageLabel.isHidden = true
-//                self.player2DamageLabel.isHidden = true
-//                completion()
-//            })
-//
-//
-//
-//
-////if we are against another user in the same phone
-//        } else {
-            getPlayer1Damage()
-            getPlayer2Damage()
-            getEnemyDefense()
+        ryuCounter = 0
+        
+        var player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
+        var player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
+        
+        //            print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
+        //            print("P1 speed = \(p1MoveResult.speed)\nP2 speed = \(p2MoveResult.speed)")
+        //        print("P1 \(p1MoveResult)\nP2 \(p2MoveResult)")
+        
+        
+        if player1Damage > 0 {
+            player2DamageLabel.text = "-\(player1Damage)"
+            player2DamageLabel.isHidden = false
+            player2DamageLabel.pulsate()
+        }
+        if player2Damage > 0 {
+            player1DamageLabel.text = "-\(player2Damage)"
+            player1DamageLabel.isHidden = false
+            player1DamageLabel.pulsate()
+        }
+        
+        
+        if CGFloat(p1MoveResult.speed!) > CGFloat(p2MoveResult.speed!) { //if p1 first
+            //            print("p1 first")
+            self.player2Hp -= player1Damage
+            self.player2HPProgress.completedUnitCount += Int64(player1Damage)
+            let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
+            self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
             
-            ryuCounter = 0
+            p1HasSpeedBoost = true //set it to true so we can give p1 a +1 speed for next turn
+            player2Damage = Int(CGFloat(player2Damage) * 0.9) //gives a little incentive to go first by reducing damage received by 10% if a player moves first
             
-            var player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
-            var player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
-            
-//            print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
-//            print("P1 speed = \(p1MoveResult.speed)\nP2 speed = \(p2MoveResult.speed)")
-            //        print("P1 \(p1MoveResult)\nP2 \(p2MoveResult)")
-            
-            
-            if player1Damage > 0 {
-                player2DamageLabel.text = "-\(player1Damage)"
-                player2DamageLabel.isHidden = false
-                player2DamageLabel.pulsate()
-            }
-            if player2Damage > 0 {
-                player1DamageLabel.text = "-\(player2Damage)"
-                player1DamageLabel.isHidden = false
-                player1DamageLabel.pulsate()
-            }
-            
-            
-            if CGFloat(p1MoveResult.speed!) > CGFloat(p2MoveResult.speed!) { //if p1 first
-                //            print("p1 first")
-                self.player2Hp -= player1Damage
-                self.player2HPProgress.completedUnitCount += Int64(player1Damage)
-                let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
-                self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
-                
-                p1HasSpeedBoost = true //set it to true so we can give p1 a +1 speed for next turn
-                player2Damage = Int(CGFloat(player2Damage) * 0.9) //gives a little incentive to go first by reducing damage received by 10% if a player moves first
-                
-                if player2Hp > 0 { //if p2 is still alive
-                    self.player1Hp -= player2Damage
-                    self.player1HPProgress.completedUnitCount += Int64(player2Damage)
-                    let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
-                    self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
-                    
-                    if player1Hp <= 0 { //if p1 dies
-                        print("p2 wins")
-                        self.player1HPLabel.text = "LOSE"
-                        self.player2HPLabel.text = "WIN"
-                        return
-                    } else {
-                        self.player1HPLabel.text = "\(player1Hp)/100"
-                        self.player2HPLabel.text = "\(player2Hp)/100"
-                    }
-                } else { //if p2 dies
-                    print("p1 wins")
-                    self.player1HPLabel.text = "WIN!"
-                    self.player2HPLabel.text = "LOSE"
-                    return
-                }
-                
-            } else { //if p2 first
-                //            print("p2 first")
+            if player2Hp > 0 { //if p2 is still alive
                 self.player1Hp -= player2Damage
                 self.player1HPProgress.completedUnitCount += Int64(player2Damage)
                 let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
                 self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
                 
-                p1HasSpeedBoost = false //p2 will have +1 speed boost
-                player1Damage = Int(CGFloat(player1Damage) * 0.9)
-                
-                if player1Hp > 0 { //if p1 is still alive
-                    self.player2Hp -= player1Damage
-                    self.player2HPProgress.completedUnitCount += Int64(player1Damage)
-                    let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
-                    self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
-                    
-                    if player2Hp <= 0 { //if p2 dies
-                        print("p1 wins")
-                        self.player1HPLabel.text = "WIN!"
-                        self.player2HPLabel.text = "LOSE"
-                        return
-                    } else {
-                        self.player1HPLabel.text = "\(player1Hp)/100"
-                        self.player2HPLabel.text = "\(player2Hp)/100"
-                    }
-                    
-                } else { //if p1 dies
-                    print("p2 wins")
-                    self.player1HPLabel.text = "LOSE"
-                    self.player2HPLabel.text = "WIN!"
-                    return
+                if player1Hp <= 0 { //if p1 dies
+                    completion(false)
+                } else {
+                    self.player1HPLabel.text = "\(player1Hp)/100"
+                    self.player2HPLabel.text = "\(player2Hp)/100"
                 }
-                
+            } else { //if p2 dies
+                completion(true)
+//                gameOver(didP1Win: true)
+//                return
             }
             
+        } else { //if p2 first
+            //            print("p2 first")
+            self.player1Hp -= player2Damage
+            self.player1HPProgress.completedUnitCount += Int64(player2Damage)
+            let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
+            self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
-                self.player1DamageLabel.isHidden = true
-                self.player2DamageLabel.isHidden = true
-                completion()
-            })
-//        }
-	}
+            p1HasSpeedBoost = false //p2 will have +1 speed boost
+            player1Damage = Int(CGFloat(player1Damage) * 0.9)
+            
+            if player1Hp > 0 { //if p1 is still alive
+                self.player2Hp -= player1Damage
+                self.player2HPProgress.completedUnitCount += Int64(player1Damage)
+                let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
+                self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
+                
+                if player2Hp <= 0 { //if p2 dies
+                    completion(true)
+//                    gameOver(didP1Win: true)
+//                    return
+                } else {
+                    self.player1HPLabel.text = "\(player1Hp)/100"
+                    self.player2HPLabel.text = "\(player2Hp)/100"
+                }
+                
+            } else { //if p1 dies
+                completion(false)
+//                gameOver(didP1Win: false)
+//                return
+            }
+            
+        }
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
+//            self.player1DamageLabel.isHidden = true
+//            self.player2DamageLabel.isHidden = true
+            completion(nil) //not gameOVer cuz p1/p2 is still alive
+        })
+    }
 	
+    
+    private func gameOver(didP1Win player: Bool) {
+        var didUserWin: Bool?
+        
+        if player { //if p1 wins
+            print("p1 wins")
+            self.player1HPLabel.text = "WIN!"
+            self.player2HPLabel.text = "LOSE"
+            didUserWin = User.currentId() == game?.player1Id ? true : false //if currentUser uid == p1 who won, then currentUser won
+        } else { //if p2 wins
+            print("p2 wins")
+            self.player1HPLabel.text = "LOSE"
+            self.player2HPLabel.text = "WIN!"
+            didUserWin = User.currentId() == game?.player2Id ? true : false
+        }
+        
+//remove game reference here
+        print("update and remove game reference here")
+        
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.performSegue(withIdentifier: "toGameOverSegue", sender: didUserWin)
+        }
+    }
+    
 	
 	private func getPlayer1Damage() {
 		var player1Damage: CGFloat = 0
@@ -819,7 +797,7 @@ class CurrentGameViewController: UIViewController {
 	
 	private func updateViewWithGame(currentGame: Game) {
 		DispatchQueue.main.async {
-            
+            self.round?.gameId = currentGame.gameId
 //            self.turnCount = currentGame.roundNumber
             
 			self.gameSessionLabel.text = currentGame.gameId
@@ -881,6 +859,8 @@ class CurrentGameViewController: UIViewController {
 	
     private func finishTurn() {
         DispatchQueue.main.async {
+            
+        //check p1 selected buttons and apply the necessary fire animation
             for button in self.player1AttackButtons! {
                 if button.selectedButton == false { continue }
                 //                        print("Selected button with animation is \(button.buttonTag)")
@@ -962,6 +942,7 @@ class CurrentGameViewController: UIViewController {
                 }
             }
             
+        //check p2 selected buttons and apply the necessary fire animation
             for button in self.player2AttackButtons! {
                 if button.selectedButton == false { continue }
                 
@@ -1142,3 +1123,4 @@ class CurrentGameViewController: UIViewController {
 	
 	
 }
+

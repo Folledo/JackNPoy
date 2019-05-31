@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E6DFDD5228CE3ED00D19B0A /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62218C228B56D3005C5312 /* GameOverViewController.swift */; };
 		7E8C908F2278A10C0057AA3E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C908E2278A10C0057AA3E /* File.swift */; };
 		7E9BAA87224FCD8C003C6D22 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */; };
 		7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA8C224FD017003C6D22 /* MyView.swift */; };
@@ -26,23 +27,27 @@
 		7E9BAAB5225004E7003C6D22 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB3225004E7003C6D22 /* ChatTableViewCell.xib */; };
 		7E9BAAB8225004FD003C6D22 /* MatchesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB6225004FD003C6D22 /* MatchesTableViewCell.swift */; };
 		7E9BAAB9225004FD003C6D22 /* MatchesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9BAAB7225004FD003C6D22 /* MatchesTableViewCell.xib */; };
+		7ED77BAA2294A33400363D5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F4224FC55A00B53E7E /* Assets.xcassets */; };
 		7EE876EE224FC55400B53E7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE876ED224FC55400B53E7E /* AppDelegate.swift */; };
 		7EE876F3224FC55500B53E7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F1224FC55500B53E7E /* Main.storyboard */; };
-		7EE876F5224FC55A00B53E7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F4224FC55A00B53E7E /* Assets.xcassets */; };
 		7EE876F8224FC55A00B53E7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EE876F6224FC55A00B53E7E /* LaunchScreen.storyboard */; };
 		7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9BAA9B224FD1A3003C6D22 /* MenuViewController.swift */; };
 		7EEB6B2B2252836F00CB275E /* CurrentGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */; };
 		7EED33ED2250B8C4004CB4B8 /* OpponentTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33EC2250B8C4004CB4B8 /* OpponentTurn.swift */; };
 		7EED33F22250BB10004CB4B8 /* GameMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F12250BB10004CB4B8 /* GameMove.swift */; };
 		7EED33F42250BB19004CB4B8 /* GameAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F32250BB19004CB4B8 /* GameAttack.swift */; };
-		7EED33F62250C4C2004CB4B8 /* UserTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F52250C4C2004CB4B8 /* UserTurn.swift */; };
 		7EED33F82250CDB3004CB4B8 /* MovesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EED33F72250CDB3004CB4B8 /* MovesButton.swift */; };
 		7EF17B272261CF320027CF2F /* PreGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF17B262261CF320027CF2F /* PreGameViewController.swift */; };
 		7EF17B292261CFE50027CF2F /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF17B282261CFE50027CF2F /* UILabel+extension.swift */; };
+		7EF1E828229FCC1F006AD20F /* GameHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E827229FCC1F006AD20F /* GameHistoryViewController.swift */; };
+		7EF1E82C229FDAF8006AD20F /* GameHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E82B229FDAF8006AD20F /* GameHistoryTableViewCell.swift */; };
+		7EFDCFF62288C17200472580 /* CurrentTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFDCFF52288C17200472580 /* CurrentTurn.swift */; };
+		7EFDCFF82288C3AA00472580 /* CurrentRound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFDCFF72288C3AA00472580 /* CurrentRound.swift */; };
 		A4807C3D9513B4067D09FC53 /* Pods_HawkHackProject2019S.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17EAA8C1E184FC4AFE5A0CC /* Pods_HawkHackProject2019S.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E62218C228B56D3005C5312 /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		7E8C908E2278A10C0057AA3E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7E9BAA8C224FD017003C6D22 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
@@ -73,10 +78,13 @@
 		7EED33EC2250B8C4004CB4B8 /* OpponentTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpponentTurn.swift; sourceTree = "<group>"; };
 		7EED33F12250BB10004CB4B8 /* GameMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMove.swift; sourceTree = "<group>"; };
 		7EED33F32250BB19004CB4B8 /* GameAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAttack.swift; sourceTree = "<group>"; };
-		7EED33F52250C4C2004CB4B8 /* UserTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTurn.swift; sourceTree = "<group>"; };
 		7EED33F72250CDB3004CB4B8 /* MovesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesButton.swift; sourceTree = "<group>"; };
 		7EF17B262261CF320027CF2F /* PreGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreGameViewController.swift; sourceTree = "<group>"; };
 		7EF17B282261CFE50027CF2F /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
+		7EF1E827229FCC1F006AD20F /* GameHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistoryViewController.swift; sourceTree = "<group>"; };
+		7EF1E82B229FDAF8006AD20F /* GameHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		7EFDCFF52288C17200472580 /* CurrentTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTurn.swift; sourceTree = "<group>"; };
+		7EFDCFF72288C3AA00472580 /* CurrentRound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRound.swift; sourceTree = "<group>"; };
 		C1ADFB1033EF7E6F34E8C73C /* Pods-HawkHackProject2019S.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HawkHackProject2019S.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HawkHackProject2019S/Pods-HawkHackProject2019S.debug.xcconfig"; sourceTree = "<group>"; };
 		CF1265AECB9D40FC02E2868C /* Pods-HawkHackProject2019S.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HawkHackProject2019S.release.xcconfig"; path = "Pods/Target Support Files/Pods-HawkHackProject2019S/Pods-HawkHackProject2019S.release.xcconfig"; sourceTree = "<group>"; };
 		D17EAA8C1E184FC4AFE5A0CC /* Pods_HawkHackProject2019S.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HawkHackProject2019S.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +156,7 @@
 		7E9BAA96224FD0B2003C6D22 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				7EF1E82B229FDAF8006AD20F /* GameHistoryTableViewCell.swift */,
 				7E9BAAB2225004E7003C6D22 /* ChatTableViewCell.swift */,
 				7E9BAAB3225004E7003C6D22 /* ChatTableViewCell.xib */,
 				7E9BAAB6225004FD003C6D22 /* MatchesTableViewCell.swift */,
@@ -185,7 +194,9 @@
 			isa = PBXGroup;
 			children = (
 				7EF17B262261CF320027CF2F /* PreGameViewController.swift */,
+				7EF1E826229FCB9F006AD20F /* GameHistory */,
 				7EEB6B2A2252836F00CB275E /* CurrentGameViewController.swift */,
+				7E62218C228B56D3005C5312 /* GameOverViewController.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -242,10 +253,19 @@
 			children = (
 				7EED33F12250BB10004CB4B8 /* GameMove.swift */,
 				7EED33F32250BB19004CB4B8 /* GameAttack.swift */,
-				7EED33F52250C4C2004CB4B8 /* UserTurn.swift */,
+				7EFDCFF52288C17200472580 /* CurrentTurn.swift */,
+				7EFDCFF72288C3AA00472580 /* CurrentRound.swift */,
 				7EED33EC2250B8C4004CB4B8 /* OpponentTurn.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		7EF1E826229FCB9F006AD20F /* GameHistory */ = {
+			isa = PBXGroup;
+			children = (
+				7EF1E827229FCC1F006AD20F /* GameHistoryViewController.swift */,
+			);
+			path = GameHistory;
 			sourceTree = "<group>";
 		};
 		F198400253A37F22B752A404 /* Pods */ = {
@@ -320,8 +340,8 @@
 				7EE876F8224FC55A00B53E7E /* LaunchScreen.storyboard in Resources */,
 				7E9BAA87224FCD8C003C6D22 /* GoogleService-Info.plist in Resources */,
 				7E9BAAB5225004E7003C6D22 /* ChatTableViewCell.xib in Resources */,
-				7EE876F5224FC55A00B53E7E /* Assets.xcassets in Resources */,
 				7EE876F3224FC55500B53E7E /* Main.storyboard in Resources */,
+				7ED77BAA2294A33400363D5B /* Assets.xcassets in Resources */,
 				7E9BAAB9225004FD003C6D22 /* MatchesTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,19 +400,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EFDCFF62288C17200472580 /* CurrentTurn.swift in Sources */,
 				7EED33F42250BB19004CB4B8 /* GameAttack.swift in Sources */,
 				7E9BAAAB224FD4FC003C6D22 /* LoginViewController.swift in Sources */,
 				7E9BAA95224FD09F003C6D22 /* OpponentUser.swift in Sources */,
+				7E6DFDD5228CE3ED00D19B0A /* GameOverViewController.swift in Sources */,
 				7E9BAA8D224FD017003C6D22 /* MyView.swift in Sources */,
 				7EF17B272261CF320027CF2F /* PreGameViewController.swift in Sources */,
 				7E9BAAB4225004E7003C6D22 /* ChatTableViewCell.swift in Sources */,
 				7E9BAAA5224FD2D1003C6D22 /* String+extensions.swift in Sources */,
 				7E9BAAA7224FD2FB003C6D22 /* UIColor+extension.swift in Sources */,
-				7EED33F62250C4C2004CB4B8 /* UserTurn.swift in Sources */,
 				7E9BAA9E224FD1D3003C6D22 /* ChatViewController.swift in Sources */,
 				7EEB6B2B2252836F00CB275E /* CurrentGameViewController.swift in Sources */,
+				7EF1E82C229FDAF8006AD20F /* GameHistoryTableViewCell.swift in Sources */,
 				7EED33F82250CDB3004CB4B8 /* MovesButton.swift in Sources */,
 				7E9BAAAD224FD5B3003C6D22 /* RegisterViewController.swift in Sources */,
+				7EF1E828229FCC1F006AD20F /* GameHistoryViewController.swift in Sources */,
 				7EED33ED2250B8C4004CB4B8 /* OpponentTurn.swift in Sources */,
 				7EED33F22250BB10004CB4B8 /* GameMove.swift in Sources */,
 				7E9BAA93224FD091003C6D22 /* Game.swift in Sources */,
@@ -400,6 +423,7 @@
 				7EF17B292261CFE50027CF2F /* UILabel+extension.swift in Sources */,
 				7E9BAA8F224FD064003C6D22 /* Message.swift in Sources */,
 				7E9BAAB8225004FD003C6D22 /* MatchesTableViewCell.swift in Sources */,
+				7EFDCFF82288C3AA00472580 /* CurrentRound.swift in Sources */,
 				7EEA5AF62250385000DC8DDD /* MenuViewController.swift in Sources */,
 				7E9BAA91224FD089003C6D22 /* User.swift in Sources */,
 				7E9BAAA2224FD2A6003C6D22 /* Service.swift in Sources */,
