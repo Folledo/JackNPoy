@@ -18,7 +18,7 @@ class Game {
 	var gameId: String = ""
 	
 	var winnerUid: String?
-	var timeStamp: Int?
+//    var timeStamp: Int?
 	var player1HP: Int = 100
 	var player2HP: Int = 100
 	
@@ -35,6 +35,10 @@ class Game {
     
     var roundNumber = 0
 	
+//    var createdAt: Date?
+//    var updatedAt: Date?
+    var createdAt: Int?
+    var updatedAt: Int?
 	
 	static let sharedInstance = Game() //initialize this Game as singleton
 	private init() {} //PB ep75 2mins this prevents reinitialization. This prevents us to invoke the ShoppingCart.init(), the access of this class is only through sharedInstance
@@ -46,7 +50,7 @@ class Game {
 		self.gameId = _dictionary[kGAMESESSIONS] as! String
 		
 		self.winnerUid = _dictionary[kWINNERUID] as? String
-		self.timeStamp = _dictionary[kTIMESTAMP] as? Int
+//        self.timeStamp = _dictionary[kTIMESTAMP] as? Int
 		self.player1HP = _dictionary[kPLAYER1HP] as! Int
 		self.player2HP = _dictionary[kPLAYER2HP] as! Int
 		
@@ -57,8 +61,18 @@ class Game {
 //        self.player2Email = _dictionary[kPLAYER2EMAIL] as? String
 		self.player1AvatarUrl = _dictionary[kPLAYER1AVATARURL] as? String
 		self.player2AvatarUrl = _dictionary[kPLAYER2AVATARURL] as? String
+        
+//        self.createdAt = dateFormatter().date(from: _dictionary[kCREATEDAT] as! String)!
+//        self.updatedAt = dateFormatter().date(from: _dictionary[kUPDATEDAT] as! String)!
+        self.createdAt = _dictionary[kCREATEDAT] as? Int
+        self.updatedAt = _dictionary[kUPDATEDAT] as? Int
+        
+        
 	}
 	
+    deinit {
+//        print("Game \(self.gameId) is being deinitialized")
+    }
 	
 	internal func gamePartnerId() -> String {
 		return (player1Id == User.currentId() ? player2Id : player1Id)!
@@ -72,29 +86,75 @@ class Game {
 	//		}
 	//	}
 	
-    func assignWinner(game: Game, winningPlayerUid: String, completion: @escaping (_ value: String?)-> Void) {
-        let loserPlayerUid = player1Id == winningPlayerUid ? player2Id : player1Id //if winning playerUID is == p1UID then p2 is loser
-        
-        let winnerRef = firDatabase.child(kGAMEHISTORY).child(winningPlayerUid).childByAutoId()
-        winnerRef.setValue(["result": "winner", "opponentUid": loserPlayerUid]) { (error, red) in
-            if let error = error {
-                completion(error.localizedDescription)
-            } else {
-                print("Finished saving winner uid \(winningPlayerUid)")
-                completion(nil)
-            }
-        }
-        
-        let loserRef = firDatabase.child(kGAMEHISTORY).child(loserPlayerUid!).childByAutoId()
-        loserRef.setValue(["result": "loser", "opponentUid": loserPlayerUid]) { (error, red) in
-            if let error = error {
-                completion(error.localizedDescription)
-            } else {
-                print("Finished saving winner uid \(winningPlayerUid)")
-                completion(nil)
-            }
-        }
-    }
+//    func uploadGameResult(game: Game, winnerUid winningPlayerId: String, completion: @escaping (_ value: String?)-> Void) {
+////    func uploadGameResult(completion: @escaping (_ value: String?)-> Void) {
+////        let loserPlayerUid: String = (player1Id == winningPlayerId ? player2Id : player1Id)! //if winning playerUID is == p1UID then p2 is loser
+//
+//    //MARK: These next26 lines basically upload current user's result of the game
+//        let userUid = User.currentId()
+//        let opponentUid: String = (player1Id == userUid ? player2Id : player1Id)!
+//
+//        let gameHistoryRef = firDatabase.child(kGAMEHISTORY).child(userUid)
+//        let userRef = firDatabase.child(kUSERS).child(userUid)
+//
+//        if userUid == winnerUid { //if currentUser won...
+//        //set the result in gameHistory
+//            gameHistoryRef.setValue(["result": "winner", "opponentUid": opponentUid, "date": Date()]) { (error, ref) in
+//                if let error = error {
+//                    completion(error.localizedDescription)
+//                } else {
+//                    print("Finished saving the win")
+//                    completion(nil)
+//                }
+//            }
+//
+//        //grab the user's win, exp, level and update it
+//            userRef.observeSingleEvent(of: .value, with: { (snap) in
+//
+//                if snap.exists() {
+//                    guard let userDic = snap.value as? NSDictionary else { print("No userDic found"); return }
+//                    var wins = userDic[kWINS] as? Int ?? 0
+//                    var experience = userDic[kEXPERIENCE] as? Int ?? 0
+//
+//                    userRef.updateChildValues([kWINS: wins += 1, kEXPERIENCE: experience += 100], withCompletionBlock: { (error, ref) in
+//                        if let error = error {
+//                            completion(error.localizedDescription)
+//                        } else {
+//                            print("Successfully updated wins stats and experience in firebase")
+//                        }
+//                    })
+//                }
+//
+//            }, withCancel: nil)
+//
+//        } else { //if currentUser lose
+//            gameHistoryRef.setValue(["result": "loser", "opponentUid": opponentUid, "date": Date()]) { (error, ref) in
+//                if let error = error {
+//                    completion(error.localizedDescription)
+//                } else {
+//                    print("Finished saving the lose)")
+//                    completion(nil)
+//                }
+//            }
+//
+//        //grab the user's lose, exp, level and update it
+//            userRef.observeSingleEvent(of: .value, with: { (snap) in
+//                if snap.exists() {
+//                    guard let userDic = snap.value as? NSDictionary else { print("No userDic found"); return }
+//                    var loses = userDic[kLOSES] as? Int ?? 0
+//                    var experience = userDic[kEXPERIENCE] as? Int ?? 0
+//
+//                    userRef.updateChildValues([kWINS: loses += 1, kEXPERIENCE: experience += 50], withCompletionBlock: { (error, ref) in
+//                        if let error = error {
+//                            completion(error.localizedDescription)
+//                        } else {
+//                            print("Successfully updated lose stats and experience in firebase")
+//                        }
+//                    })
+//                }
+//            }, withCancel: nil)
+//        }
+//    }
     
 	func deleteGame(game: Game, completion: @escaping (_ value: String)-> Void) {
 		let player1Ref = firDatabase.child(kUSERTOGAMESESSIONS).child(game.player1Id!).child(game.player2Id!)
@@ -136,7 +196,7 @@ class Game {
 		self.gameId = ""
 		
 		self.winnerUid = nil
-		self.timeStamp = nil
+//        self.timeStamp = nil
 		self.player1HP = 100
 		self.player2HP = 100
 		
@@ -251,10 +311,120 @@ class Game {
 //        return false
 //    }
 //}
-    
+
 //---------------------------------++++++++++++++++++++++++++++++++++++++++++++++++
 
 //MARK: Helper fuctions
+func uploadGameResult(game: Game, completion: @escaping (_ value: String?)-> Void) {
+    print("uploadGameResult is now being ran")
+    //    func uploadGameResult(completion: @escaping (_ value: String?)-> Void) {
+    //        let loserPlayerUid: String = (player1Id == winningPlayerId ? player2Id : player1Id)! //if winning playerUID is == p1UID then p2 is loser
+    
+    //MARK: These next26 lines basically upload current user's result of the game
+    let userUid = User.currentId()
+    let opponentUid: String = (game.player1Id == userUid ? game.player2Id : game.player1Id)!
+    
+    let gameHistoryRef = firDatabase.child(kGAMEHISTORY).child(userUid).child(game.gameId)
+    let userRef = firDatabase.child(kUSERS).child(userUid).child(kGAMESTATS)//NOW WORK ON PULLING WINNER/LOSER, EXPERIENCE, AND LEVEL
+    
+    if userUid == game.winnerUid { //if currentUser won...
+        //set the result in gameHistory
+        gameHistoryRef.setValue(["result": "winner", "opponentUid": opponentUid]) { (error, ref) in
+            if let error = error {
+                completion(error.localizedDescription)
+            } else {
+                print("Finished saving the win")
+//                completion(nil)
+            }
+        }
+        
+        
+//grab the user's win, exp, level and update it
+        userRef.observeSingleEvent(of: .value, with: { (snap) in
+            
+//            if snap.exists() {
+            print("\n\ngame result Snap is \(snap)\n\n")
+//                guard let userDic = snap.value as? NSDictionary else { print("No userDic found")
+            
+            if let userDic = snap.value as? NSDictionary {
+                print("User dic in uploadGameResult = \(userDic)")
+                let wins = userDic[kWINS] as? Int ?? 0
+                let experience = userDic[kEXPERIENCE] as? Int ?? 0
+                
+                userRef.updateChildValues([kWINS: wins + 1, kEXPERIENCE: experience + 100], withCompletionBlock: { (error, ref) in //LOOKING FOR KEXPERIENCE
+                    if let error = error {
+                        completion(error.localizedDescription)
+                    } else {
+                        print("Successfully updated wins stats and experience in firebase")
+                    }
+                })
+            } else {
+                userRef.setValue([kWINS: 1, kEXPERIENCE: 100], withCompletionBlock: { (error, ref) in
+                    print("This is first game ever, should only be printed once")
+                    
+                    if let error = error {
+                        completion(error.localizedDescription)
+                        
+                    } else {
+                        print("First game completed with a win!")
+                        
+                    }
+                })
+            }
+        }, withCancel: nil)
+        
+    } else { //if userUid != game.winnerUid, meaning currentUser lose
+        print("current user lost")
+        gameHistoryRef.setValue(["result": "loser", "opponentUid": opponentUid]) { (error, ref) in
+            if let error = error {
+                completion(error.localizedDescription)
+            } else {
+                print("Finished saving the lose)")
+                ////                completion(nil)
+                //            }
+                //        }
+                //
+            } //end of no error on setting value on gameHistory
+        } //end of gameHistory.setValue
+        
+        //        //grab the user's lose, exp, level and update it
+        userRef.observeSingleEvent(of: .value, with: { (snap) in
+            //            if snap.exists() {
+            //                guard let userDic = snap.value as? NSDictionary else { print("No userDic found"); return }
+            if let userDic = snap.value as? NSDictionary {
+                let loses = userDic[kLOSES] as? Int ?? 0
+                let experience = userDic[kEXPERIENCE] as? Int ?? 0
+                
+                userRef.updateChildValues([kLOSES: loses + 1, kEXPERIENCE: experience + 10], withCompletionBlock: { (error, ref) in
+                    if let error = error {
+                        completion(error.localizedDescription)
+                    } else {
+                        print("Successfully updated lose stats and experience in firebase")
+                    }
+                })
+                
+            } else {
+                userRef.setValue([kLOSES: 1, kEXPERIENCE: 10], withCompletionBlock: { (error, ref) in
+                    print("This is first game ever, should only be printed once")
+                    
+                    if let error = error {
+                        completion(error.localizedDescription)
+//                        return
+                    } else {
+                        print("First game completed with a LOSE!")
+                        
+                    }
+                })
+            } //end of user's 1st fighting game ever
+        }, withCancel: nil) //end of userRef.observeSingleEvent
+        
+    } //end of if currentUser lose
+    
+    print("No error at all!!!")
+    completion(nil)
+}
+
+
 func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) -> Void) { //used in PreGameVC
 	//	let ref = firDatabase.child(kGAMESESSIONS).queryEqual(toValue: gameSessionId)
     let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId)
@@ -336,4 +506,13 @@ func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnC
 		
 		
 	}, withCancel: nil)
+}
+
+//date object and function
+private let dateFormat = "yyyyMMddHHmmss" //RE ep.12 3mins made it private so it will remain constant and wont be changed at all outside of this file
+func dateFormatter() -> DateFormatter { //RE ep.12 1min DateFormatter = A formatter that converts between dates and their textual representations.
+    let dateFormatter = DateFormatter() //RE ep.12 2mins
+    dateFormatter.dateFormat = dateFormat //RE ep.12 3mins
+    
+    return dateFormatter //RE ep.12 4mins
 }

@@ -16,21 +16,60 @@ class User: NSObject {
 	var email: String
 	var avatarURL: String
 	var userID: String
+    
+//    var winLoseStat: [Int: Int] //win/lose
+    var wins: Int?
+    var loses: Int?
+    var matchesDictionary: [String]? //has info like "winnerUid": String, "wonBy" Int
+    var matchesUid: [String]?
+    var experience: Int
+    var level: Int
 	
-	init(_userID: String, _name: String, _email: String, _avatarURL: String = "") {
+    init(_userID: String, _name: String, _email: String, _avatarURL: String = "", _wins: Int, _loses: Int, _matchesDictionary: [String], _matchesUid: [String], _experience: Int, _level: Int) {
 		userID = _userID
 		name = _name
 		email = _email
 		avatarURL = _avatarURL
+        
+        wins = _wins
+        loses = _loses
+        matchesDictionary = _matchesDictionary
+        matchesUid = _matchesUid
+        experience = _experience
+        level = _level
 	}
+    
+//to initialize user easier
+    init(_userID: String, _name: String, _email: String, _avatarURL: String = "", _experience: Int, _level: Int) {
+        userID = _userID
+        name = _name
+        email = _email
+        avatarURL = _avatarURL
+        
+        experience = _experience
+        level = _level
+    }
 	
 	init(_dictionary: [String: Any]) {
 		self.name = _dictionary[kNAME] as! String
 		self.email = _dictionary[kEMAIL] as! String
 		self.avatarURL = _dictionary[kAVATARURL] as! String
 		self.userID = _dictionary[kUSERID] as! String
+        
+    //user Informations
+//        self.winLoseStat = _dictionary[kWINLOSESTAT] as! [Int: Int]
+        self.wins = _dictionary[kWINS] as? Int
+        self.loses = _dictionary[kLOSES] as? Int
+        self.matchesUid = _dictionary[kMATCHESUID] as? [String] ?? [""]
+        self.matchesDictionary = _dictionary[kMATCHESDICTIONARY] as? [String] ?? [""]
+        self.experience = (_dictionary[kEXPERIENCE] as? Int)!
+        self.level = _dictionary[kLEVEL] as! Int
 	}
 	
+    deinit {
+//        print("User \(self.name) is being deinitialize.")
+    }
+    
 	class func currentId() -> String {
 		return Auth.auth().currentUser!.uid
 	}
@@ -101,6 +140,13 @@ class User: NSObject {
 			completion(error)
 		})
 	}
+    
+//    class func increaseExperience(amount: Int) {
+//        if Auth.auth().currentUser != nil {
+//
+//        }
+//    }
+    
 	
 }
 
@@ -109,6 +155,8 @@ func saveUserInBackground(user: User) {
 	let ref = firDatabase.child(kUSERS).child(user.userID)
 	ref.setValue(userDictionaryFrom(user: user))
 	print("Finished saving user \(user.name) in Firebase")
+    
+    
 }
 
 //save locally
@@ -118,6 +166,12 @@ func saveUserLocally(user: User) {
 	print("Finished saving user \(user.name) locally...")
 }
 
+func increaseExperience(user: User, gained: Int) {
+    user.experience += gained
+    print("Experience = \(user.experience)")
+    saveUserLocally(user: user)
+    saveUserInBackground(user: user)
+}
 
 //MARK: Helper fuctions
 //func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void) {
@@ -148,7 +202,7 @@ func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void
 	let ref = firDatabase.child(kUSERS).queryOrdered(byChild: kUSERID).queryEqual(toValue: userId)
 
 	ref.observeSingleEvent(of: .value, with: { (snapshot) in
-		print("SNAPSHOT FROM FETCH USER IS \(snapshot)")
+//        print("SNAPSHOT FROM FETCH USER IS \(snapshot)")
 		if snapshot.exists() {
 			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: Any]
 			let user = User(_dictionary: userDictionary)
@@ -161,8 +215,8 @@ func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void
 func userDictionaryFrom(user: User) -> NSDictionary { //take a user and return an NSDictionary
 	
 	return NSDictionary(
-		objects: [user.userID, user.name, user.email, user.avatarURL],
-		forKeys: [kUSERID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying]) //this func create and return an NSDictionary
+        objects: [user.userID, user.name, user.email, user.avatarURL, user.wins!, user.loses!, user.matchesDictionary ?? [""], user.matchesUid ?? [""], user.experience, user.level],
+        forKeys: [kUSERID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying, kWINS as NSCopying, kLOSES as NSCopying, kMATCHESDICTIONARY as NSCopying, kMATCHESUID as NSCopying, kEXPERIENCE as NSCopying, kLEVEL as NSCopying]) //this func create and return an NSDictionary
 }
 
 

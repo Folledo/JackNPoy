@@ -115,15 +115,15 @@ class CurrentGameViewController: UIViewController {
 	var bgMaxCounter: Int = 0
 	var backgroundTimer: Timer?
 	var backgroundName: String = ""
-	var player1Hp: Int = 100
-	var player2Hp: Int = 100
+	var player1Hp: Int = 30
+	var player2Hp: Int = 30
 	
 	var clockTimer: Timer?
 	var clockCounter: Int = 8
-	var turnCount: Int = 0
+//    var turnCount: Int = 0
 	
-	let player1HPProgress = Progress(totalUnitCount: 100)
-	let player2HPProgress = Progress(totalUnitCount: 100)
+	let player1HPProgress = Progress(totalUnitCount: 30)
+	let player2HPProgress = Progress(totalUnitCount: 30)
 	
 	var smallFireTimer: Timer?
 	var smallFireCounter = 0
@@ -155,9 +155,11 @@ class CurrentGameViewController: UIViewController {
 		updateViewWithGame(currentGame: game!)
 		
 		
-        turnCount = 1
-        self.roundNumberLabel.text = "\(turnCount)"
+        game?.roundNumber = 1
+        self.roundNumberLabel.text = "\(game!.roundNumber)"
 		startTurnTimer()
+        
+//        uploadGameToFirebase(withGame: game!)
     }
     
 	override func viewDidDisappear(_ animated: Bool) {
@@ -174,9 +176,9 @@ class CurrentGameViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "toGameOverSegue":
-            guard let didUserWin = sender as? Bool else { return }
+//            guard let didUserWin = sender as? Bool else { return }
             let gameOverVC: GameOverViewController = segue.destination as! GameOverViewController
-            gameOverVC.didWin = didUserWin
+//            gameOverVC.didWin = didUserWin
             gameOverVC.game = game //pass the game to gameOVer
         default:
             break
@@ -297,8 +299,8 @@ class CurrentGameViewController: UIViewController {
 	}
 	
 	private func startTurnTimer() {
-//        turnCount = 1
-//        self.roundNumberLabel.text = "\(turnCount)"
+//        game?.roundNumber
+//        self.roundNumberLabel.text = "\(game?.roundNumber)"
         player1IsFirstImageView.isHidden = !p1HasSpeedBoost //if p1IsFirstImageView will be hidden if p1HasSpeedBoost == false
         player2IsFirstImageView.isHidden = p1HasSpeedBoost
         print("p1 is hidden  = \(!p1HasSpeedBoost)\np2 is hidden = \(!p1HasSpeedBoost)")
@@ -329,21 +331,16 @@ class CurrentGameViewController: UIViewController {
         
         if !isAgainstOnlineUser {
             
-            self.applyDamagesToViews(opponentTag: (nil, nil), completion: { (didP1Win) in
+            self.applyDamagesToViews(opponentTag: (nil, nil), completion: {
                 self.player1DamageLabel.isHidden = true
                 self.player2DamageLabel.isHidden = true
                 
-                if didP1Win == nil {
-//                    if self.player1TagSelected == (nil, nil) || self.player2TagSelected == (nil, nil) {
-//                        print("Player1 or Player 2 Tag is nil")
-//                    } else {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            print("applied damage to views")
-                            self.finishTurn()
-//                        }
-//                    }
+                if self.game?.winnerUid == nil {
+                    self.finishTurn()
+                    
                 } else { //if isGameOver is not nil
-                    self.gameOver(didP1Win: didP1Win!) //pass either if p1 or p2 wins
+//                    print("we have results! \(self.game?.winnerUid)")
+                    self.gameOver() //pass either if p1 or p2 wins
                 }
             })
             return
@@ -353,24 +350,24 @@ class CurrentGameViewController: UIViewController {
                 self.player1TagSelected.move = player1TagSelected.move == nil ? 1 : player1TagSelected.move
                 self.player1TagSelected.attack = player1TagSelected.attack == nil ? 1 : player1TagSelected.attack //ifuser didnt select a move, we will upload 1 instead of the buttonTag
                 
-                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1", turnCount: turnCount, currentUserTag: (player1TagSelected.move!, player1TagSelected.attack!)) { (error) in //we can safely force unwrap tagSelected because we said to equal it to 1 if it is nil
+                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p1", turnCount: game!.roundNumber, currentUserTag: (player1TagSelected.move!, player1TagSelected.attack!)) { (error) in //we can safely force unwrap tagSelected because we said to equal it to 1 if it is nil
                     if let error = error {
                         Service.presentAlert(on: self, title: "Error Uploading User Selected Tag", message: error.localizedDescription)
                         return
                     } else {
-                        self.fetchOpponentSelectedTag(gameSessionId: self.game!.gameId, p1OrP2String: "p2", turnCount: self.turnCount)
+                        self.fetchOpponentSelectedTag(gameSessionId: self.game!.gameId, p1OrP2String: "p2")
                     }
                 }
             } else if User.currentId() == self.game?.player2Id { //if our current user is p2 then upload p2's selectedTag and fetch p1's selectedTag
                 self.player2TagSelected.move = player2TagSelected.move == nil ? 1 : player2TagSelected.move //if user didnt select a move, we will upload 1 instead of the buttonTag
                 self.player2TagSelected.attack = player2TagSelected.attack == nil ? 1 : player2TagSelected.attack //ifuser didnt select a move, we will upload 1 instead of the buttonTag
                 
-                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2", turnCount: turnCount, currentUserTag: (player2TagSelected.move!, player2TagSelected.attack!)) { (error) in
+                uploadCurrentUserSelectedTag(gameSessionId: game!.gameId, p1OrP2String: "p2", turnCount: game!.roundNumber, currentUserTag: (player2TagSelected.move!, player2TagSelected.attack!)) { (error) in
                     if let error = error {
                         Service.presentAlert(on: self, title: "Error Uploading User Selected Tag", message: error.localizedDescription)
                         return
                     } else {
-                        self.fetchOpponentSelectedTag(gameSessionId: self.game!.gameId, p1OrP2String: "p1", turnCount: self.turnCount)
+                        self.fetchOpponentSelectedTag(gameSessionId: self.game!.gameId, p1OrP2String: "p1")
                     }
                 }
             }
@@ -378,20 +375,20 @@ class CurrentGameViewController: UIViewController {
     }
     
     
-    func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String, turnCount: Int) {
-        let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child(kCURRENTGAME).child(kROUNDS).child("\(turnCount)")
+    func fetchOpponentSelectedTag(gameSessionId: String, p1OrP2String: String) {
+        let ref =  firDatabase.child(kGAMESESSIONS).child(gameSessionId).child(kCURRENTGAME).child(kROUNDS).child("\(String(game!.roundNumber))")
         ref.observe(.value, with: { (snapshot) in
-            print("Hey something was added at currentGame turn #\(turnCount)")
+            print("Hey something was added at currentGame turn #\(self.game!.roundNumber)")
             if snapshot.exists() && snapshot.childrenCount == 4 { //if it exist and it has 4 children (p1Move, p1Attack, p2Move, p2Attack)...
                 self.fetchingOpponentMoveTimer?.invalidate()
                 //            let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
-                print("SNAPSHOT is \(snapshot)")
+//                print("SNAPSHOT is \(snapshot)")
                 guard let resultDic = snapshot.value as? [String: AnyObject] else {
                     //                completion((0,0))
-                    print("2")
+//                    print("2")
                     return
                 }
-                print("Result Dic is \(resultDic)")
+//                print("Result Dic is \(resultDic)")
                 guard let fetchedOpponentMove = resultDic["\(p1OrP2String)MoveTag"] as? Int else {
                     print("No opponentMove found");
                     return
@@ -418,12 +415,13 @@ class CurrentGameViewController: UIViewController {
                     }
                 }
                 
-            print("applying damage to views")
-                self.applyDamagesToViews(opponentTag: (fetchedOpponentMove, fetchedOpponentAttack), completion: { (didP1Win) in
-                    self.player1DamageLabel.isHidden = true
+//            print("applying damage to views")
+                self.applyDamagesToViews(opponentTag: (fetchedOpponentMove, fetchedOpponentAttack), completion: { //now after 2 seconds after delay of giving a value to optional game.winnerUid
+                    
+                    self.player1DamageLabel.isHidden = true //hide hp damage label
                     self.player2DamageLabel.isHidden = true
                     
-                    if didP1Win == nil {
+                    if self.game?.winnerUid == nil { //if winnerUid is nil then continue the turn cuz game is not over
                         if self.player1TagSelected == (nil, nil) || self.player2TagSelected == (nil, nil) {
                             print("Player1 or Player 2 Tag is nil")
                         } else {
@@ -432,8 +430,12 @@ class CurrentGameViewController: UIViewController {
                                 self.finishTurn()
                             }
                         }
-                    } else { //if isGameOver is not nil
-                        self.gameOver(didP1Win: didP1Win!)
+                    } else { //if we have a game.winnerUid!!! so game over
+//                        self.game?.winnerUid = didP1Win == true ? self.game?.player1Id : self.game?.player2Id //assign the game's winnerUid to p1 or p2
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
+//                            print("we have results! \(self.game?.winnerUid)")
+                            self.gameOver() //run gameOver
+                        })
                     }
                 })
                 
@@ -455,7 +457,7 @@ class CurrentGameViewController: UIViewController {
         print("counting...")
     }
 	
-    private func applyDamagesToViews(opponentTag:(move: Int?, attack: Int?), completion: @escaping (_ didP1Win: Bool?) -> Void) { //or () -> ()
+    private func applyDamagesToViews(opponentTag:(move: Int?, attack: Int?), completion: @escaping () -> Void) { //or () -> ()
         getPlayer1Damage()
         getPlayer2Damage()
         getEnemyDefense()
@@ -464,6 +466,13 @@ class CurrentGameViewController: UIViewController {
         
         var player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
         var player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
+        
+        if p1MoveResult.speed! > p2MoveResult.speed! { //if p1 is first then lower p2's damage
+            player2Damage = Int(CGFloat(player1Damage) * 0.9)
+        }
+        if p2MoveResult.speed! > p1MoveResult.speed! {
+            player1Damage = Int(CGFloat(player1Damage) * 0.9)
+        }
         
         //            print("P1 Damage = \(player1Damage)\nP2 Damage = \(player2Damage)")
         //            print("P1 speed = \(p1MoveResult.speed)\nP2 speed = \(p2MoveResult.speed)")
@@ -490,7 +499,7 @@ class CurrentGameViewController: UIViewController {
             self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
             
             p1HasSpeedBoost = true //set it to true so we can give p1 a +1 speed for next turn
-            player2Damage = Int(CGFloat(player2Damage) * 0.9) //gives a little incentive to go first by reducing damage received by 10% if a player moves first
+//            player2Damage = Int(CGFloat(player2Damage) * 0.9) //gives a little incentive to go first by reducing damage received by 10% if a player moves first
             
             if player2Hp > 0 { //if p2 is still alive
                 self.player1Hp -= player2Damage
@@ -499,15 +508,15 @@ class CurrentGameViewController: UIViewController {
                 self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
                 
                 if player1Hp <= 0 { //if p1 dies
-                    completion(false)
+                    game?.winnerUid = game?.player2Id
+//                    completion(false)
                 } else {
-                    self.player1HPLabel.text = "\(player1Hp)/100"
-                    self.player2HPLabel.text = "\(player2Hp)/100"
+                    self.player1HPLabel.text = "\(player1Hp)/30"
+                    self.player2HPLabel.text = "\(player2Hp)/30"
                 }
             } else { //if p2 dies
-                completion(true)
-//                gameOver(didP1Win: true)
-//                return
+                game?.winnerUid = game?.player1Id
+//                completion(true)
             }
             
         } else { //if p2 first
@@ -518,7 +527,7 @@ class CurrentGameViewController: UIViewController {
             self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
             
             p1HasSpeedBoost = false //p2 will have +1 speed boost
-            player1Damage = Int(CGFloat(player1Damage) * 0.9)
+//            player1Damage = Int(CGFloat(player1Damage) * 0.9)
             
             if player1Hp > 0 { //if p1 is still alive
                 self.player2Hp -= player1Damage
@@ -527,55 +536,75 @@ class CurrentGameViewController: UIViewController {
                 self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
                 
                 if player2Hp <= 0 { //if p2 dies
-                    completion(true)
-//                    gameOver(didP1Win: true)
+                    game?.winnerUid = game?.player1Id
+//                    completion(true)
 //                    return
                 } else {
-                    self.player1HPLabel.text = "\(player1Hp)/100"
-                    self.player2HPLabel.text = "\(player2Hp)/100"
+                    self.player1HPLabel.text = "\(player1Hp)/30"
+                    self.player2HPLabel.text = "\(player2Hp)/30"
                 }
                 
             } else { //if p1 dies
-                completion(false)
-//                gameOver(didP1Win: false)
-//                return
+                game?.winnerUid = game?.player2Id
+//                completion(false)
             }
-            
         }
         
+        completion()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
-//            self.player1DamageLabel.isHidden = true
-//            self.player2DamageLabel.isHidden = true
-            completion(nil) //not gameOVer cuz p1/p2 is still alive
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
+////            self.player1DamageLabel.isHidden = true
+////            self.player2DamageLabel.isHidden = true
+//            completion() //not gameOVer cuz p1/p2 is still alive
+//        })
     }
+    
+//    func uploadGameToFirebase(withGame game: Game) {
+//        print("work on uploading game to firebase")
+//    }
 	
     
-    private func gameOver(didP1Win player: Bool) {
-        var didUserWin: Bool?
+    private func gameOver() {
+//        var didUserWin: Bool?
+//
+//        if game?.winnerUid == game?.player1Id { //if p1 wins
+//            print("p1 wins")
+//            self.player1HPLabel.text = "WIN!"
+//            self.player2HPLabel.text = "LOSE"
+////            self.game?.winnerUid = game?.player1Id
+////            didUserWin = User.currentId() == game?.player1Id ? true : false //if currentUser uid == p1 who won, then currentUser won
+//
+//        } else if game?.winnerUid == game?.player2Id { //if p2 wins
+//            print("p2 wins")
+//            self.player1HPLabel.text = "LOSE"
+//            self.player2HPLabel.text = "WIN!"
+////            self.game?.winnerUid = game?.player2Id
+////            didUserWin = User.currentId() == game?.player2Id ? true : false
+//        } else { //if winnerUid == nil, or != p1 or p2
+//            print("p1 or p2 didnt win")
+//            return
+//        }
         
-        if player { //if p1 wins
-            print("p1 wins")
-            self.player1HPLabel.text = "WIN!"
-            self.player2HPLabel.text = "LOSE"
-            didUserWin = User.currentId() == game?.player1Id ? true : false //if currentUser uid == p1 who won, then currentUser won
-        } else { //if p2 wins
-            print("p2 wins")
-            self.player1HPLabel.text = "LOSE"
-            self.player2HPLabel.text = "WIN!"
-            didUserWin = User.currentId() == game?.player2Id ? true : false
-        }
+        player1HPLabel.text = game?.player1Id == game?.winnerUid ? "WIN!" : "LOSE"
+        player2HPLabel.text = game?.player2Id == game?.winnerUid ? "WIN!": "LOSE"
         
 //remove game reference here
         print("update and remove game reference here")
         
-        
+        uploadGameResult(game: game!) { (error) in
+            if let error = error {
+                Service.presentAlert(on: self, title: "Upload Error", message: error)
+                return
+            } else {
+                print("Finished uploading result")
+            }
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.performSegue(withIdentifier: "toGameOverSegue", sender: didUserWin)
+            self.performSegue(withIdentifier: "toGameOverSegue", sender: nil)
         }
     }
+    
     
 	
 	private func getPlayer1Damage() {
@@ -798,7 +827,7 @@ class CurrentGameViewController: UIViewController {
 	private func updateViewWithGame(currentGame: Game) {
 		DispatchQueue.main.async {
             self.round?.gameId = currentGame.gameId
-//            self.turnCount = currentGame.roundNumber
+//            game?.roundNumber = currentGame.roundNumber
             
 			self.gameSessionLabel.text = currentGame.gameId
 			
@@ -814,10 +843,10 @@ class CurrentGameViewController: UIViewController {
 			
             
 			self.player1NameLabel.text = "\(currentGame.player1Name!)"
-			self.player1HPLabel.text = "\(currentGame.player1HP)/100"
+			self.player1HPLabel.text = "\(currentGame.player1HP)/30"
 			
 			self.player2NameLabel.text = "\(currentGame.player2Name!)"
-			self.player2HPLabel.text = "\(currentGame.player2HP)/100"
+			self.player2HPLabel.text = "\(currentGame.player2HP)/30"
 			
 			
 			if currentGame.player1Id == currentGame.player2Id { //if user is playing against itself
@@ -1052,8 +1081,8 @@ class CurrentGameViewController: UIViewController {
             
             updateButtonsView(buttons: allButtons)
             
-            self.turnCount += 1
-            self.roundNumberLabel.text = "\(self.turnCount)"
+            self.game?.roundNumber += 1
+            self.roundNumberLabel.text = "\(self.game!.roundNumber)"
             self.clockCounter = 8
             self.timeLeftLabel.text = "\(self.clockCounter)"
             

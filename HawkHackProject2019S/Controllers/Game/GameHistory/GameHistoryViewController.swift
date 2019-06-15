@@ -10,15 +10,19 @@ import UIKit
 
 class GameHistoryViewController: UIViewController {
     
+//MARK: IBOutlets
     @IBOutlet weak var fullNameLabel: UILabel!
     @IBOutlet weak var playedIdLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
     @IBOutlet weak var levelLabel: UILabel!
-    
     @IBOutlet weak var currentPlayerImageView: UIImageView!
-    
     @IBOutlet weak var gameHistoryTableView: UITableView!
     
+    
+//MARK: Properties
+    
+    
+//MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,12 +32,19 @@ class GameHistoryViewController: UIViewController {
         
     }
     
+//MARK: Helper Methods
     func setupViews() {
-        fullNameLabel.text = "\(String(describing: User.currentUser()!.name))"
-        playedIdLabel.text = "\(User.currentId())"
-        currentPlayerImageView.downloaded(fromLink: User.currentUser()!.avatarURL)
+        guard let user = User.currentUser() else { return }
+        fullNameLabel.text = "\(String(describing: user.name))"
+        playedIdLabel.text = "\(user.userID)"
+        currentPlayerImageView.downloaded(fromLink: user.avatarURL)
+        
+        statsLabel.text = "\(user.wins)-\(user.loses)"
+        levelLabel.text = "\(user.level)"
+        
     }
     
+//MARK: IBActions
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

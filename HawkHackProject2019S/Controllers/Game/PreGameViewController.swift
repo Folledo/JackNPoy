@@ -96,8 +96,6 @@ class PreGameViewController: UIViewController {
         
 		guard let opponentEmail = self.emailTextField.text?.trimmedString() else { return }
 		
-		
-		
 		if opponentEmail.isValidEmail && opponentEmail != "" {
 			var opponentUid: String = ""
 			for user in users { //go through each users and find email that matches our textfield
@@ -106,6 +104,7 @@ class PreGameViewController: UIViewController {
 					break
 				} else { continue }
 			}
+//            print("OpponentUid = \(opponentUid)")
 			if opponentUid == "" { return }
 			
 			fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
@@ -113,14 +112,14 @@ class PreGameViewController: UIViewController {
 				
 				DispatchQueue.main.async {
 					let opponentDic = opponentUserToDictionaryFrom(user: opponentUser)
-					
+//                    print("OpponentDic is \(opponentDic)")
 					//					print("OPPONENTDIC FROM SEND REQUEST IS \(opponentDic)")
 					guard let user = User.currentUser() else { return }
-					var values: [String: AnyObject] = [kPLAYER1ID : userId, kPLAYER1EMAIL: user.email, kPLAYER1NAME: user.name, kPLAYER1AVATARURL: user.avatarURL, kPLAYER1HP: 100, kPLAYER2HP: 100 ] as [String: AnyObject] //values of our currentUser
+					var gameValues: [String: AnyObject] = [kPLAYER1ID : userId, kPLAYER1EMAIL: user.email, kPLAYER1NAME: user.name, kPLAYER1AVATARURL: user.avatarURL, kPLAYER1HP: 100, kPLAYER2HP: 100 ] as [String: AnyObject] //values of our currentUser
 					
-					opponentDic.forEach {values[$0] = $1} //combine each element in opponentDic to our values before we send the request
+					opponentDic.forEach {gameValues[$0] = $1} //combine each element in opponentDic to our values before we send the request
 					
-					self.sendRequestWithProperties(values, to: opponentUid)
+					self.sendRequestWithProperties(gameValues, to: opponentUid)
 				}
 				
 			}
@@ -135,10 +134,11 @@ class PreGameViewController: UIViewController {
 		let timeStamp: Int = Int(Date().timeIntervalSince1970)
 		
 		
-		var values: [String: AnyObject] = [kTIMESTAMP: timeStamp, kGAMESESSIONS: gameId] as [String: AnyObject] //values for our game session
+        var gameValues: [String: AnyObject] = [kCREATEDAT: timeStamp, kUPDATEDAT: timeStamp, kGAMESESSIONS: gameId] as [String: AnyObject] //values for our game session
 		
-		properties.forEach {values[$0] = $1}
-		gameReference.updateChildValues(values) { (error, ref) in //update our values in our reference
+		properties.forEach {gameValues[$0] = $1}
+        print("Game values is \(gameValues)")
+		gameReference.updateChildValues(gameValues) { (error, ref) in //update our values in our reference
 			if let error = error {
 				Service.presentAlert(on: self, title: "Error", message: error.localizedDescription); return
 			} else {
@@ -197,7 +197,7 @@ class PreGameViewController: UIViewController {
 //                    self.matches.removeAll()
                     
 					guard let game = game else { return }
-					print("Fetched game found = \(game.gameId)")
+//                    print("Fetched game found = \(game.gameId)")
 					
 					self.matches.append(game)
 					self.matchesTableView.reloadData()
@@ -208,19 +208,25 @@ class PreGameViewController: UIViewController {
 	}
 	
 	
-	//MARK: Helper private methods
+//MARK: Helper private methods
 	private func fetchUsers() {
 		let ref = firDatabase.child(kUSERS)
 		ref.observe(.childAdded, with: { (snapshot) in
-			//			print("user found")
-			guard let userDic = snapshot.value as? [String: String] else { return }
-			let user = User(_dictionary: userDic)
-			user.name = userDic[kNAME]!
-			user.email = userDic[kEMAIL]!
-			user.userID = snapshot.key
+//            print("user found and snapshot is \(snapshot)")
+			guard let userDic = snapshot.value as? [String: Any] else { return }
+//            print("snapshot.value is \(userDic)")
+            
+            let user = User(_userID: snapshot.key, _name: userDic[kNAME]! as! String, _email: userDic[kEMAIL]! as! String, _experience: userDic[kEXPERIENCE]! as! Int, _level: userDic[kLEVEL]! as! Int)
+            
+            
+//            let user = User(_dictionary: userDic)
+//            user.name = userDic[kNAME]!
+//            user.email = userDic[kEMAIL]!
+//            user.userID = snapshot.key
 			
 			self.users.append(user)
 		}, withCancel: nil)
+//        print("Users \(users)")
 	}
 	
 	@objc func tapToDismiss(tap: UITapGestureRecognizer) {

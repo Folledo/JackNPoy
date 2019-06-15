@@ -130,7 +130,7 @@ func fetchOpponentUserWith(opponentUid: String, completion: @escaping (_ user: O
 			//			print("SNAPSHOT FROM FETCH opponent user IS \(snapshot)")
 			//			let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
 			let userDictionary = snapshot.value as! [String: AnyObject]
-			
+			print("userDictionary of the opponent is \(userDictionary)")
 			
 			//			print("USER DICTIONARY IS \(userDictionary)")
 			let user = OpponentUser(_dictionary: userDictionary)

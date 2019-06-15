@@ -19,7 +19,7 @@ class GameOverViewController: UIViewController {
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var yesButton: UIButton!
     
-    var didWin: Bool?
+//    var didWin: Bool?
 //    {
 //        didSet {
 //            if let won = didWin {
@@ -34,11 +34,11 @@ class GameOverViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let won = didWin {
-            print("won has value")
-            self.backgroundImageView.image = won == true ? UIImage(named: "youWin.jpg") : UIImage(named: "youLose.png")
-        }
+        self.backgroundImageView.image = game?.winnerUid == User.currentId() ? UIImage(named: "youWin.jpg") : UIImage(named: "youLose.png")
+//        if let won = didWin {
+//            print("won has value")
+//            self.backgroundImageView.image = won == true ? UIImage(named: "youWin.jpg") : UIImage(named: "youLose.png")
+//        }
         
         self.profileImageView.layer.cornerRadius = 25 //half of the imageView to make it round
         self.profileImageView.layer.masksToBounds = true
@@ -55,8 +55,8 @@ class GameOverViewController: UIViewController {
     
     @IBAction func noButtonTapped(_ sender: Any) {
         let preGameVC: PreGameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: kPREGAMEVIEWCONTROLLER) as! PreGameViewController
-        self.navigationController?.popToViewController(preGameVC, animated: true)
-//        self.navigationController?.popToRootViewController(animated: true)
+//        self.navigationController?.popToViewController(preGameVC, animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func yesButtonTapped(_ sender: Any) {

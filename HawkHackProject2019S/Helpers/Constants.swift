@@ -35,6 +35,8 @@ let kPLAYER1HP: String = "player1Hp"
 let kPLAYER2HP: String = "player2Hp"
 let kP1MOVE: String = "p1Move"
 let kP2MOVE: String = "p2Move"
+let kCREATEDAT: String = "createdAt"
+let kUPDATEDAT: String = "updatedAt"
 
 let kWINNERUID: String = "winnerUid"
 let kCURRENTGAME: String = "currentGame"
@@ -56,6 +58,17 @@ let kGAMEVIEWCONTROLLER: String = "gameVC"
 let kGAMEOVERVIEWCONTROLLER: String = "gameOverVC"
 let kGAMEHISTORYVIEWCONTROLLER: String = "gameHistoryVC"
 let kGAMEHISTORYCELL: String = "gameHistoryCell"
+
+//User info
+let kGAMESTATS: String = "gameStats" //this is for Firebase/users/uid/gameStats
+let kWINLOSESTAT: String = "winLoseStat"
+let kWINS: String = "wins"
+let kLOSES: String = "loses"
+let kMATCHESUID: String = "matchesUid"
+let kMATCHESDICTIONARY: String = "matchesDictionary"
+let kEXPERIENCE: String = "experience"
+let kLEVEL: String = "level"
+
 
 let kSMILEYURL: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/220px-Smiley.svg.png"
 let firDatabase = Database.database().reference()
