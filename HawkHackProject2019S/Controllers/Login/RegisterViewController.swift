@@ -124,8 +124,8 @@ class RegisterViewController: UIViewController {
 										
 										let uid = User.currentId()
 										guard let url = imageUrl?.absoluteString else { return }
-//                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCE: 0, kLEVEL: 0 ] as [String : Any] //pass the url
-                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCE: 0, kLEVEL: 0 ] as [String : Any] //pass the url
+//                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
+                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
 										self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
 										
 										//finished registering!
@@ -141,6 +141,7 @@ class RegisterViewController: UIViewController {
 										})
 									}
 								})
+                                
 							}
 						})
 					}
@@ -163,9 +164,9 @@ class RegisterViewController: UIViewController {
 				Service.presentAlert(on: self, title: "Register Error", message: error.localizedDescription)
 				return
             } else {
-                let gameStatsValues = [kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCE: 0, kLEVEL: 0 ] as [String : Any] //pass the url
+                let gameStatsValues = [kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
                 
-                let gameRef = usersReference.child(kGAMESTATS)
+                let gameRef = usersReference.child(kGAMESTATS) //this is the reference for user's win, lose, and experience stats
                 gameRef.setValue(gameStatsValues, withCompletionBlock: { (error, ref) in
                     if let error = error {
                         Service.presentAlert(on: self, title: "Firebase Register Error", message: error.localizedDescription)

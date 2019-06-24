@@ -162,6 +162,11 @@ class CurrentGameViewController: UIViewController {
 //        uploadGameToFirebase(withGame: game!)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		backgroundTimer?.invalidate()
@@ -431,6 +436,8 @@ class CurrentGameViewController: UIViewController {
                             }
                         }
                     } else { //if we have a game.winnerUid!!! so game over
+                        self.player1HPLabel.text = self.game?.player1Id == self.game?.winnerUid ? "WIN!" : "LOSE"
+                        self.player2HPLabel.text = self.game?.player2Id == self.game?.winnerUid ? "WIN!": "LOSE"
 //                        self.game?.winnerUid = didP1Win == true ? self.game?.player1Id : self.game?.player2Id //assign the game's winnerUid to p1 or p2
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { //delay
 //                            print("we have results! \(self.game?.winnerUid)")
@@ -559,44 +566,23 @@ class CurrentGameViewController: UIViewController {
 //        })
     }
     
-//    func uploadGameToFirebase(withGame game: Game) {
-//        print("work on uploading game to firebase")
-//    }
-	
     
     private func gameOver() {
-//        var didUserWin: Bool?
-//
-//        if game?.winnerUid == game?.player1Id { //if p1 wins
-//            print("p1 wins")
-//            self.player1HPLabel.text = "WIN!"
-//            self.player2HPLabel.text = "LOSE"
-////            self.game?.winnerUid = game?.player1Id
-////            didUserWin = User.currentId() == game?.player1Id ? true : false //if currentUser uid == p1 who won, then currentUser won
-//
-//        } else if game?.winnerUid == game?.player2Id { //if p2 wins
-//            print("p2 wins")
-//            self.player1HPLabel.text = "LOSE"
-//            self.player2HPLabel.text = "WIN!"
-////            self.game?.winnerUid = game?.player2Id
-////            didUserWin = User.currentId() == game?.player2Id ? true : false
-//        } else { //if winnerUid == nil, or != p1 or p2
-//            print("p1 or p2 didnt win")
-//            return
-//        }
-        
-        player1HPLabel.text = game?.player1Id == game?.winnerUid ? "WIN!" : "LOSE"
-        player2HPLabel.text = game?.player2Id == game?.winnerUid ? "WIN!": "LOSE"
+
+//        player1HPLabel.text = game?.player1Id == game?.winnerUid ? "WIN!" : "LOSE"
+//        player2HPLabel.text = game?.player2Id == game?.winnerUid ? "WIN!": "LOSE"
         
 //remove game reference here
         print("update and remove game reference here")
         
-        uploadGameResult(game: game!) { (error) in
+        game!.saveGameResult(game: game!) { (error) in
             if let error = error {
                 Service.presentAlert(on: self, title: "Upload Error", message: error)
                 return
             } else {
-                print("Finished uploading result")
+                print("\nFinished uploading result\nNow let's save it locally and to our User object\n\nDo not forget to also save the game and the user here\n\n")
+//                User.currentUser().
+                
             }
         }
         

@@ -110,7 +110,7 @@ class PreGameViewController: UIViewController {
 			fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
 				guard let opponentUser = opponentUser else { return }
 				
-				DispatchQueue.main.async {
+				DispatchQueue.main.async { //is needed or it will create 2 requests
 					let opponentDic = opponentUserToDictionaryFrom(user: opponentUser)
 //                    print("OpponentDic is \(opponentDic)")
 					//					print("OPPONENTDIC FROM SEND REQUEST IS \(opponentDic)")
@@ -134,10 +134,10 @@ class PreGameViewController: UIViewController {
 		let timeStamp: Int = Int(Date().timeIntervalSince1970)
 		
 		
-        var gameValues: [String: AnyObject] = [kCREATEDAT: timeStamp, kUPDATEDAT: timeStamp, kGAMESESSIONS: gameId] as [String: AnyObject] //values for our game session
+        var gameValues: [String: AnyObject] = [kCREATEDAT: timeStamp, kUPDATEDAT: timeStamp, kGAMESESSIONS: gameId] as [String: AnyObject] //values for our game session on top of each users's infos
 		
 		properties.forEach {gameValues[$0] = $1}
-        print("Game values is \(gameValues)")
+        print("Game values is created. Recommended to also save this in Core Data \(gameValues)")
 		gameReference.updateChildValues(gameValues) { (error, ref) in //update our values in our reference
 			if let error = error {
 				Service.presentAlert(on: self, title: "Error", message: error.localizedDescription); return
@@ -164,7 +164,6 @@ class PreGameViewController: UIViewController {
 					}
 				})
 			}
-			
 		}
 	}
 	
@@ -177,7 +176,9 @@ class PreGameViewController: UIViewController {
 		let requestReference = firDatabase.child(kUSERTOGAMESESSIONS).child(User.currentId()) //MISSING OPPONENT'S UID before we can access the game session id
 		requestReference.observe(.value, with: { (snapshot) in
 			
-			guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { print("No requests found"); return }
+            guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { print("No requests found"); return }
+//            guard let snapshot = snapshot.value as? NSDictionary else { print("no requests found"); return }
+            print(snapshot)
 			for snap in snapshot { //each snap in snapshot is a dictionary //snap.key is the opponentUID and snap.value is the gameSessionId : 1
 				guard let gameSessionUids = snap.value as? [String: AnyObject] else { print("snap.value cannot be found"); return } //snap.value = gameSessionId : 1 //has to be converted to [String: AnyObject] in order to get the snap.value properly
 				self.gameUidsToGame(gameUidDictionary: gameSessionUids)
@@ -197,7 +198,7 @@ class PreGameViewController: UIViewController {
 //                    self.matches.removeAll()
                     
 					guard let game = game else { return }
-//                    print("Fetched game found = \(game.gameId)")
+                    print("Fetched game found = \(game.gameId)")
 					
 					self.matches.append(game)
 					self.matchesTableView.reloadData()
@@ -216,8 +217,8 @@ class PreGameViewController: UIViewController {
 			guard let userDic = snapshot.value as? [String: Any] else { return }
 //            print("snapshot.value is \(userDic)")
             
-            let user = User(_userID: snapshot.key, _name: userDic[kNAME]! as! String, _email: userDic[kEMAIL]! as! String, _experience: userDic[kEXPERIENCE]! as! Int, _level: userDic[kLEVEL]! as! Int)
-            
+            let user = User(_userID: snapshot.key, _name: userDic[kNAME]! as! String, _email: userDic[kEMAIL]! as! String, _experience: userDic[kEXPERIENCES]! as! Int, _level: userDic[kLEVEL]! as! Int)
+            print("You can save other users here in Core Data")
             
 //            let user = User(_dictionary: userDic)
 //            user.name = userDic[kNAME]!
@@ -264,11 +265,7 @@ extension PreGameViewController: UITableViewDelegate, UITableViewDataSource {
 		cell.indexPath = indexPath
 		cell.setCellData(game: match)
 		cell.delegate = self
-		//		let item = shoppingCart.items[indexPath.row] //PB ep78 23mins, this will be item that will be displayed in each individual cell
-		//		cell.item = item //PB ep78 24mins pass the cell's item to be our item
-		//		cell.itemIndexPath = indexPath
-		//
-		//		cell.delegate = self //PB ep81 6mins now we implement that method
+        
 		return cell
 	}
 	
@@ -278,18 +275,17 @@ extension PreGameViewController: UITableViewDelegate, UITableViewDataSource {
 	func segueWithGameUid(withGame game: Game) {
 		self.performSegue(withIdentifier: "preGameToGameSegue", sender: game)
 	}
-	
 }
 
 extension PreGameViewController: MatchesTableViewCellDelegate {
 	func removeGame(withGame game: Game, indexPath: IndexPath) {
-		game.deleteGame(game: game) { (message) in
-			if message != "Success" {
-				Service.presentAlert(on: self, title: "Error Removing Game", message: message)
+		game.deleteGame(game: game) { (error) in
+			if let error = error {
+                Service.presentAlert(on: self, title: "Error Removing Game", message: error)
 			} else {
 				self.matches.remove(at: indexPath.row)
 				self.matchesTableView.reloadData()
-			}
+			 }
 		}
 	}
 }

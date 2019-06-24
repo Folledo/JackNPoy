@@ -62,7 +62,7 @@ class User: NSObject {
         self.loses = _dictionary[kLOSES] as? Int
         self.matchesUid = _dictionary[kMATCHESUID] as? [String] ?? [""]
         self.matchesDictionary = _dictionary[kMATCHESDICTIONARY] as? [String] ?? [""]
-        self.experience = (_dictionary[kEXPERIENCE] as? Int)!
+        self.experience = (_dictionary[kEXPERIENCES] as? Int)!
         self.level = _dictionary[kLEVEL] as! Int
 	}
 	
@@ -166,11 +166,30 @@ func saveUserLocally(user: User) {
 	print("Finished saving user \(user.name) locally...")
 }
 
-func increaseExperience(user: User, gained: Int) {
+func increaseExperience(user: User, gained: Int, completion: @escaping () -> Void) {
     user.experience += gained
-    print("Experience = \(user.experience)")
-    saveUserLocally(user: user)
-    saveUserInBackground(user: user)
+    let maxExp:Int = getMaxExperienceNeeded(fromLevel: user.level)
+    print("Experience = \(user.experience)/\(maxExp)")
+    if user.experience >= maxExp { //check if our user has more experience than maxExp
+        print("LEVEL UP! Has extra exp = \(user.experience - maxExp)")
+        increaseUserLevel(user: user, extra: user.experience - maxExp) {
+            completion()
+        }
+    } else {
+        completion()
+    }
+//    saveUserLocally(user: user)
+//    saveUserInBackground(user: user)
+}
+
+func increaseUserLevel(user: User, extra exp: Int, completion: @escaping () -> Void) {
+    let extraExperience: Int = exp
+    user.level += 1
+    user.experience = 0
+    user.experience = extraExperience > 0 ? extraExperience : 0
+    completion()
+//    saveUserLocally(user: user)
+//    saveUserInBackground(user: user)
 }
 
 //MARK: Helper fuctions
@@ -216,7 +235,7 @@ func userDictionaryFrom(user: User) -> NSDictionary { //take a user and return a
 	
 	return NSDictionary(
         objects: [user.userID, user.name, user.email, user.avatarURL, user.wins!, user.loses!, user.matchesDictionary ?? [""], user.matchesUid ?? [""], user.experience, user.level],
-        forKeys: [kUSERID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying, kWINS as NSCopying, kLOSES as NSCopying, kMATCHESDICTIONARY as NSCopying, kMATCHESUID as NSCopying, kEXPERIENCE as NSCopying, kLEVEL as NSCopying]) //this func create and return an NSDictionary
+        forKeys: [kUSERID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying, kWINS as NSCopying, kLOSES as NSCopying, kMATCHESDICTIONARY as NSCopying, kMATCHESUID as NSCopying, kEXPERIENCES as NSCopying, kLEVEL as NSCopying]) //this func create and return an NSDictionary
 }
 
 
@@ -250,6 +269,21 @@ func isUserLoggedIn() -> Bool {
 	}
 }
 
+
+func getMaxExperienceNeeded(fromLevel level: Int) -> Int {
+    var num: Int = 100
+    switch level {
+    case 0:
+        print("Current level is 0, or maybe lower")
+        return num
+    case _ where level > 0:
+        print("You are level \(level)")
+        num = (level * (level / 2)) * 100
+    default:
+        break
+    }
+    return num
+}
 
 
 //func isUserLoggedIn(viewController: UIViewController) -> Bool {

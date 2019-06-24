@@ -66,8 +66,11 @@ let kWINS: String = "wins"
 let kLOSES: String = "loses"
 let kMATCHESUID: String = "matchesUid"
 let kMATCHESDICTIONARY: String = "matchesDictionary"
-let kEXPERIENCE: String = "experience"
+let kEXPERIENCES: String = "experiences"
+let kMAXEXPERIENCE: String = "maxExperience"
 let kLEVEL: String = "level"
+let kRESULT: String = "result"
+let kOPPONENTUID: String = "opponentUid"
 
 
 let kSMILEYURL: String = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/220px-Smiley.svg.png"
