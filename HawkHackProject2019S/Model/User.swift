@@ -16,6 +16,7 @@ class User: NSObject {
 	var email: String
 	var avatarURL: String
 	var userID: String
+    var pushId: String?
     
 //    var winLoseStat: [Int: Int] //win/lose
     var wins: Int?
@@ -25,8 +26,9 @@ class User: NSObject {
     var experience: Int
     var level: Int
 	
-    init(_userID: String, _name: String, _email: String, _avatarURL: String = "", _wins: Int, _loses: Int, _matchesDictionary: [String], _matchesUid: [String], _experience: Int, _level: Int) {
+    init(_userID: String, _pushId: String, _name: String, _email: String, _avatarURL: String = "", _wins: Int, _loses: Int, _matchesDictionary: [String], _matchesUid: [String], _experience: Int, _level: Int) {
 		userID = _userID
+        pushId = _pushId
 		name = _name
 		email = _email
 		avatarURL = _avatarURL
@@ -55,7 +57,7 @@ class User: NSObject {
 		self.email = _dictionary[kEMAIL] as! String
 		self.avatarURL = _dictionary[kAVATARURL] as! String
 		self.userID = _dictionary[kUSERID] as! String
-        
+        self.pushId = _dictionary[kPUSHID] as? String
     //user Informations
 //        self.winLoseStat = _dictionary[kWINLOSESTAT] as! [Int: Int]
         self.wins = _dictionary[kWINS] as? Int
@@ -234,16 +236,16 @@ func fetchUserWith(userId: String, completion: @escaping (_ user: User?) -> Void
 func userDictionaryFrom(user: User) -> NSDictionary { //take a user and return an NSDictionary
 	
 	return NSDictionary(
-        objects: [user.userID, user.name, user.email, user.avatarURL, user.wins!, user.loses!, user.matchesDictionary ?? [""], user.matchesUid ?? [""], user.experience, user.level],
-        forKeys: [kUSERID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying, kWINS as NSCopying, kLOSES as NSCopying, kMATCHESDICTIONARY as NSCopying, kMATCHESUID as NSCopying, kEXPERIENCES as NSCopying, kLEVEL as NSCopying]) //this func create and return an NSDictionary
+        objects: [user.userID, user.pushId, user.name, user.email, user.avatarURL, user.wins!, user.loses!, user.matchesDictionary ?? [""], user.matchesUid ?? [""], user.experience, user.level],
+        forKeys: [kUSERID as NSCopying, kPUSHID as NSCopying, kNAME as NSCopying, kEMAIL as NSCopying, kAVATARURL as NSCopying, kWINS as NSCopying, kLOSES as NSCopying, kMATCHESDICTIONARY as NSCopying, kMATCHESUID as NSCopying, kEXPERIENCES as NSCopying, kLEVEL as NSCopying]) //this func create and return an NSDictionary
 }
 
 
-func updateCurrentUser(withValues: [String : Any], withBlock: @escaping(_ success: Bool) -> Void) {
+func updateCurrentUser(withValues: [String : Any], withBlock: @escaping(_ success: Bool) -> Void) { //OneSignal S3 ep. 24 withBlock makes it run in the background
 	
 	if UserDefaults.standard.object(forKey: kCURRENTUSER) != nil {
 		guard let currentUser = User.currentUser() else { return }
-		let userObject = userDictionaryFrom(user: currentUser).mutableCopy() as! NSMutableDictionary
+		let userObject = userDictionaryFrom(user: currentUser).mutableCopy() as! NSMutableDictionary //OneSignal S3 ep. 24 4mins
 		userObject.setValuesForKeys(withValues)
 		
 		let ref = firDatabase.child(kUSERS).child(currentUser.userID)
@@ -296,3 +298,28 @@ func getMaxExperienceNeeded(fromLevel level: Int) -> Int {
 //		return false
 //	}
 //}
+
+//MARK: One Signal Functions
+func updateOneSignalId() { //OneSignal S3 ep. 25 0mins
+    if User.currentUser() != nil {
+        if let pushId = UserDefaults.standard.string(forKey: kONESIGNALID) { //OneSignal S3 ep. 25 1mins set one signal id
+            setOneSignalId(pushId: pushId)
+        } else { //OneSignal S3 ep. 25 2mins remove one signal id
+            removeOneSignalId()
+        }
+    }
+}
+
+func setOneSignalId(pushId: String) { //OneSignal S3 ep. 25 2mins
+    updateCurrentUserOneSignalId(newId: pushId) //OneSignal S3 ep. 25 4mins
+}
+
+func removeOneSignalId() { //OneSignal S3 ep. 25 3mins
+    updateCurrentUserOneSignalId(newId: "") //OneSignal S3 ep. 25 4mins
+}
+
+func updateCurrentUserOneSignalId(newId: String) {
+    updateCurrentUser(withValues: [kPUSHID: newId]) { (success) in //OneSignal S3 ep. 25 5mins you can also put updatedAt here
+        print("One Signal Id was updated \(success)")
+    }
+}

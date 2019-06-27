@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 import FirebaseDatabase
 
+//ids and keys for one signal
+public let kONESIGNALAPPID: String = "56b0898f-a888-42f3-8208-7c58fe1e785d"
+public let kONESIGNALID: String = "OneSignalId"
 let kUSERID: String = "userID"
 let kNAME: String = "name"
 let kEMAIL: String = "email"
@@ -18,6 +21,7 @@ let kTEXT: String = "text"
 let kCURRENTUSER: String = "currentUser" //for userDefaults
 let kUSERS: String = "user" //fore firebase
 let kMESSAGES: String = "message"
+let kPUSHID: String = "pushId"
 
 let kGAMESESSIONS: String = "gameSessions"
 let kUSERTOGAMESESSIONS: String = "user-gameSessions"

@@ -78,83 +78,6 @@ class Game {
 		return (player1Id == User.currentId() ? player2Id : player1Id)!
 	}
 	
-	//	internal func gamePartnerName() -> String {
-	//		if player1Id == User.currentId() {
-	//			return player2Name
-	//		} else {
-	//			return player1Name
-	//		}
-	//	}
-	
-//    func uploadGameResult(game: Game, winnerUid winningPlayerId: String, completion: @escaping (_ value: String?)-> Void) {
-////    func uploadGameResult(completion: @escaping (_ value: String?)-> Void) {
-////        let loserPlayerUid: String = (player1Id == winningPlayerId ? player2Id : player1Id)! //if winning playerUID is == p1UID then p2 is loser
-//
-//    //MARK: These next26 lines basically upload current user's result of the game
-//        let userUid = User.currentId()
-//        let opponentUid: String = (player1Id == userUid ? player2Id : player1Id)!
-//
-//        let gameHistoryRef = firDatabase.child(kGAMEHISTORY).child(userUid)
-//        let userRef = firDatabase.child(kUSERS).child(userUid)
-//
-//        if userUid == winnerUid { //if currentUser won...
-//        //set the result in gameHistory
-//            gameHistoryRef.setValue(["result": "winner", "opponentUid": opponentUid, "date": Date()]) { (error, ref) in
-//                if let error = error {
-//                    completion(error.localizedDescription)
-//                } else {
-//                    print("Finished saving the win")
-//                    completion(nil)
-//                }
-//            }
-//
-//        //grab the user's win, exp, level and update it
-//            userRef.observeSingleEvent(of: .value, with: { (snap) in
-//
-//                if snap.exists() {
-//                    guard let userDic = snap.value as? NSDictionary else { print("No userDic found"); return }
-//                    var wins = userDic[kWINS] as? Int ?? 0
-//                    var experience = userDic[kEXPERIENCES] as? Int ?? 0
-//
-//                    userRef.updateChildValues([kWINS: wins += 1, kEXPERIENCES: experience += 100], withCompletionBlock: { (error, ref) in
-//                        if let error = error {
-//                            completion(error.localizedDescription)
-//                        } else {
-//                            print("Successfully updated wins stats and experience in firebase")
-//                        }
-//                    })
-//                }
-//
-//            }, withCancel: nil)
-//
-//        } else { //if currentUser lose
-//            gameHistoryRef.setValue(["result": "loser", "opponentUid": opponentUid, "date": Date()]) { (error, ref) in
-//                if let error = error {
-//                    completion(error.localizedDescription)
-//                } else {
-//                    print("Finished saving the lose)")
-//                    completion(nil)
-//                }
-//            }
-//
-//        //grab the user's lose, exp, level and update it
-//            userRef.observeSingleEvent(of: .value, with: { (snap) in
-//                if snap.exists() {
-//                    guard let userDic = snap.value as? NSDictionary else { print("No userDic found"); return }
-//                    var loses = userDic[kLOSES] as? Int ?? 0
-//                    var experience = userDic[kEXPERIENCES] as? Int ?? 0
-//
-//                    userRef.updateChildValues([kWINS: loses += 1, kEXPERIENCES: experience += 50], withCompletionBlock: { (error, ref) in
-//                        if let error = error {
-//                            completion(error.localizedDescription)
-//                        } else {
-//                            print("Successfully updated lose stats and experience in firebase")
-//                        }
-//                    })
-//                }
-//            }, withCancel: nil)
-//        }
-//    }
     
 	func deleteGame(game: Game, completion: @escaping (_ value: String?)-> Void) {
 		let player1Ref = firDatabase.child(kUSERTOGAMESESSIONS).child(game.player1Id!).child(game.player2Id!)
@@ -695,7 +618,8 @@ func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) 
 
 
 func gameDictionaryFrom(game: Game) -> NSDictionary {
-    return NSDictionary(objects:[game.gameId, game.roundNumber], forKeys:[] )
+    return NSDictionary(objects:[game.gameId, game.roundNumber, game.winnerUid ?? "", game.player1Name!, game.player1HP, game.player1Id!, game.player1AvatarUrl!, game.player2Name!, game.player2HP, game.player2Id!, game.player2AvatarUrl!],
+                        forKeys:[kGAMEID as NSCopying, kROUNDNUMBER as NSCopying, kPLAYER1NAME as NSCopying, kPLAYER1HP as NSCopying, kPLAYER1ID as NSCopying, kPLAYER1AVATARURL as NSCopying, kPLAYER2NAME as NSCopying, kPLAYER2HP as NSCopying, kPLAYER2ID as NSCopying, kPLAYER2AVATARURL as NSCopying] )
 }
 
 

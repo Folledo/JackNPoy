@@ -14,4 +14,5 @@ target 'HawkHackProject2019S' do
   pod 'Firebase/Storage'
   pod 'Firebase/Messaging'
 
+  pod 'OneSignal'
 end

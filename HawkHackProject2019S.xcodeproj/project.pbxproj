@@ -47,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E03271E22C3588900CE0178 /* HawkHackProject2019S.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HawkHackProject2019S.entitlements; sourceTree = "<group>"; };
 		7E62218C228B56D3005C5312 /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		7E8C908E2278A10C0057AA3E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		7E9BAA86224FCD8C003C6D22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -233,6 +234,7 @@
 		7EE876EC224FC55400B53E7E /* HawkHackProject2019S */ = {
 			isa = PBXGroup;
 			children = (
+				7E03271E22C3588900CE0178 /* HawkHackProject2019S.entitlements */,
 				7EE876ED224FC55400B53E7E /* AppDelegate.swift */,
 				7E8C908E2278A10C0057AA3E /* File.swift */,
 				7EE876F1224FC55500B53E7E /* Main.storyboard */,
@@ -311,6 +313,11 @@
 				TargetAttributes = {
 					7EE876E9224FC55400B53E7E = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -576,6 +583,7 @@
 			baseConfigurationReference = C1ADFB1033EF7E6F34E8C73C /* Pods-HawkHackProject2019S.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HawkHackProject2019S/HawkHackProject2019S.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8KSKUH7X29;
@@ -598,6 +606,7 @@
 			baseConfigurationReference = CF1265AECB9D40FC02E2868C /* Pods-HawkHackProject2019S.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HawkHackProject2019S/HawkHackProject2019S.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8KSKUH7X29;

@@ -24,6 +24,7 @@ class GameHistoryViewController: UIViewController {
 //MARK: Properties
     let shapeLayer = CAShapeLayer() //for expBar
     
+    
 //MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,9 +92,6 @@ class GameHistoryViewController: UIViewController {
         let toValue: CGFloat = currentExp / maxExp
         print("Current user experience is \(currentExp)/\(maxExp)")
         
-//        increaseExperience(user: user, gained: 0) {
-//            print("Refreshed")
-//        }
         
     //create the animation
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
@@ -116,6 +114,20 @@ class GameHistoryViewController: UIViewController {
     @IBAction func cameraButtonTapped(_ sender: Any) {
         
     }
+    
+    
+    
+}
+
+extension GameHistoryViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
     
     
     
