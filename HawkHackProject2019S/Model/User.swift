@@ -16,7 +16,7 @@ class User: NSObject {
 	var email: String
 	var avatarURL: String
 	var userID: String
-    var pushId: String?
+    var pushId: String? //OneSignal Id
     
 //    var winLoseStat: [Int: Int] //win/lose
     var wins: Int?
@@ -28,7 +28,7 @@ class User: NSObject {
 	
     init(_userID: String, _pushId: String, _name: String, _email: String, _avatarURL: String = "", _wins: Int, _loses: Int, _matchesDictionary: [String], _matchesUid: [String], _experience: Int, _level: Int) {
 		userID = _userID
-        pushId = _pushId
+        pushId = _pushId //OneSignal Id
 		name = _name
 		email = _email
 		avatarURL = _avatarURL
@@ -51,13 +51,28 @@ class User: NSObject {
         experience = _experience
         level = _level
     }
-	
+    
+//to initialize user easier with pushId and more info for Game
+    init(_userID: String, _pushId: String, _name: String, _email: String, _avatarURL: String, _wins: Int, _loses: Int, _experience: Int, _level: Int) {
+        userID = _userID
+        pushId = _pushId
+        name = _name
+        email = _email
+        avatarURL = _avatarURL
+        
+        wins = _wins
+        loses = _loses
+        experience = _experience
+        level = _level
+    }
+    
+    
 	init(_dictionary: [String: Any]) {
 		self.name = _dictionary[kNAME] as! String
 		self.email = _dictionary[kEMAIL] as! String
 		self.avatarURL = _dictionary[kAVATARURL] as! String
 		self.userID = _dictionary[kUSERID] as! String
-        self.pushId = _dictionary[kPUSHID] as? String
+        self.pushId = _dictionary[kPUSHID] as? String //OneSignalId
     //user Informations
 //        self.winLoseStat = _dictionary[kWINLOSESTAT] as! [Int: Int]
         self.wins = _dictionary[kWINS] as? Int
@@ -260,7 +275,6 @@ func updateCurrentUser(withValues: [String : Any], withBlock: @escaping(_ succes
 			withBlock(true)
 		}
 	}
-	
 }
 
 func isUserLoggedIn() -> Bool {

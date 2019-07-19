@@ -124,8 +124,11 @@ class RegisterViewController: UIViewController {
 										
 										let uid = User.currentId()
 										guard let url = imageUrl?.absoluteString else { return }
+                                        let oneSignalId: String? = UserDefaults.standard.string(forKey: kONESIGNALID)
+                                        print("OneSignal Id = \(oneSignalId)")
+                                        let pushId: String = oneSignalId == nil || oneSignalId == "" ? "" : oneSignalId!
 //                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
-                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
+                                        let values = [kNAME: name, kEMAIL: email, kAVATARURL: url, kUSERID: uid, kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0, kPUSHID: pushId] as [String : Any] //pass the url
 										self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
 										
 										//finished registering!
@@ -164,7 +167,8 @@ class RegisterViewController: UIViewController {
 				Service.presentAlert(on: self, title: "Register Error", message: error.localizedDescription)
 				return
             } else {
-                let gameStatsValues = [kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0 ] as [String : Any] //pass the url
+                print("user reference created successfully")
+                let gameStatsValues = [kWINS: 0, kLOSES: 0, kMATCHESUID: [], kMATCHESDICTIONARY:[], kEXPERIENCES: 0, kLEVEL: 0] as [String : Any] //pass the url
                 
                 let gameRef = usersReference.child(kGAMESTATS) //this is the reference for user's win, lose, and experience stats
                 gameRef.setValue(gameStatsValues, withCompletionBlock: { (error, ref) in
@@ -172,6 +176,7 @@ class RegisterViewController: UIViewController {
                         Service.presentAlert(on: self, title: "Firebase Register Error", message: error.localizedDescription)
                         return
                     } else {
+                        
                         DispatchQueue.main.async {
                             let user = User(_dictionary: values)
                             saveUserLocally(user: user)
@@ -239,9 +244,9 @@ class RegisterViewController: UIViewController {
 extension RegisterViewController: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		switch textField {
+        case nameTextField:
+            emailTextField.becomeFirstResponder()
 		case emailTextField:
-			nameTextField.becomeFirstResponder()
-		case nameTextField:
 			passwordTextField.becomeFirstResponder()
 		case passwordTextField:
 			register() //register
@@ -251,6 +256,8 @@ extension RegisterViewController: UITextFieldDelegate {
 		return true
 	}
 }
+
+
 
 //----------- UIImagePickerController Delegate ------------
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

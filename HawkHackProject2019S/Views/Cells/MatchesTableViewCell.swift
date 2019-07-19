@@ -58,6 +58,9 @@ class MatchesTableViewCell: UITableViewCell {
 	
 	@IBAction func acceptButtonTapped(_ sender: Any) {
 		if self.delegate != nil {
+            
+            
+            
 			self.delegate.segueWithGameUid(withGame: match!)
 		}
 	}

@@ -104,13 +104,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if pushToken != nil {
             if let playerId = userID { //OneSignal S3 ep. 23 15mins
-                UserDefaults.standard.set(playerId, forKey: "OneSignalId") //OneSignal S3 ep. 23 15mins
+                //print("\nOne Signal Id pushtoken \(pushToken)\nplayerId is \(playerId)\n")
+                UserDefaults.standard.set(playerId, forKey: kONESIGNALID) //OneSignal S3 ep. 23 15mins
+                UserDefaults.standard.synchronize()
             } else { //OneSignal S3 ep. 23 16mins
-                UserDefaults.standard.removeObject(forKey: "OneSignalId") //OneSignal S3 ep. 23 16mins if user doesnt have OneSignalId then remove it from UserDefaults
+                UserDefaults.standard.removeObject(forKey: kONESIGNALID) //OneSignal S3 ep. 23 16mins if user doesnt have OneSignalId then remove it from UserDefaults
+                UserDefaults.standard.synchronize()
             }
         }
         
-        //save to user object
+    //save to user object
         updateOneSignalId() //OneSignal S3 ep. 25 6mins
     }
 

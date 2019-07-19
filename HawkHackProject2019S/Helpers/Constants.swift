@@ -23,6 +23,8 @@ let kUSERS: String = "user" //fore firebase
 let kMESSAGES: String = "message"
 let kPUSHID: String = "pushId"
 
+let kCREATEDAT: String = "createdAt"
+let kUPDATEDAT: String = "updatedAt"
 let kGAMESESSIONS: String = "gameSessions"
 let kUSERTOGAMESESSIONS: String = "user-gameSessions"
 let kPLAYER1ID: String = "player1Id"
@@ -39,8 +41,6 @@ let kPLAYER1HP: String = "player1Hp"
 let kPLAYER2HP: String = "player2Hp"
 let kP1MOVE: String = "p1Move"
 let kP2MOVE: String = "p2Move"
-let kCREATEDAT: String = "createdAt"
-let kUPDATEDAT: String = "updatedAt"
 
 let kWINNERUID: String = "winnerUid"
 let kCURRENTGAME: String = "currentGame"

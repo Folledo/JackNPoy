@@ -33,8 +33,9 @@ class GameOverViewController: UIViewController {
     var game: Game?
     var opponentUser: User?
     var previousExp: Int?
-    let gainedExpShapeLayer = CAShapeLayer() //for expBar
+    let gainedExpShapeLayer: CAShapeLayer = CAShapeLayer() //for expBar
     let currentExpShapeLayer: CAShapeLayer = CAShapeLayer()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -32,20 +32,41 @@ class GameHistoryTableViewCell: UITableViewCell {
     }
     
     func setCellData(game: Game) {
-        if game.player1Id == User.currentId() { //if p1 is our current user then opponent is p2
-            let opponentUid: String = game.player2Id!
-            fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
-                self.opponentImageView.downloaded(fromLink: opponentUser!.avatarURL)
-                self.opponentNameLabel.text = "\(opponentUser!.name)"
-            }
-            
-        } else { //current user is p2
-            let opponentUid: String = game.player1Id!
-            fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
-                self.opponentImageView.downloaded(fromLink: opponentUser!.avatarURL)
-                self.opponentNameLabel.text = "\(opponentUser!.name)"
-            }
+        guard let user = User.currentUser() else { return }
+        let opponentUid: String = User.currentId() == game.player1Id ? game.player2Id! : game.player1Id! //if user is p1, then opponent is p2
+        switch game.winnerUid {
+        case user.userID:
+            gameCoinsLabel.text = "+$10"
+            gameExpLabel.text = "+100"
+            gameResultButton.setBackgroundImage(UIImage(named: "W"), for: .normal)
+        case opponentUid:
+            gameCoinsLabel.text = "+$1"
+            gameExpLabel.text = "+10"
+            gameResultButton.setBackgroundImage(UIImage(named: "L"), for: .normal)
+        default:
+            print("Weird game uid = \(game.winnerUid)\ndoes not match any user uid")
         }
+        
+        fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
+            self.opponentImageView.downloaded(fromLink: opponentUser!.avatarURL)
+            self.opponentNameLabel.text = "\(opponentUser!.name)"
+            
+        }
+
+//        if game.player1Id == User.currentId() { //if p1 is our current user then opponent is p2
+//            let opponentUid: String = User.currentId() == game.player1Id ? game.player2Id! : game.player1Id!
+//            fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
+//                self.opponentImageView.downloaded(fromLink: opponentUser!.avatarURL)
+//                self.opponentNameLabel.text = "\(opponentUser!.name)"
+//            }
+//
+//        } else { //current user is p2
+//            let opponentUid: String = game.player1Id!
+//            fetchOpponentUserWith(opponentUid: opponentUid) { (opponentUser) in
+//                self.opponentImageView.downloaded(fromLink: opponentUser!.avatarURL)
+//                self.opponentNameLabel.text = "\(opponentUser!.name)"
+//            }
+//        }
 //        let opponentUid: String = (game.player1Id == User.currentId() ? game.player2Id : game.player1Id)! //opponentUid will not be the current user
         
         

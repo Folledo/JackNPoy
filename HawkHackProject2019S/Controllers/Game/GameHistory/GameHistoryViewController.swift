@@ -23,7 +23,7 @@ class GameHistoryViewController: UIViewController {
     
 //MARK: Properties
     let shapeLayer = CAShapeLayer() //for expBar
-    
+    var matches:[Game] = []
     
 //MARK: LifeCycle
     override func viewDidLoad() {
@@ -32,6 +32,14 @@ class GameHistoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         setupViews()
+        
+        setupGameHistoryTable()
+        
+    }
+    
+    func setupGameHistoryTable() {
+        
+        
         
     }
     
@@ -125,6 +133,9 @@ extension GameHistoryViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: GameHistoryTableViewCell = tableView.dequeueReusableCell(withIdentifier: "gameHistoryCell", for: indexPath) as! GameHistoryTableViewCell
+        //cell.setCellData(game: matches[indexPath]) //need at least matches
+        
         return UITableViewCell()
     }
     

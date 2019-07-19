@@ -88,7 +88,7 @@ class CurrentGameViewController: UIViewController {
 	
 //MARK: Properties
 	var game: Game?
-    var round: CurrentRound?
+//    var round: CurrentRound?
 //    var p1Round: CurrentRound?
 //    var p2Round: CurrentRound?
     
@@ -115,8 +115,8 @@ class CurrentGameViewController: UIViewController {
 	var bgMaxCounter: Int = 0
 	var backgroundTimer: Timer?
 	var backgroundName: String = ""
-	var player1Hp: Int = 30
-	var player2Hp: Int = 30
+//    var player1Hp: Int = 30
+//    var player2Hp: Int = 30
 	
 	var clockTimer: Timer?
 	var clockCounter: Int = 8
@@ -155,8 +155,18 @@ class CurrentGameViewController: UIViewController {
 		updateViewWithGame(currentGame: game!)
 		
 		
-        game?.roundNumber = 1
+        game?.roundNumber = 1 //make game's roundNumber = 1 and update offline and online
+        UserDefaults.standard.set(gameDictionaryFrom(game: game!), forKey: game!.gameId)
+        UserDefaults.standard.synchronize()
         self.roundNumberLabel.text = "\(game!.roundNumber)"
+        updateCurrentGame(game: game!, withValues: [kROUNDNUMBER: game!.roundNumber]) { (error) in
+            if let error = error {
+                Service.presentAlert(on: self, title: "Error", message: error)
+                return
+            } else {
+                print("\n\nGame is \(gameDictionaryFrom(game: self.game!))\n\n")
+            }
+        }
 		startTurnTimer()
         
 //        uploadGameToFirebase(withGame: game!)
@@ -336,7 +346,7 @@ class CurrentGameViewController: UIViewController {
         
         if !isAgainstOnlineUser {
             
-            self.applyDamagesToViews(opponentTag: (nil, nil), completion: {
+            self.applyDamagesToViews(completion: {
                 self.player1DamageLabel.isHidden = true
                 self.player2DamageLabel.isHidden = true
                 
@@ -421,7 +431,7 @@ class CurrentGameViewController: UIViewController {
                 }
                 
 //            print("applying damage to views")
-                self.applyDamagesToViews(opponentTag: (fetchedOpponentMove, fetchedOpponentAttack), completion: { //now after 2 seconds after delay of giving a value to optional game.winnerUid
+                self.applyDamagesToViews(completion: { //now after 2 seconds after delay of giving a value to optional game.winnerUid
                     
                     self.player1DamageLabel.isHidden = true //hide hp damage label
                     self.player2DamageLabel.isHidden = true
@@ -464,12 +474,21 @@ class CurrentGameViewController: UIViewController {
         print("counting...")
     }
 	
-    private func applyDamagesToViews(opponentTag:(move: Int?, attack: Int?), completion: @escaping () -> Void) { //or () -> ()
+    private func applyDamagesToViews(completion: @escaping () -> Void) { //or () -> ()
         getPlayer1Damage()
         getPlayer2Damage()
         getEnemyDefense()
         
         ryuCounter = 0
+        
+        updateCurrentGame(game: game!, withValues: ["round\(game!.roundNumber)": [game!.roundNumber, player1TagSelected.move, player1TagSelected.attack, player2TagSelected.move, player2TagSelected.attack]]) { (error) in
+            if let error = error {
+                Service.presentAlert(on: self, title: "Updating Round Error", message: error)
+                return
+            } else {
+                print("No error updating the game's dictionary = \(gameDictionaryFrom(game: self.game!))")
+            }
+        }
         
         var player1Damage = Int(CGFloat(p1MoveResult.damage!) * p1MoveResult.damageMultiplier! * p2MoveResult.defenseMultiplier!)
         var player2Damage = Int(CGFloat(p2MoveResult.damage!) * p2MoveResult.damageMultiplier! * p1MoveResult.defenseMultiplier!)
@@ -500,7 +519,7 @@ class CurrentGameViewController: UIViewController {
         
         if CGFloat(p1MoveResult.speed!) > CGFloat(p2MoveResult.speed!) { //if p1 first
             //            print("p1 first")
-            self.player2Hp -= player1Damage
+            self.game!.player2HP -= player1Damage
             self.player2HPProgress.completedUnitCount += Int64(player1Damage)
             let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
             self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
@@ -508,18 +527,18 @@ class CurrentGameViewController: UIViewController {
             p1HasSpeedBoost = true //set it to true so we can give p1 a +1 speed for next turn
 //            player2Damage = Int(CGFloat(player2Damage) * 0.9) //gives a little incentive to go first by reducing damage received by 10% if a player moves first
             
-            if player2Hp > 0 { //if p2 is still alive
-                self.player1Hp -= player2Damage
+            if game!.player2HP > 0 { //if p2 is still alive
+                self.game!.player1HP -= player2Damage
                 self.player1HPProgress.completedUnitCount += Int64(player2Damage)
                 let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
                 self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
                 
-                if player1Hp <= 0 { //if p1 dies
+                if game!.player1HP <= 0 { //if p1 dies
                     game?.winnerUid = game?.player2Id
 //                    completion(false)
                 } else {
-                    self.player1HPLabel.text = "\(player1Hp)/30"
-                    self.player2HPLabel.text = "\(player2Hp)/30"
+                    self.player1HPLabel.text = "\(game!.player1HP)/30"
+                    self.player2HPLabel.text = "\(game!.player2HP)/30"
                 }
             } else { //if p2 dies
                 game?.winnerUid = game?.player1Id
@@ -528,7 +547,7 @@ class CurrentGameViewController: UIViewController {
             
         } else { //if p2 first
             //            print("p2 first")
-            self.player1Hp -= player2Damage
+            self.game!.player1HP -= player2Damage
             self.player1HPProgress.completedUnitCount += Int64(player2Damage)
             let player1ProgressFloat = Float(self.player1HPProgress.fractionCompleted)
             self.player1HPBar.setProgress(player1ProgressFloat, animated: true)
@@ -536,19 +555,19 @@ class CurrentGameViewController: UIViewController {
             p1HasSpeedBoost = false //p2 will have +1 speed boost
 //            player1Damage = Int(CGFloat(player1Damage) * 0.9)
             
-            if player1Hp > 0 { //if p1 is still alive
-                self.player2Hp -= player1Damage
+            if game!.player1HP > 0 { //if p1 is still alive
+                self.game!.player2HP -= player1Damage
                 self.player2HPProgress.completedUnitCount += Int64(player1Damage)
                 let player2ProgressFloat = Float(self.player2HPProgress.fractionCompleted)
                 self.player2HPBar.setProgress(player2ProgressFloat, animated: true)
                 
-                if player2Hp <= 0 { //if p2 dies
+                if game!.player2HP <= 0 { //if p2 dies
                     game?.winnerUid = game?.player1Id
 //                    completion(true)
 //                    return
                 } else {
-                    self.player1HPLabel.text = "\(player1Hp)/30"
-                    self.player2HPLabel.text = "\(player2Hp)/30"
+                    self.player1HPLabel.text = "\(game!.player1HP)/30"
+                    self.player2HPLabel.text = "\(game!.player2HP)/30"
                 }
                 
             } else { //if p1 dies
@@ -637,8 +656,9 @@ class CurrentGameViewController: UIViewController {
 			p1Button19HDown.cooldown = 4
 			p1MoveResult.speed! += 3
 			
-		case .none:
+		case .none, 1:
 			player1Damage = 0
+            p1MoveResult.speed! = 0
 		default:
 			break
 		}
@@ -687,7 +707,7 @@ class CurrentGameViewController: UIViewController {
 			p2Button29LDown.cooldown = 2
 			p2MoveResult.speed! += 9
 			
-		case .none:
+		case .none, 1:
 			p2MoveResult.speed = 0
 			player2Damage = 0
 		default:
@@ -720,7 +740,7 @@ class CurrentGameViewController: UIViewController {
 		case 10: //if p1 jumped
 			p1MoveResult.speed! *= 1
 			switch player2TagSelected.attack {
-			case 24,25,26,.none: //p2 attacked high
+			case 24,25,26,.none, 1: //p2 attacked high
 				p1MoveResult.defenseMultiplier! *= 1 //if p1 jumped up and p2 attacked up, p1's defense is 1
 			case 27,28,29: //p2 attacked low
 				p1MoveResult.defenseMultiplier! *= 0 //if p1 jumped up and p2 attacked low, p1's defense is 0
@@ -733,13 +753,13 @@ class CurrentGameViewController: UIViewController {
 			case 24,25,26: //p2 attacked high
 				p1MoveResult.defenseMultiplier! *= 0
 				
-			case 27,28,29,.none: //p2 attacked low
+			case 27,28,29,.none, 1: //p2 attacked low
 				p1MoveResult.defenseMultiplier! *= 1
 				
 			default:
 				break
 			}
-		case .none: //if p1 didnt move
+		case .none, 1: //if p1 didnt move
 			p1MoveResult.speed! *= 1
 			p1MoveResult.defenseMultiplier! *= 1
 		default:
@@ -758,7 +778,7 @@ class CurrentGameViewController: UIViewController {
 		case 20: //if p2 jumped
 			p2MoveResult.speed! *= 1
 			switch player1TagSelected.attack {
-			case 14,15,16,.none: //p1 attacked high
+			case 14,15,16,.none, 1: //p1 attacked high
 				p2MoveResult.defenseMultiplier! *= 1
 				
 			case 17,18,19: //p1 attacked low
@@ -773,13 +793,13 @@ class CurrentGameViewController: UIViewController {
 			case 14,15,16: //p1 attacked high
 				p2MoveResult.defenseMultiplier! *= 0
 				
-			case 17,18,19,.none: //p1 attacked low
+			case 17,18,19,.none, 1: //p1 attacked low
 				p2MoveResult.defenseMultiplier! *= 1
 				
 			default:
 				break
 			}
-		case .none: //if p1 didnt move
+		case .none, 1: //if p1 didnt move
 			p2MoveResult.speed! *= 1
 			p2MoveResult.defenseMultiplier! *= 1
 		default:
@@ -812,7 +832,7 @@ class CurrentGameViewController: UIViewController {
 	
 	private func updateViewWithGame(currentGame: Game) {
 		DispatchQueue.main.async {
-            self.round?.gameId = currentGame.gameId
+//            self.round?.gameId = currentGame.gameId
 //            game?.roundNumber = currentGame.roundNumber
             
 			self.gameSessionLabel.text = currentGame.gameId
@@ -1068,6 +1088,10 @@ class CurrentGameViewController: UIViewController {
             updateButtonsView(buttons: allButtons)
             
             self.game?.roundNumber += 1
+            
+            UserDefaults.standard.set(gameDictionaryFrom(game: self.game!), forKey: self.game!.gameId)
+            UserDefaults.standard.synchronize()
+            
             self.roundNumberLabel.text = "\(self.game!.roundNumber)"
             self.clockCounter = 8
             self.timeLeftLabel.text = "\(self.clockCounter)"

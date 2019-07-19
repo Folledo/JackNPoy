@@ -19,8 +19,8 @@ class Game {
 	
 	var winnerUid: String?
 //    var timeStamp: Int?
-	var player1HP: Int = 100
-	var player2HP: Int = 100
+	var player1HP: Int = 30
+	var player2HP: Int = 30
 	
 	var player1Name: String?
 	var player2Name: String?
@@ -47,7 +47,7 @@ class Game {
 		self.player1Id = _dictionary[kPLAYER1ID] as? String
 		self.text = _dictionary["text"] as? String
 		self.player2Id = _dictionary[kPLAYER2ID] as? String
-		self.gameId = _dictionary[kGAMESESSIONS] as! String
+		self.gameId = _dictionary[kGAMEID] as! String
 		
 		self.winnerUid = _dictionary[kWINNERUID] as? String
 //        self.timeStamp = _dictionary[kTIMESTAMP] as? Int
@@ -73,6 +73,15 @@ class Game {
     deinit {
 //        print("Game \(self.gameId) is being deinitialized")
     }
+    
+//    class func currentGame(game: Game) -> Game? {
+//        if Auth.auth().currentUser != nil { //if we have user...
+//            if let dictionary = UserDefaults.standard.object(forKey: kCURRENTUSER) {
+//                return User.init(_dictionary: dictionary as! [String: Any])
+//            }
+//        }
+//        return nil //if we dont have user in our UserDefaults, then return nil
+//    }
 	
 	internal func gamePartnerId() -> String {
 		return (player1Id == User.currentId() ? player2Id : player1Id)!
@@ -134,6 +143,9 @@ class Game {
     func saveGameResult(game: Game, completion: @escaping (_ error: String?)-> Void) {
         print("uploadGameResult is now being ran")
         
+//        UserDefaults.standard.set(gameDictionaryFrom(game: game), forKey: game.gameId)
+//        UserDefaults.standard.synchronize()
+        
         //MARK: These next26 lines basically upload current user's result of the game
         let user: User = User.currentUser()!
         
@@ -151,7 +163,7 @@ class Game {
                 //                print("User dic in uploadGameResult = \(userDic)")
                 let wins = userDic[kWINS] as? Int ?? 0
                 let loses = userDic[kLOSES] as? Int ?? 0
-                let experience = userDic[kEXPERIENCES] as? Int ?? 0
+//                let experience = userDic[kEXPERIENCES] as? Int ?? 0
                 
             //update user
                 user.wins = userUid == game.winnerUid ? wins + 1 : wins + 0
@@ -174,15 +186,6 @@ class Game {
                             completion(error.localizedDescription)
                         } else {
                             print("Successfully updated wins stats and experience in firebase")
-                            //                        print("\n\n\nUser dictionary of the user being saved = \(userDictionaryFrom(user: user))")
-                            //                        updateCurrentUser(withValues: statsValues, withBlock: { (hasError) in
-                            //                            if !hasError {//if has error == false
-                            //                                completion("Error updating current user")
-                            //                            } else {
-                            //                                print("No error updating current user's statsValue")
-                            //                            }
-                            //                        })
-                            //                        saveUserLocally(user: user)
                         }
                     })
                 })
@@ -191,7 +194,6 @@ class Game {
                 
                 user.wins = userUid == game.winnerUid ? 1 : 0
                 user.loses = userUid == game.winnerUid ? 0 : 1
-//                user.experience = userUid == game.winnerUid ? 100 : 10
                 let expGained = userUid == game.winnerUid ? 100 : 10
                 increaseExperience(user: user, gained: expGained, completion: {
                     let statsValues: [String: Int] = [kWINS: user.wins!, kLOSES: user.loses!, kEXPERIENCES: user.experience, kLEVEL: user.level] //if currentUser won, then increase win by 1 and exp by 100 || lose by 1 and exp by 10
@@ -221,6 +223,11 @@ class Game {
         let gameHistoryRef = firDatabase.child(kGAMEHISTORY).child(userUid).child(game.gameId)
         let values: [String: String] = userUid == game.winnerUid ? [kRESULT: "W", kOPPONENTUID: opponentUid] : [kRESULT: "L", kOPPONENTUID: opponentUid]
         
+    //save it offline
+        UserDefaults.standard.set(values, forKey: game.gameId) //values needs lesser key-value pairs to store
+        UserDefaults.standard.synchronize()
+        
+    //save it online - setting the value in the reference
         gameHistoryRef.setValue(values) { (error, ref) in
             if let error = error {
                 completion(error.localizedDescription)
@@ -437,7 +444,31 @@ class Game {
 //}
 
 //---------------------------------++++++++++++++++++++++++++++++++++++++++++++++++
-
+func updateCurrentGame(game: Game, withValues: [String : Any], withBlock: @escaping(_ error: String?) -> Void) { //OneSignal S3 ep. 24 withBlock makes it run in the background
+    
+    //    if UserDefaults.standard.object(forKey: game.gameId) != nil { //check if we have the gameId saved already
+    
+    guard let gameObject = gameDictionaryFrom(game: game).mutableCopy() as? NSMutableDictionary else {
+        print("No gameObject found!!")
+        //            withBlock("No game object found")
+        return
+    }
+    gameObject.setValuesForKeys(withValues)
+    
+    let ref = firDatabase.child(kGAMESESSIONS).child(game.gameId)
+    ref.updateChildValues(withValues) { (error, ref) in
+        if let error = error {
+            withBlock(error.localizedDescription)
+        } else {
+            UserDefaults.standard.set(gameObject, forKey: game.gameId)
+            UserDefaults.standard.synchronize()
+            withBlock(nil)
+        }
+    }
+    //    } else { //if we dont have game saved, then create the game
+    //        withBlock(nil)
+    //    }
+}
 //MARK: Helper fuctions
 //class func uploadGameResult(game: Game, completion: @escaping (_ error: String?)-> Void) {
 //    print("uploadGameResult is now being ran")
@@ -601,12 +632,14 @@ func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) 
         if snapshot.exists() {
             //            print("SNAPSHOT FROM FETCH GAMESESSION IS \(snapshot)")
             //            let userDictionary = ((snapshot.value as! NSDictionary).allValues as NSArray).firstObject! as! [String: AnyObject]
-            var gameDictionary = snapshot.value as! [String: AnyObject]
+            let gameDictionary = snapshot.value as! [String: AnyObject]
             //            print("GAME DICTIONARY IS \(gameDictionary)")
             
             //            let gameUid: String = gameDictionary[kGAMESESSIONS] as! String
             
             let game = Game(_dictionary: gameDictionary)
+            game.player1Image = downloadImage(fromLink: game.player1AvatarUrl!)
+            game.player2Image = downloadImage(fromLink: game.player2AvatarUrl!)
             
             //            print("FETCHED GAME IS \(game)")
             completion(game)
@@ -616,10 +649,35 @@ func fetchGameWith(gameSessionId: String, completion: @escaping (_ game: Game?) 
     }, withCancel: nil)
 }
 
+func downloadImage(fromURL url: URL) -> UIImage? {  //convert a url to a UIImage
+//    contentMode = mode
+    URLSession.shared.dataTask(with: url) { data, response, error in
+        guard
+            let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+            let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+            let data = data, error == nil,
+            let image: UIImage = UIImage(data: data)
+            else { return }
+        DispatchQueue.main.async() {
+            
+            return image
+        }
+        }.resume()
+    return nil
+}
+func downloadImage(fromLink link: String) -> UIImage? {  //convert a link to a UIImage
+    guard let url = URL(string: link) else { return nil }
+    if let image: UIImage = downloadImage(fromURL: url) {
+        return image
+    } else {
+        print("No user image found")
+        return nil
+    }
+}
 
 func gameDictionaryFrom(game: Game) -> NSDictionary {
-    return NSDictionary(objects:[game.gameId, game.roundNumber, game.winnerUid ?? "", game.player1Name!, game.player1HP, game.player1Id!, game.player1AvatarUrl!, game.player2Name!, game.player2HP, game.player2Id!, game.player2AvatarUrl!],
-                        forKeys:[kGAMEID as NSCopying, kROUNDNUMBER as NSCopying, kPLAYER1NAME as NSCopying, kPLAYER1HP as NSCopying, kPLAYER1ID as NSCopying, kPLAYER1AVATARURL as NSCopying, kPLAYER2NAME as NSCopying, kPLAYER2HP as NSCopying, kPLAYER2ID as NSCopying, kPLAYER2AVATARURL as NSCopying] )
+    return NSDictionary(objects:[game.gameId, game.roundNumber, game.winnerUid ?? "", game.player1Name!, game.player1HP, game.player1Id!, game.player1AvatarUrl!, game.player2Name!, game.player2HP, game.player2Id!, game.player2AvatarUrl!, game.text ?? "", game.createdAt!, game.updatedAt!],
+                        forKeys:[kGAMEID as NSCopying, kROUNDNUMBER as NSCopying, kWINNERUID as NSCopying, kPLAYER1NAME as NSCopying, kPLAYER1HP as NSCopying, kPLAYER1ID as NSCopying, kPLAYER1AVATARURL as NSCopying, kPLAYER2NAME as NSCopying, kPLAYER2HP as NSCopying, kPLAYER2ID as NSCopying, kPLAYER2AVATARURL as NSCopying, kTEXT as NSCopying, kCREATEDAT as NSCopying, kUPDATEDAT as NSCopying] ) //game.player1Image and player2Image seem to not work
 }
 
 

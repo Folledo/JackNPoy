@@ -72,13 +72,31 @@ class PreGameViewController: UIViewController {
 		switch segue.identifier {
 		case "preGameToGameSegue":
 			guard let game: Game = sender as? Game else { return }
-			//			print("game uid to segue is \(game.gameId)")
-			let gameVC: CurrentGameViewController = segue.destination as! CurrentGameViewController
-			gameVC.game = game
-			
-		default:
-			break
-		}
+            
+            let gameVC: CurrentGameViewController = segue.destination as! CurrentGameViewController
+            print(gameDictionaryFrom(game: game))
+            gameVC.game = game
+        
+//            //            print("game uid to segue is \(game.gameId)")
+////            let game2 = UserDefaults.standard.dictionary(forKey: game.gameId)
+//            if let gameDictionary = UserDefaults.standard.object(forKey: game.gameId) { //if game was saved before
+//                print("Game has been played before = \(gameDictionary)")
+//                let currentGame: Game = Game.init(_dictionary: gameDictionary as! [String : Any])
+//
+//                let gameVC: CurrentGameViewController = segue.destination as! CurrentGameViewController
+//                gameVC.game = currentGame
+//
+//            } else { //if game was never saved, start it
+//
+//                let gameVC: CurrentGameViewController = segue.destination as! CurrentGameViewController
+//                gameVC.game = game
+//
+//                UserDefaults.standard.set(game, forKey: game.gameId)
+//                UserDefaults.standard.synchronize()
+//            }
+        default:
+            break
+        }
 	}
 	
 	
@@ -115,7 +133,7 @@ class PreGameViewController: UIViewController {
 //                    print("OpponentDic is \(opponentDic)")
 					//					print("OPPONENTDIC FROM SEND REQUEST IS \(opponentDic)")
 					guard let user = User.currentUser() else { return }
-					var gameValues: [String: AnyObject] = [kPLAYER1ID : userId, kPLAYER1EMAIL: user.email, kPLAYER1NAME: user.name, kPLAYER1AVATARURL: user.avatarURL, kPLAYER1HP: 100, kPLAYER2HP: 100 ] as [String: AnyObject] //values of our currentUser
+					var gameValues: [String: AnyObject] = [kPLAYER1ID : userId, kPLAYER1EMAIL: user.email, kPLAYER1NAME: user.name, kPLAYER1AVATARURL: user.avatarURL, kPLAYER1HP: 30, kPLAYER2HP: 30 ] as [String: AnyObject] //values of our currentUser
 					
 					opponentDic.forEach {gameValues[$0] = $1} //combine each element in opponentDic to our values before we send the request
 					
@@ -134,16 +152,21 @@ class PreGameViewController: UIViewController {
 		let timeStamp: Int = Int(Date().timeIntervalSince1970)
 		
 		
-        var gameValues: [String: AnyObject] = [kCREATEDAT: timeStamp, kUPDATEDAT: timeStamp, kGAMESESSIONS: gameId] as [String: AnyObject] //values for our game session on top of each users's infos
-		
+        var gameValues: [String: AnyObject] = [kCREATEDAT: timeStamp, kUPDATEDAT: timeStamp, kGAMEID: gameId] as [String: AnyObject] //values for our game session on top of each users's infos
+        
 		properties.forEach {gameValues[$0] = $1}
-        print("Game values is created. Recommended to also save this in Core Data \(gameValues)")
+//        print("Game values is created. Recommended to also save this in Core Data \(gameValues)")
+        
+        
+        
+        
+        
 		gameReference.updateChildValues(gameValues) { (error, ref) in //update our values in our reference
 			if let error = error {
 				Service.presentAlert(on: self, title: "Error", message: error.localizedDescription); return
 			} else {
 				
-				//after updating our GAMESESSION's values, we will now create a reference to GAMESESSION's ids for our user's USERTOGAMESESSIONS
+//after updating our GAMESESSION's values, we will now create a reference to GAMESESSION's ids for our user's USERTOGAMESESSIONS
 				guard let user = User.currentUser() else { return }
 				let currentUserGameRef = firDatabase.child(kUSERTOGAMESESSIONS).child(user.userID).child(opponentUid)
 				
@@ -163,6 +186,10 @@ class PreGameViewController: UIViewController {
 						})
 					}
 				})
+                
+//                UserDefaults.standard.set(gameValues, forKey: gameId)
+//                UserDefaults.standard.synchronize()
+//                
 			}
 		}
 	}
@@ -178,7 +205,7 @@ class PreGameViewController: UIViewController {
 			
             guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { print("No requests found"); return }
 //            guard let snapshot = snapshot.value as? NSDictionary else { print("no requests found"); return }
-            print(snapshot)
+//            print(snapshot)
 			for snap in snapshot { //each snap in snapshot is a dictionary //snap.key is the opponentUID and snap.value is the gameSessionId : 1
 				guard let gameSessionUids = snap.value as? [String: AnyObject] else { print("snap.value cannot be found"); return } //snap.value = gameSessionId : 1 //has to be converted to [String: AnyObject] in order to get the snap.value properly
 				self.gameUidsToGame(gameUidDictionary: gameSessionUids)
@@ -198,7 +225,8 @@ class PreGameViewController: UIViewController {
 //                    self.matches.removeAll()
                     
 					guard let game = game else { return }
-                    print("Fetched game found = \(game.gameId)")
+                    
+                    print("Fetched game found = \(game)")
 					
 					self.matches.append(game)
 					self.matchesTableView.reloadData()
@@ -215,9 +243,21 @@ class PreGameViewController: UIViewController {
 		ref.observe(.childAdded, with: { (snapshot) in
 //            print("user found and snapshot is \(snapshot)")
 			guard let userDic = snapshot.value as? [String: Any] else { return }
+            guard let pushId: String = userDic[kPUSHID] as? String else { print("No pushId"); return }
+            guard let name: String = userDic[kNAME] as? String else { print("No name"); return }
+            guard let email: String = userDic[kEMAIL] as? String else { print("No email"); return }
+            guard let avatarUrl: String = userDic[kAVATARURL] as? String else { print("No avatarUrl"); return }
+            guard let wins: Int = userDic[kWINS] as? Int else { print("No wins"); return }
+            guard let loses: Int = userDic[kLOSES] as? Int else { print("No loses"); return }
+            guard let experience: Int = userDic[kEXPERIENCES] as? Int else { print("No experience"); return }
+            guard let level: Int = userDic[kLEVEL] as? Int else { print("No level"); return }
+//            guard let pushId: String = userDic[kPUSHID] as? String else { print("No pushId"); return }
+//            print(snapshot.key)
 //            print("snapshot.value is \(userDic)")
+//            User(_u)
+//            let user = User(_userID: snapshot.key, _pushId: userDic[kPUSHID] as! String, _name: userDic[kNAME]! as! String, _email: userDic[kEMAIL]! as! String, _experience: userDic[kEXPERIENCES]! as! Int, _level: userDic[kLEVEL]! as! Int)
+            let user = User(_userID: snapshot.key, _pushId: pushId, _name: name, _email: email, _avatarURL: avatarUrl, _wins: wins, _loses: loses, _experience: experience, _level: level)
             
-            let user = User(_userID: snapshot.key, _name: userDic[kNAME]! as! String, _email: userDic[kEMAIL]! as! String, _experience: userDic[kEXPERIENCES]! as! Int, _level: userDic[kLEVEL]! as! Int)
             print("You can save other users here in Core Data")
             
 //            let user = User(_dictionary: userDic)
@@ -269,15 +309,32 @@ extension PreGameViewController: UITableViewDelegate, UITableViewDataSource {
 		return cell
 	}
 	
-	
-	
-	//MatchesTableViewCellDelegate Methods
-	func segueWithGameUid(withGame game: Game) {
-		self.performSegue(withIdentifier: "preGameToGameSegue", sender: game)
-	}
 }
 
+//MatchesTableViewCellDelegate Methods
 extension PreGameViewController: MatchesTableViewCellDelegate {
+    func segueWithGameUid(withGame game: Game) {
+        
+        if let gameDictionary = UserDefaults.standard.object(forKey: game.gameId) as? [String: Any] { //if game was saved before
+            print("Game has been played before = \(gameDictionary)")
+            let currentGame: Game = Game.init(_dictionary: gameDictionary)
+            self.performSegue(withIdentifier: "preGameToGameSegue", sender: currentGame)
+            
+        } else { //if game was never saved, start it, sender: game)
+            
+//            let gameVC: CurrentGameViewController = segue.destination as! CurrentGameViewController
+//            gameVC.game = game
+            print("Game has never been started in this device \(game)")
+            UserDefaults.standard.set(gameDictionaryFrom(game: game), forKey: game.gameId)
+            UserDefaults.standard.synchronize()
+            self.performSegue(withIdentifier: "preGameToGameSegue", sender: game)
+        }
+        
+        
+        
+//        self.performSegue(withIdentifier: "preGameToGameSegue", sender: game)
+    }
+    
 	func removeGame(withGame game: Game, indexPath: IndexPath) {
 		game.deleteGame(game: game) { (error) in
 			if let error = error {
